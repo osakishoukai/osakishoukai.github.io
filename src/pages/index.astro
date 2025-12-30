@@ -1,17 +1,80 @@
 ---
-import Container from "@/components/container.astro";
-import Cta from "@/components/cta.astro";
-import Features from "@/components/features.astro";
-import Hero from "@/components/hero.astro";
-import Logos from "@/components/logos.astro";
-import Layout from "@/layouts/Layout.astro";
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/container.astro";
 ---
 
-<Layout title="">
+<Layout title="大崎商会 | みんなVRでたのしくくらそう">
   <Container>
-    <Hero />
-    <Features />
-    <Logos />
-    <Cta />
+    <main class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
+      <!-- 左側：テキスト -->
+      <div class="py-6 md:order-1 text-center lg:text-left">
+        <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
+          みんなVRで<br/>たのしくくらそう！
+        </h1>
+        <p class="text-lg mt-4 text-slate-600 max-w-xl">
+          こんにちは、おおさきです。<br/>
+          VRChatで「けものバーずんどこ」を運営しながら、<br/>
+          ワールドで使える軽量アセットを作ってます。
+        </p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+          <a href="/products" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-black text-white hover:bg-gray-800 border-2 border-transparent flex gap-1 items-center justify-center">
+            🛍️ 商品を見る
+          </a>
+          <a href="/events" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black flex gap-1 items-center justify-center">
+            🍺 イベント情報
+          </a>
+        </div>
+      </div>
+      
+      <!-- 右側：店長画像 -->
+      <div class="relative md:order-2">
+        <img 
+          src="/images/top.png" 
+          alt="大崎商会 店長 おおさきくん"
+          class="w-full max-w-lg mx-auto animate-slide-in"
+        />
+      </div>
+    </main>
+    
+    <!-- こだわりセクション -->
+    <div class="mt-16 md:mt-0">
+      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight text-center">
+        大崎商会のこだわり
+      </h2>
+      <div class="grid sm:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12">
+        <div class="text-center">
+          <div class="text-5xl mb-4">⚡</div>
+          <h3 class="font-semibold text-xl">超軽量</h3>
+          <p class="text-slate-600 mt-2">使われなくても残念ではない軽さ</p>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl mb-4">📱</div>
+          <h3 class="font-semibold text-xl">Quest対応</h3>
+          <p class="text-slate-600 mt-2">誰でも楽しめるように</p>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl mb-4">✨</div>
+          <h3 class="font-semibold text-xl">リアル</h3>
+          <p class="text-slate-600 mt-2">日常に溶け込むデザイン</p>
+        </div>
+      </div>
+    </div>
   </Container>
 </Layout>
+
+<style>
+.animate-slide-in {
+  animation: slideInRight 1s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+</style>

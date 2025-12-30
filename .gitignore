@@ -19,3 +19,31 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+AGENTS.md
+
+# 開発メモ（念のため）
+spec.md
+仕様書.md
+開発メモ/
+internal/
+AGENTS.md
+
+# 環境変数
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Astro
+dist/
+.astro/
+node_modules/
+
+# ログ
+*.log
