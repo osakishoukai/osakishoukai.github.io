@@ -1,0 +1,579 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import { Icon } from "astro-icon/components";
+---
+
+<Layout title="製品利用規約">
+  <Container>
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">大崎商会 製品利用規約</h1>
+      <p class="page-description">
+        本製品をご利用いただく際は、本規約に同意したものとみなします。
+      </p>
+    </div>
+
+    <!-- License Content -->
+    <div class="license-content">
+      <!-- Section 1: 利用許諾 -->
+      <section class="license-section">
+        <div class="section-header">
+          <Icon name="mdi:check-circle" class="section-icon allowed" />
+          <h2 class="section-title">1. 利用許諾</h2>
+        </div>
+        <div class="section-body">
+          <p class="section-intro">
+            本製品は、VRChat等のメタバース空間におけるワールドやアバター用アセットとしての利用を想定しています。各部品の個別使用や改変も自由です。
+          </p>
+          
+          <h3 class="subsection-title">こんな使い方ができます：</h3>
+          <ul class="allowed-list">
+            <li>
+              <Icon name="mdi:check" class="list-icon" />
+              <span>VRChat、cluster、Resonite等のメタバースプラットフォームでの利用</span>
+            </li>
+            <li>
+              <Icon name="mdi:check" class="list-icon" />
+              <span>ワールドやアバターへの組み込み（想定外の使い方をした場合のサポートはできませんが、使うこと自体はOKです）</span>
+            </li>
+            <li>
+              <Icon name="mdi:check" class="list-icon" />
+              <span>収益化イベントや収益化配信での使用</span>
+            </li>
+            <li>
+              <Icon name="mdi:check" class="list-icon" />
+              <span>企業・法人による利用</span>
+            </li>
+            <li>
+              <Icon name="mdi:check" class="list-icon" />
+              <span>改変・テクスチャ等の素材抽出</span>
+            </li>
+            <li>
+              <Icon name="mdi:check" class="list-icon" />
+              <span>Unity、Unreal Engine等でのゲーム制作</span>
+            </li>
+            <li>
+              <Icon name="mdi:check" class="list-icon" />
+              <span>スクリーンショットや動画のSNS投稿</span>
+            </li>
+            <li>
+              <Icon name="mdi:check" class="list-icon" />
+              <span>アバターのクローン許可設定やPublicワールドでの使用</span>
+            </li>
+          </ul>
+
+          <div class="note-box">
+            <Icon name="mdi:information" class="note-icon" />
+            <div>
+              <strong>クレジット表記：</strong> 任意です。書いてもらえると嬉しいです。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: 禁止事項 -->
+      <section class="license-section">
+        <div class="section-header">
+          <Icon name="mdi:close-circle" class="section-icon prohibited" />
+          <h2 class="section-title">2. 禁止事項</h2>
+        </div>
+        <div class="section-body">
+          <h3 class="subsection-title">やっちゃダメなこと：</h3>
+          <ul class="prohibited-list">
+            <li>
+              <Icon name="mdi:close" class="list-icon" />
+              <span>本製品データの二次配布（再配布・転売）</span>
+            </li>
+            <li>
+              <Icon name="mdi:close" class="list-icon" />
+              <span>本製品を使ったワールド/アバターを他人に配布すること</span>
+            </li>
+            <li>
+              <Icon name="mdi:alert" class="list-icon warning" />
+              <div>
+                <strong>音源データのみを抽出して転用すること</strong>
+                <div class="warning-note">（第三者の権利が含まれるため特に厳禁です）</div>
+              </div>
+            </li>
+            <li>
+              <Icon name="mdi:close" class="list-icon" />
+              <span>製作者へのなりすまし</span>
+            </li>
+            <li>
+              <Icon name="mdi:close" class="list-icon" />
+              <span>法令違反な使い方</span>
+            </li>
+          </ul>
+
+          <div class="info-box">
+            <Icon name="mdi:lightbulb" class="info-icon" />
+            <div>
+              <strong>Prefabのみの配布はOK：</strong><br />
+              実体データ（モデル、テクスチャ、音源、Udon等）を含まないPrefabのみなら配布できます。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: 免責事項 -->
+      <section class="license-section">
+        <div class="section-header">
+          <Icon name="mdi:shield-alert" class="section-icon disclaimer" />
+          <h2 class="section-title">3. 免責事項</h2>
+        </div>
+        <div class="section-body">
+          <ul class="disclaimer-list">
+            <li>本製品の配布は予告なく終了する場合があります。購入後はすぐにダウンロード＆バックアップをお願いします</li>
+            <li>使ったこと/使えなかったこと等によって生じた損害について、製作者は責任を負いません</li>
+            <li>ダウンロード商品のため、返品・返金には対応できません</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 4: 外部素材について -->
+      <section class="license-section">
+        <div class="section-header">
+          <Icon name="mdi:file-multiple" class="section-icon external" />
+          <h2 class="section-title">4. 外部素材について</h2>
+        </div>
+        <div class="section-body">
+          <p>
+            本製品には第三者提供の素材（効果音、画像、AI生成物等）が含まれる場合があります。それらの権利は各権利者に帰属します。
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 5: 規約の変更 -->
+      <section class="license-section">
+        <div class="section-header">
+          <Icon name="mdi:update" class="section-icon update" />
+          <h2 class="section-title">5. 規約の変更</h2>
+        </div>
+        <div class="section-body">
+          <p>
+            本規約は予告なく変更される場合があります。最新版はBOOTHの商品ページをご確認ください。
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 6: お問い合わせ -->
+      <section class="license-section">
+        <div class="section-header">
+          <Icon name="mdi:email" class="section-icon contact" />
+          <h2 class="section-title">6. お問い合わせ</h2>
+        </div>
+        <div class="section-body">
+          <p>
+            アップデート情報は商品ページを、不具合報告や質問はBOOTHのメッセージ機能からお気軽にどうぞ。
+          </p>
+          <div class="contact-buttons">
+            <a href="https://booth.pm" target="_blank" rel="noopener" class="contact-button">
+              <Icon name="mdi:shopping" class="button-icon" />
+              Boothで確認
+            </a>
+            <a href="/support/contact" class="contact-button secondary">
+              <Icon name="mdi:help-circle" class="button-icon" />
+              サポートページ
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Summary Box -->
+    <div class="summary-box">
+      <h3 class="summary-title">要約</h3>
+      <div class="summary-grid">
+        <div class="summary-item allowed">
+          <Icon name="mdi:check-circle" class="summary-icon" />
+          <div>
+            <strong>できること</strong>
+            <p>メタバース空間での自由な使用、改変、収益化</p>
+          </div>
+        </div>
+        <div class="summary-item prohibited">
+          <Icon name="mdi:close-circle" class="summary-icon" />
+          <div>
+            <strong>できないこと</strong>
+            <p>データの再配布、転売、音源の単体転用</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back Link -->
+    <div class="back-link-section">
+      <a href="/about" class="back-link">
+        <Icon name="mdi:arrow-left" class="back-icon" />
+        <span>Aboutページに戻る</span>
+      </a>
+    </div>
+  </Container>
+</Layout>
+
+<style>
+  /* Page Header */
+  .page-header {
+    text-align: center;
+    padding: 4rem 0 3rem;
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-description {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: #64748b;
+    line-height: 1.8;
+  }
+
+  /* License Content */
+  .license-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  .license-section {
+    margin-bottom: 3rem;
+    padding: 2.5rem;
+    background: white;
+    border-radius: 1.5rem;
+    border: 2px solid #e2e8f0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1f5f9;
+  }
+
+  .section-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+  }
+
+  .section-icon.allowed {
+    color: #10b981;
+  }
+
+  .section-icon.prohibited {
+    color: #ef4444;
+  }
+
+  .section-icon.disclaimer {
+    color: #f59e0b;
+  }
+
+  .section-icon.external {
+    color: #8b5cf6;
+  }
+
+  .section-icon.update {
+    color: #3b82f6;
+  }
+
+  .section-icon.contact {
+    color: #667eea;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .section-body {
+    color: #475569;
+    line-height: 1.8;
+  }
+
+  .section-intro {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .subsection-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 1.5rem 0 1rem;
+  }
+
+  /* Lists */
+  .allowed-list,
+  .prohibited-list,
+  .disclaimer-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .allowed-list li,
+  .prohibited-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .allowed-list li {
+    background: #f0fdf4;
+  }
+
+  .allowed-list li:hover {
+    background: #dcfce7;
+  }
+
+  .prohibited-list li {
+    background: #fef2f2;
+  }
+
+  .prohibited-list li:hover {
+    background: #fee2e2;
+  }
+
+  .list-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+  }
+
+  .allowed-list .list-icon {
+    color: #10b981;
+  }
+
+  .prohibited-list .list-icon {
+    color: #ef4444;
+  }
+
+  .prohibited-list .list-icon.warning {
+    color: #f59e0b;
+  }
+
+  .warning-note {
+    font-size: 0.875rem;
+    color: #f59e0b;
+    margin-top: 0.25rem;
+  }
+
+  .disclaimer-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .disclaimer-list li:last-child {
+    border-bottom: none;
+  }
+
+  /* Info Boxes */
+  .note-box,
+  .info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 1rem;
+    border-left: 4px solid;
+  }
+
+  .note-box {
+    background: #eff6ff;
+    border-color: #3b82f6;
+  }
+
+  .info-box {
+    background: #fef3c7;
+    border-color: #f59e0b;
+  }
+
+  .note-icon,
+  .info-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .note-icon {
+    color: #3b82f6;
+  }
+
+  .info-icon {
+    color: #f59e0b;
+  }
+
+  /* Contact Buttons */
+  .contact-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.75rem;
+    border-radius: 3rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .contact-button:not(.secondary) {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .contact-button:not(.secondary):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+  }
+
+  .contact-button.secondary {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+  }
+
+  .contact-button.secondary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .button-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Summary Box */
+  .summary-box {
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 2rem;
+  }
+
+  .summary-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #1e293b;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .summary-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    border: 2px solid;
+  }
+
+  .summary-item.allowed {
+    border-color: #10b981;
+  }
+
+  .summary-item.prohibited {
+    border-color: #ef4444;
+  }
+
+  .summary-icon {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+  }
+
+  .summary-item.allowed .summary-icon {
+    color: #10b981;
+  }
+
+  .summary-item.prohibited .summary-icon {
+    color: #ef4444;
+  }
+
+  .summary-item strong {
+    display: block;
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+  }
+
+  .summary-item p {
+    font-size: 0.875rem;
+    color: #64748b;
+    line-height: 1.6;
+  }
+
+  /* Back Link */
+  .back-link-section {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: gap 0.3s ease;
+  }
+
+  .back-link:hover {
+    gap: 1rem;
+  }
+
+  .back-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .license-section {
+      padding: 2rem 1.5rem;
+    }
+
+    .summary-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-buttons {
+      flex-direction: column;
+    }
+
+    .contact-button {
+      justify-content: center;
+    }
+  }
+</style>

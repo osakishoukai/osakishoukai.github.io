@@ -1,175 +1,97 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Container from "../components/container.astro";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import { Picture } from "astro:assets";
 ---
 
-<Layout title="大崎商会 | みんなVRでたのしくくらそう">
+<Layout title="ホーム">
+  <!-- Hero Section -->
   <Container>
-    <main class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
-      <!-- 左側：テキスト -->
-      <div class="py-6 md:order-1 text-center lg:text-left">
-        <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
-          みんなVRで<br/>たのしくくらそう！
-        </h1>
-        <p class="text-lg mt-4 text-slate-600 max-w-xl">
-          こんにちは、おおさきです。<br/>
-          VRChatで「けものバーずんどこ」を運営しながら、<br/>
-          ワールドで使える軽量アセットを作ってます。
-        </p>
-        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-          <a href="/products" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-black text-white hover:bg-gray-800 border-2 border-transparent flex gap-1 items-center justify-center">
-            🛍️ 商品を見る
-          </a>
-          <a href="/events" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black flex gap-1 items-center justify-center">
-            🍺 イベント情報
-          </a>
+    <div class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1 class="hero-title">
+            みんなVRで<br />たのしくくらそう！
+          </h1>
+          <p class="hero-intro">
+            こんにちは、おおさきくんです。<br />
+            VRChat「けものバーずんどこ」の店主をしたり、<br />
+            ワールドで使える軽量アセットをつくったりしているよ！
+          </p>
         </div>
-      </div>
-      
-      <!-- 右側：店長画像 -->
-      <div class="relative md:order-2">
-        <img 
-          src="/images/top.webp" 
-          alt="大崎商会 店長 おおさきくん"
-          class="w-full max-w-lg mx-auto animate-slide-in"
-        />
-      </div>
-    </main>
-    
-    <!-- こだわりセクション -->
-    <div class="mt-16 md:mt-0">
-      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight text-center">
-        大崎商会のこだわり
-      </h2>
-      <div class="grid sm:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12">
-        <div class="text-center">
-          <div class="text-5xl mb-4">⚡</div>
-          <h3 class="font-semibold text-xl">超軽量</h3>
-          <p class="text-slate-600 mt-2">使われなくても残念ではない軽さ</p>
-        </div>
-        <div class="text-center">
-          <div class="text-5xl mb-4">📱</div>
-          <h3 class="font-semibold text-xl">Quest対応</h3>
-          <p class="text-slate-600 mt-2">誰でも楽しめるように</p>
-        </div>
-        <div class="text-center">
-          <div class="text-5xl mb-4">✨</div>
-          <h3 class="font-semibold text-xl">リアル</h3>
-          <p class="text-slate-600 mt-2">日常に溶け込むデザイン</p>
+        <div class="hero-image">
+          <img src="/images/top.webp" alt="おおさきくん" class="character-image" />
         </div>
       </div>
     </div>
+  </Container>
 
-    <!-- 3つの入り口セクション -->
-    <div class="mt-24">
-      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight text-center mb-12">
-        どこから始めますか？
-      </h2>
-      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        <!-- 商品を探す -->
-        <a href="/products/" class="group block p-8 bg-white border-2 border-gray-200 rounded-2xl hover:border-black hover:shadow-lg transition-all duration-300">
-          <div class="text-6xl mb-4">🛍️</div>
-          <h3 class="font-bold text-2xl mb-3 group-hover:text-black transition">商品を探す</h3>
-          <p class="text-slate-600 mb-4">VRChatで使える軽量アセットをチェック</p>
-          <span class="text-black font-semibold group-hover:underline">商品一覧へ →</span>
+  <!-- Quick Links Section -->
+  <Container>
+    <div class="quick-links-section">
+      <div class="quick-links-grid">
+        <a href="/products" class="quick-link-card">
+          <div class="link-emoji">🛍️</div>
+          <h3 class="link-title">商品を探す</h3>
+          <p class="link-description">Quest対応の軽量アセット</p>
         </a>
-
-        <!-- イベントに参加 -->
-        <a href="/events/" class="group block p-8 bg-white border-2 border-gray-200 rounded-2xl hover:border-black hover:shadow-lg transition-all duration-300">
-          <div class="text-6xl mb-4">🍺</div>
-          <h3 class="font-bold text-2xl mb-3 group-hover:text-black transition">イベントに参加</h3>
-          <p class="text-slate-600 mb-4">けものバーずんどこで一緒に楽しもう</p>
-          <span class="text-black font-semibold group-hover:underline">イベント情報へ →</span>
+        <a href="/events" class="quick-link-card">
+          <div class="link-emoji">🍺</div>
+          <h3 class="link-title">イベント参加</h3>
+          <p class="link-description">けものバーずんどこ</p>
         </a>
-
-        <!-- 思い出を見る -->
-        <a href="/events/archive/" class="group block p-8 bg-white border-2 border-gray-200 rounded-2xl hover:border-black hover:shadow-lg transition-all duration-300">
-          <div class="text-6xl mb-4">📚</div>
-          <h3 class="font-bold text-2xl mb-3 group-hover:text-black transition">思い出を見る</h3>
-          <p class="text-slate-600 mb-4">過去のイベントやアーカイブをチェック</p>
-          <span class="text-black font-semibold group-hover:underline">アーカイブへ →</span>
+        <a href="/about" class="quick-link-card">
+          <div class="link-emoji">📚</div>
+          <h3 class="link-title">思い出を見る</h3>
+          <p class="link-description">大崎商会について</p>
         </a>
       </div>
     </div>
+  </Container>
 
-    <!-- 新着情報セクション -->
-    <div class="mt-24 bg-slate-50 -mx-4 px-4 py-16 md:-mx-8 md:px-8 rounded-3xl">
-      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight text-center mb-12">
-        新着情報
-      </h2>
-      <div class="max-w-3xl mx-auto space-y-6">
-        <!-- ニュース項目1 -->
-        <a href="/blog/complete-guide-fullstack-development/" class="block p-6 bg-white rounded-xl hover:shadow-md transition-shadow border border-gray-100">
-          <div class="flex items-start gap-4">
-            <time class="text-sm text-slate-500 font-mono whitespace-nowrap pt-1">2025.12.30</time>
-            <div class="flex-1">
-              <h3 class="font-semibold text-lg hover:text-blue-600 transition">新商品「おつまみセット」をリリースしました</h3>
-            </div>
-          </div>
-        </a>
-
-        <!-- ニュース項目2 -->
-        <a href="/blog/how-to-become-frontend-master/" class="block p-6 bg-white rounded-xl hover:shadow-md transition-shadow border border-gray-100">
-          <div class="flex items-start gap-4">
-            <time class="text-sm text-slate-500 font-mono whitespace-nowrap pt-1">2025.12.25</time>
-            <div class="flex-1">
-              <h3 class="font-semibold text-lg hover:text-blue-600 transition">年末年始イベント開催のお知らせ</h3>
-            </div>
-          </div>
-        </a>
-
-        <!-- ニュース項目3 -->
-        <a href="/blog/essential-data-structures-algorithms/" class="block p-6 bg-white rounded-xl hover:shadow-md transition-shadow border border-gray-100">
-          <div class="flex items-start gap-4">
-            <time class="text-sm text-slate-500 font-mono whitespace-nowrap pt-1">2025.12.20</time>
-            <div class="flex-1">
-              <h3 class="font-semibold text-lg hover:text-blue-600 transition">公式サイトをリニューアルしました</h3>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="text-center mt-8">
-        <a href="/blog/" class="inline-block text-black font-semibold hover:underline">すべての更新履歴を見る →</a>
+  <!-- Features Section -->
+  <Container>
+    <div class="features-section">
+      <h2 class="section-title">大崎商会の特徴</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">✨</div>
+          <h3 class="feature-title">Quest対応</h3>
+          <p class="feature-description">すべてのアセットはQuest環境で動作確認済み。誰でも使える、誰でも楽しめる。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🪶</div>
+          <h3 class="feature-title">超軽量</h3>
+          <p class="feature-description">ポリゴン数、テクスチャサイズを最適化。使われなくても残念じゃない軽さ。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">実証済み</h3>
+          <p class="feature-description">「けものバーずんどこ」で毎週実証テスト。実際のイベント環境で快適動作。</p>
+        </div>
       </div>
     </div>
+  </Container>
 
-    <!-- おおさきくん紹介セクション -->
-    <div class="mt-24 mb-16">
-      <div class="max-w-4xl mx-auto">
-        <div class="grid md:grid-cols-3 gap-8 items-start">
-          <!-- 左側：アバター画像 -->
-          <div class="md:col-span-1 text-center">
-            <img 
-              src="/images/top.webp" 
-              alt="おおさきくん"
-              class="w-48 h-48 mx-auto rounded-full object-cover border-4 border-gray-200 shadow-lg"
-            />
-            <h3 class="font-bold text-2xl mt-4">おおさきくん</h3>
-            <p class="text-slate-600 text-sm mt-1">大崎商会 店長</p>
-          </div>
-
-          <!-- 右側：自己紹介 -->
-          <div class="md:col-span-2">
-            <h2 class="text-3xl font-bold mb-6">はじめまして</h2>
-            <div class="space-y-4 text-slate-700 leading-relaxed">
-              <p>
-                こんにちは、おおさきです！VRChatで「けものバーずんどこ」というバーを運営しながら、
-                ワールドで使える軽量アセットを制作しています。
-              </p>
-              <p>
-                「みんなVRでたのしくくらそう！」をモットーに、Quest対応の超軽量アセットにこだわって制作しています。
-                使われなくても残念じゃない軽さと、日常に溶け込むリアルなデザインが特徴です。
-              </p>
-              <p>
-                イベントも定期的に開催していますので、ぜひ遊びに来てください！
-              </p>
-            </div>
-            <div class="mt-6">
-              <a href="/about/" class="inline-block px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition font-semibold">
-                詳しく見る →
-              </a>
-            </div>
-          </div>
+  <!-- Latest Updates -->
+  <Container>
+    <div class="updates-section">
+      <h2 class="section-title">新着情報</h2>
+      <div class="updates-list">
+        <div class="update-item">
+          <span class="update-date">2025.01.01</span>
+          <span class="update-category products">商品</span>
+          <a href="/products" class="update-link">公式サイトをリニューアルしました</a>
+        </div>
+        <div class="update-item">
+          <span class="update-date">2024.12.28</span>
+          <span class="update-category events">イベント</span>
+          <a href="/events" class="update-link">けものバーずんどこ 年末感謝祭を開催</a>
+        </div>
+        <div class="update-item">
+          <span class="update-date">2024.12.15</span>
+          <span class="update-category products">商品</span>
+          <a href="/products" class="update-link">新商品「おつまみセット」をリリース</a>
         </div>
       </div>
     </div>
@@ -177,18 +99,239 @@ import Container from "../components/container.astro";
 </Layout>
 
 <style>
-.animate-slide-in {
-  animation: slideInRight 1s ease-out;
-}
+  /* Hero Section */
+  .hero-section {
+    padding: 3rem 0 4rem;
+  }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+
+  .hero-text {
+    padding: 2rem 0;
   }
-}
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 2rem;
+    color: #1e293b;
+  }
+
+  .hero-intro {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    color: #64748b;
+    line-height: 1.8;
+  }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .character-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Quick Links Section */
+  .quick-links-section {
+    padding: 3rem 0;
+  }
+
+  .quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .quick-link-card {
+    padding: 2rem;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 1rem;
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .quick-link-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+  }
+
+  .link-emoji {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .link-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+  }
+
+  .link-description {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  /* Features Section */
+  .features-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 2rem;
+    margin: 3rem 0;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #1e293b;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 0 2rem;
+  }
+
+  .feature-card {
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #1e293b;
+  }
+
+  .feature-description {
+    font-size: 0.875rem;
+    color: #64748b;
+    line-height: 1.6;
+  }
+
+  /* Updates Section */
+  .updates-section {
+    padding: 4rem 0;
+  }
+
+  .updates-list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .update-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .update-item:hover {
+    transform: translateX(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+  }
+
+  .update-date {
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: 600;
+    min-width: 100px;
+  }
+
+  .update-category {
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .update-category.products {
+    background: #ddd6fe;
+    color: #5b21b6;
+  }
+
+  .update-category.events {
+    background: #fce7f3;
+    color: #be185d;
+  }
+
+  .update-link {
+    color: #1e293b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .update-link:hover {
+    color: #667eea;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .hero-image {
+      order: -1;
+    }
+
+    .quick-links-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .update-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .update-date {
+      min-width: auto;
+    }
+  }
 </style>

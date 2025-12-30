@@ -1,19 +1,51 @@
 <footer class="my-20">
-  <p class="text-center text-sm text-slate-500">
-    Copyright © {new Date().getFullYear()} Astroship. All rights reserved.
-  </p>
-  <!--
-    Can we ask you a favor 🙏
-    Please keep this backlink on your website if possible.
-    or Purchase a commercial license from https://web3templates.com
-  -->
-  <p class="text-center text-xs text-slate-500 mt-1">
-    Made by <a
-      href="https://web3templates.com"
-      target="_blank"
-      rel="noopener"
-      class="hover:underline">
-      Web3Templates
-    </a>
-  </p>
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <!-- About -->
+      <div>
+        <h3 class="font-bold text-slate-800 mb-3">大崎商会</h3>
+        <p class="text-sm text-slate-500">
+          みんなVRでたのしくくらそう。<br />
+          Quest対応・軽量化にこだわったVRChatアセットを開発しています。
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div>
+        <h3 class="font-bold text-slate-800 mb-3">リンク</h3>
+        <ul class="space-y-2 text-sm text-slate-500">
+          <li><a href="/products" class="hover:text-slate-800">商品一覧</a></li>
+          <li><a href="/events" class="hover:text-slate-800">イベント情報</a></li>
+          <li><a href="/about" class="hover:text-slate-800">About</a></li>
+          <li><a href="/support" class="hover:text-slate-800">サポート</a></li>
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div>
+        <h3 class="font-bold text-slate-800 mb-3">SNS</h3>
+        <ul class="space-y-2 text-sm text-slate-500">
+          <li>
+            <a href="https://twitter.com/osakikun_vrc" target="_blank" rel="noopener" class="hover:text-slate-800">
+              Twitter
+            </a>
+          </li>
+          <li>
+            <a href="https://booth.pm" target="_blank" rel="noopener" class="hover:text-slate-800">
+              Booth
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-200 pt-6">
+      <p class="text-center text-sm text-slate-500">
+        Copyright © {new Date().getFullYear()} 大崎商会. All rights reserved.
+      </p>
+      <p class="text-center text-xs text-slate-400 mt-2">
+        Built with <a href="https://astro.build" target="_blank" rel="noopener" class="hover:underline">Astro</a>
+      </p>
+    </div>
+  </div>
 </footer>
