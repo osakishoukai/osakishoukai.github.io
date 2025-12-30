@@ -6,7 +6,7 @@ import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://osakishokai.github.io",  // ← ここを変更
+  site: "https://osakishoukai.github.io",  // ← ここを変更
   integrations: [mdx(), sitemap(), icon()],
   vite: {
     plugins: [tailwindcss()],
