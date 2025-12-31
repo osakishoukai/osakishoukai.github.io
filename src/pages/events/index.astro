@@ -58,6 +58,8 @@ function formatDate(dateStr) {
     </div>
   </Container>
 
+
+
   <Container>
     <!-- Archive -->
     <div class="archive-section">
@@ -83,6 +85,26 @@ function formatDate(dateStr) {
           アーカイブをもっと見る
           <Icon name="mdi:arrow-right" class="arrow-icon" />
         </a>
+      </div>
+    </div>
+
+    <!-- Media Section -->
+    <div class="media-section">
+      <h2 class="section-title">メディア掲載</h2>
+      <div class="summary-card">
+        <div class="summary-content">
+          <p class="summary-text" style="font-size: 1.2rem;">
+            フルトラ研のワールドナビ様に<br />
+            『KemonoBarずんどこ』を紹介していただきました！<br />
+            <span style="font-size: 1rem; opacity: 0.8;">素敵な動画もあるので、ぜひご覧ください！</span>
+          </p>
+          <div class="summary-cta">
+            <a href="https://vrchat-fbt.com/kemonobar/" target="_blank" class="join-group-link">
+              <Icon name="mdi:arrow-right" class="btn-icon" style="transform: rotate(-45deg);" />
+              記事を見る
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -258,6 +280,8 @@ function formatDate(dateStr) {
     box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     filter: brightness(1.1);
   }
+
+  .media-section { margin-bottom: 5rem; }
 
   .archive-section { margin-bottom: 5rem; }
   .archive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
