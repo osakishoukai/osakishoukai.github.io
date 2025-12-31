@@ -1,0 +1,46 @@
+<div class="theme-switcher">
+  <button data-theme-set="scheme1" class="theme-btn scheme1" title="繝・・繝・"></button>
+  <button data-theme-set="scheme2" class="theme-btn scheme2" title="繝・・繝・"></button>
+  <button data-theme-set="scheme3" class="theme-btn scheme3" title="繝・・繝・"></button>
+</div>
+
+<style>
+  .theme-switcher {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .theme-btn {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .theme-btn:hover {
+    transform: scale(1.2);
+  }
+  .theme-btn.scheme1 { background-color: #E6904E; }
+  .theme-btn.scheme2 { background-color: #3E5F8A; }
+  .theme-btn.scheme3 { background-color: #CF3D31; }
+</style>
+
+<script>
+  const themeBtns = document.querySelectorAll('[data-theme-set]');
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.getAttribute('data-theme-set');
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    });
+  });
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }
+</script>
+

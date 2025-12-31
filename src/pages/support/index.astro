@@ -5,177 +5,90 @@ import { Icon } from "astro-icon/components";
 ---
 
 <Layout title="サポート">
-  <Container>
-    <!-- Page Header -->
-    <div class="page-header">
+  <div class="page-header">
+    <Container>
       <h1 class="page-title">サポート</h1>
       <p class="page-description">
-        よくある質問、お問い合わせ、チュートリアルなど<br />
-        お困りの際はこちらをご覧ください。
+        大崎商会のアセットやイベントに関するサポートページです。<br />
+        よくある質問の確認や、お問い合わせはこちらから。
       </p>
-    </div>
+    </Container>
+  </div>
 
+  <Container>
     <!-- Quick Links -->
     <div class="quick-links">
-      <a href="/support/faq" class="quick-link-card">
-        <Icon name="mdi:help-circle" class="quick-icon" />
+      <a href="#faq" class="quick-link-card">
+        <Icon name="mdi:frequently-asked-questions" class="quick-icon" />
         <h3>よくある質問</h3>
-        <p>導入方法、カスタマイズ、トラブルシューティング</p>
+        <p>導入方法や仕様についてのQ&A</p>
       </a>
-      <a href="/support/contact" class="quick-link-card">
+      <a href="#contact" class="quick-link-card">
         <Icon name="mdi:email" class="quick-icon" />
         <h3>お問い合わせ</h3>
-        <p>ご質問・ご要望はこちらから</p>
+        <p>不具合報告やご要望はこちら</p>
       </a>
-      <a href="/support/tutorial" class="quick-link-card">
-        <Icon name="mdi:school" class="quick-icon" />
-        <h3>チュートリアル</h3>
-        <p>ワールド作成入門（準備中）</p>
+      <a href="/about/license" class="quick-link-card">
+        <Icon name="mdi:scale-balance" class="quick-icon" />
+        <h3>ライセンス</h3>
+        <p>アセットの利用規約について</p>
       </a>
     </div>
 
-    <!-- FAQ Preview -->
-    <div class="faq-section">
+    <!-- FAQ Section -->
+    <div id="faq" class="faq-section">
       <h2 class="section-title">よくある質問</h2>
-      
       <div class="faq-list">
         <details class="faq-item">
           <summary class="faq-question">
             <Icon name="mdi:chevron-right" class="chevron" />
-            <span>アセットの導入方法は？</span>
+            <span>Quest対応ワールドで使えますか？</span>
           </summary>
           <div class="faq-answer">
-            <p>各商品には詳細なReadMeが付属しています。基本的な手順は以下の通りです：</p>
-            <ol>
-              <li>UnityでVRChatワールドプロジェクトを開く</li>
-              <li>ダウンロードしたunitypackageをインポート</li>
-              <li>Prefabをシーンに配置</li>
-              <li>必要に応じてパラメータを調整</li>
-            </ol>
-            <p>詳しくは各商品ページのReadMeをご確認ください。</p>
+            <p>はい、すべてのアセットはQuest単体環境での動作を確認済みです。安心してご利用いただけます。</p>
           </div>
         </details>
-
         <details class="faq-item">
           <summary class="faq-question">
             <Icon name="mdi:chevron-right" class="chevron" />
-            <span>Quest対応とは具体的にどういうことですか？</span>
+            <span>商用利用（動画配信など）は可能ですか？</span>
           </summary>
           <div class="faq-answer">
-            <p>Quest対応とは、Meta Quest（旧Oculus Quest）でも問題なく動作することを意味します。</p>
-            <ul>
-              <li>ポリゴン数を最小限に抑えている</li>
-              <li>テクスチャサイズを最適化している</li>
-              <li>Quest環境で実際に動作確認済み</li>
-              <li>シェーダーはQuest互換のものを使用</li>
-            </ul>
-            <p>すべてのアセットは「けものバーずんどこ」で実証済みです。</p>
+            <p>はい、個人・法人を問わず、動画配信や収益化されたワールドでの利用が可能です。詳細はライセンスページをご確認ください。</p>
           </div>
         </details>
-
         <details class="faq-item">
           <summary class="faq-question">
             <Icon name="mdi:chevron-right" class="chevron" />
-            <span>カスタマイズはできますか？</span>
+            <span>アセットがピンク色（Missing Material）になります。</span>
           </summary>
           <div class="faq-answer">
-            <p>はい、可能です。各アセットは以下のようなカスタマイズに対応しています：</p>
-            <ul>
-              <li>色の変更（マテリアル調整）</li>
-              <li>サイズの変更</li>
-              <li>配置位置の調整</li>
-              <li>ギミックのパラメータ調整</li>
-            </ul>
-            <p>ただし、改変する場合は利用規約をご確認ください。</p>
+            <p>多くの場合、指定のシェーダーが導入されていないことが原因です。各商品の説明欄に記載されているシェーダーを導入してから、アセットをインポートしてください。</p>
           </div>
         </details>
-
-        <details class="faq-item">
-          <summary class="faq-question">
-            <Icon name="mdi:chevron-right" class="chevron" />
-            <span>商用利用は可能ですか？</span>
-          </summary>
-          <div class="faq-answer">
-            <p>基本的に商用利用は可能です。ただし、以下の点にご注意ください：</p>
-            <ul>
-              <li>VRChatワールド内での使用に限ります</li>
-              <li>アセット自体の再配布は禁止です</li>
-              <li>詳細は各商品の利用規約をご確認ください</li>
-            </ul>
-            <p>不明な点があれば、お問い合わせください。</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary class="faq-question">
-            <Icon name="mdi:chevron-right" class="chevron" />
-            <span>不具合があった場合はどうすればいいですか？</span>
-          </summary>
-          <div class="faq-answer">
-            <p>不具合を発見された場合は、以下の情報とともにお問い合わせください：</p>
-            <ul>
-              <li>商品名とバージョン</li>
-              <li>使用しているUnityのバージョン</li>
-              <li>VRChat SDKのバージョン</li>
-              <li>不具合の詳細（スクリーンショットがあると助かります）</li>
-              <li>再現手順</li>
-            </ul>
-            <p>できる限り迅速に対応いたします。</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary class="faq-question">
-            <Icon name="mdi:chevron-right" class="chevron" />
-            <span>アップデートはありますか？</span>
-          </summary>
-          <div class="faq-answer">
-            <p>はい、必要に応じてアップデートを提供しています：</p>
-            <ul>
-              <li>不具合修正</li>
-              <li>新機能の追加</li>
-              <li>VRChat SDK更新への対応</li>
-              <li>パフォーマンス改善</li>
-            </ul>
-            <p>アップデート情報はBoothの商品ページおよびTwitterでお知らせします。</p>
-          </div>
-        </details>
-      </div>
-
-      <div class="faq-cta">
-        <a href="/support/faq" class="btn-primary">
-          すべてのFAQを見る
-          <Icon name="mdi:arrow-right" class="arrow-icon" />
-        </a>
       </div>
     </div>
 
     <!-- Contact Section -->
-    <div class="contact-section">
-      <h2 class="section-title">お問い合わせ</h2>
+    <div id="contact" class="contact-section">
       <div class="contact-content">
         <div class="contact-info">
-          <Icon name="mdi:email-outline" class="contact-icon" />
-          <h3>ご質問・ご要望はこちら</h3>
+          <Icon name="mdi:message-draw" class="contact-icon" />
+          <h3>お問い合わせ</h3>
           <p>
-            商品に関するご質問、カスタマイズのご相談、<br />
-            不具合報告など、お気軽にお問い合わせください。
+            商品に関するご質問、カスタマイズのご相談、不具合報告など、お気軽にお問い合わせください。
           </p>
           <ul class="contact-methods">
             <li>
               <Icon name="mdi:twitter" class="method-icon" />
-              <span>Twitter DM: @osakikun_vrc</span>
+              <span>Twitter DM: @osaki_shokai</span>
             </li>
             <li>
               <Icon name="mdi:email" class="method-icon" />
               <span>お問い合わせフォーム（準備中）</span>
             </li>
-            <li>
-              <Icon name="mdi:discord" class="method-icon" />
-              <span>Discord（準備中）</span>
-            </li>
           </ul>
-          <a href="https://twitter.com/osakikun_vrc" target="_blank" class="btn-secondary">
+          <a href="https://twitter.com/osaki_shokai" target="_blank" class="btn-secondary">
             <Icon name="mdi:twitter" class="btn-icon" />
             TwitterでDMを送る
           </a>
@@ -183,29 +96,29 @@ import { Icon } from "astro-icon/components";
       </div>
     </div>
 
-    <!-- Resources Section -->
+    <!-- Resources -->
     <div class="resources-section">
       <h2 class="section-title">関連リソース</h2>
       <div class="resources-grid">
         <a href="https://docs.vrchat.com" target="_blank" class="resource-card">
           <Icon name="mdi:book-open-variant" class="resource-icon" />
           <h3>VRChat公式ドキュメント</h3>
-          <p>VRChatの公式ドキュメント。ワールド制作の基礎から学べます。</p>
+          <p>ワールド制作の基礎から学べます。</p>
         </a>
-        <a href="https://booth.pm" target="_blank" class="resource-card">
+        <a href="https://osaki-vrc.booth.pm/" target="_blank" class="resource-card">
           <Icon name="mdi:shopping" class="resource-icon" />
-          <h3>Booth</h3>
-          <p>大崎商会のBoothショップ。すべての商品はこちらで購入できます。</p>
+          <h3>Boothショップ</h3>
+          <p>最新のアセットはこちらから。</p>
         </a>
         <a href="/products" class="resource-card">
           <Icon name="mdi:package-variant" class="resource-icon" />
           <h3>商品一覧</h3>
-          <p>大崎商会のすべての商品を見る。技術仕様や開発秘話も掲載。</p>
+          <p>全アセットの技術仕様を掲載。</p>
         </a>
         <a href="/events" class="resource-card">
           <Icon name="mdi:calendar" class="resource-icon" />
           <h3>イベント情報</h3>
-          <p>けものバーずんどこの開催情報。実際にアセットを体験できます。</p>
+          <p>KemonoBarずんどこの開催情報。</p>
         </a>
       </div>
     </div>
@@ -213,329 +126,35 @@ import { Icon } from "astro-icon/components";
 </Layout>
 
 <style>
-  /* Page Header */
-  .page-header {
-    text-align: center;
-    padding: 4rem 0 3rem;
-  }
-
-  .page-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 900;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .page-description {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: #64748b;
-    line-height: 1.8;
-  }
-
-  /* Section Titles */
-  .section-title {
-    font-size: clamp(2rem, 4vw, 2.5rem);
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 3rem;
-    color: #1e293b;
-  }
-
-  /* Quick Links */
-  .quick-links {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0 5rem;
-  }
-
-  .quick-link-card {
-    padding: 2.5rem;
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-
-  .quick-link-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-    border-color: #667eea;
-  }
-
-  .quick-icon {
-    width: 4rem;
-    height: 4rem;
-    margin: 0 auto 1.5rem;
-    color: #667eea;
-  }
-
-  .quick-link-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: #1e293b;
-  }
-
-  .quick-link-card p {
-    color: #64748b;
-    line-height: 1.6;
-  }
-
-  /* FAQ Section */
-  .faq-section {
-    padding: 4rem 0;
-  }
-
-  .faq-list {
-    max-width: 900px;
-    margin: 0 auto 3rem;
-  }
-
-  .faq-item {
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 1rem;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .faq-item:hover {
-    border-color: #cbd5e1;
-  }
-
-  .faq-item[open] {
-    border-color: #667eea;
-  }
-
-  .faq-question {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1e293b;
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.3s ease;
-  }
-
-  .faq-question:hover {
-    background: #f8fafc;
-  }
-
-  .chevron {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: #667eea;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-  }
-
-  .faq-item[open] .chevron {
-    transform: rotate(90deg);
-  }
-
-  .faq-answer {
-    padding: 0 1.5rem 1.5rem 4rem;
-    color: #64748b;
-    line-height: 1.8;
-  }
-
-  .faq-answer p {
-    margin-bottom: 1rem;
-  }
-
-  .faq-answer ul,
-  .faq-answer ol {
-    margin: 1rem 0;
-    padding-left: 1.5rem;
-  }
-
-  .faq-answer li {
-    margin-bottom: 0.5rem;
-  }
-
-  .faq-cta {
-    text-align: center;
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 3rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
-    gap: 1.25rem;
-  }
-
-  .arrow-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-
-  /* Contact Section */
-  .contact-section {
-    padding: 4rem 0;
-  }
-
-  .contact-content {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .contact-info {
-    padding: 3rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border-radius: 2rem;
-    text-align: center;
-  }
-
-  .contact-icon {
-    width: 5rem;
-    height: 5rem;
-    margin: 0 auto 1.5rem;
-    color: #667eea;
-  }
-
-  .contact-info h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #1e293b;
-  }
-
-  .contact-info p {
-    color: #64748b;
-    line-height: 1.8;
-    margin-bottom: 2rem;
-  }
-
-  .contact-methods {
-    list-style: none;
-    padding: 0;
-    margin: 2rem 0;
-  }
-
-  .contact-methods li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    color: #64748b;
-    font-weight: 500;
-  }
-
-  .method-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: #667eea;
-  }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2rem;
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
-    border-radius: 3rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .btn-secondary:hover {
-    background: #667eea;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
-  }
-
-  .btn-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-
-  /* Resources Section */
-  .resources-section {
-    padding: 4rem 0;
-  }
-
-  .resources-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-  }
-
-  .resource-card {
-    padding: 2rem;
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s ease;
-  }
-
-  .resource-card:hover {
-    transform: translateY(-4px);
-    border-color: #667eea;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  }
-
-  .resource-icon {
-    width: 3rem;
-    height: 3rem;
-    margin-bottom: 1rem;
-    color: #667eea;
-  }
-
-  .resource-card h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: #1e293b;
-  }
-
-  .resource-card p {
-    font-size: 0.875rem;
-    color: #64748b;
-    line-height: 1.6;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .quick-links {
-      grid-template-columns: 1fr;
-    }
-
-    .faq-answer {
-      padding-left: 1.5rem;
-    }
-
-    .resources-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+  .page-header { text-align: center; padding: 4rem 0 3rem; }
+  .page-title { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; margin-bottom: 1rem; color: var(--main-color); }
+  .page-description { font-size: clamp(1rem, 2vw, 1.25rem); color: var(--sub-color); line-height: 1.8; }
+  .section-title { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 900; text-align: center; margin-bottom: 3rem; color: var(--sub-color); }
+  .quick-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 5rem; }
+  .quick-link-card { background: white; padding: 2.5rem; border: 3px solid var(--main-color); border-radius: 2rem; text-decoration: none; text-align: center; transition: all 0.3s ease; }
+  .quick-link-card:hover { transform: translateY(-8px); background: var(--bg-color); }
+  .quick-icon { width: 3.5rem; height: 3.5rem; color: var(--main-color); margin-bottom: 1.5rem; }
+  .quick-link-card h3 { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--sub-color); }
+  .quick-link-card p { font-size: 0.9rem; color: var(--sub-color); opacity: 0.8; }
+  .faq-list { max-width: 800px; margin: 0 auto 5rem; }
+  .faq-item { background: white; border: 2px solid var(--main-color); border-radius: 1rem; margin-bottom: 1rem; overflow: hidden; }
+  .faq-question { padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; font-weight: 900; color: var(--sub-color); list-style: none; }
+  .faq-question::-webkit-details-marker { display: none; }
+  .chevron { width: 1.5rem; height: 1.5rem; color: var(--main-color); transition: transform 0.3s ease; }
+  .faq-item[open] .chevron { transform: rotate(90deg); }
+  .faq-answer { padding: 0 1.5rem 1.5rem 4rem; color: var(--sub-color); line-height: 1.7; opacity: 0.9; }
+  .contact-info { background: var(--bg-color); padding: 4rem; border-radius: 2rem; text-align: center; border: 3px solid var(--main-color); margin-bottom: 5rem; }
+  .contact-icon { width: 4rem; height: 4rem; color: var(--main-color); margin-bottom: 1.5rem; }
+  .contact-info h3 { font-size: 2rem; font-weight: 900; margin-bottom: 1rem; color: var(--sub-color); }
+  .contact-methods { list-style: none; padding: 0; margin: 2rem 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .contact-methods li { display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: var(--sub-color); font-weight: 700; }
+  .method-icon { width: 1.25rem; height: 1.25rem; color: var(--main-color); }
+  .btn-secondary { display: inline-flex; align-items: center; gap: 0.5rem; background: white; padding: 1rem 2rem; border-radius: 3rem; border: 2px solid var(--main-color); color: var(--main-color); text-decoration: none; font-weight: 900; transition: all 0.3s ease; }
+  .btn-secondary:hover { background: var(--main-color); color: white; }
+  .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 5rem; }
+  .resource-card { background: white; padding: 2rem; border-radius: 1.5rem; border: 2px solid #e2e8f0; text-decoration: none; transition: all 0.3s ease; }
+  .resource-card:hover { border-color: var(--main-color); transform: translateY(-4px); }
+  .resource-icon { width: 2.5rem; height: 2.5rem; color: var(--main-color); margin-bottom: 1rem; }
+  .resource-card h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--sub-color); }
+  .resource-card p { font-size: 0.875rem; color: var(--sub-color); opacity: 0.8; }
 </style>

@@ -1,13 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36">
-  <path fill="#000" d="M22.25 4h-8.5a1 1 0 0 0-.96.73l-5.54 19.4a.5.5 0 0 0 .62.62l5.05-1.44a2 2 0 0 0 1.38-1.4l3.22-11.66a.5.5 0 0 1 .96 0l3.22 11.67a2 2 0 0 0 1.38 1.39l5.05 1.44a.5.5 0 0 0 .62-.62l-5.54-19.4a1 1 0 0 0-.96-.73Z"/>
-  <path fill="url(#gradient)" d="M18 28a7.63 7.63 0 0 1-5-2c-1.4 2.1-.35 4.35.6 5.55.14.17.41.07.47-.15.44-1.8 2.93-1.22 2.93.6 0 2.28.87 3.4 1.72 3.81.34.16.59-.2.49-.56-.31-1.05-.29-2.46 1.29-3.25 3-1.5 3.17-4.83 2.5-6-.67.67-2.6 2-5 2Z"/>
-  <defs>
-    <linearGradient id="gradient" x1="16" x2="16" y1="32" y2="24" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#000"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
-	<style>
-    @media (prefers-color-scheme:dark){:root{filter:invert(100%)}}
-  </style>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="115.46256mm"
+   height="115.46257mm"
+   viewBox="0 0 115.46256 115.46257"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1" /><g
+     id="layer1"
+     transform="translate(330.75629,-135.41644)"><rect
+       style="fill:#000000;stroke-width:11.2;stroke-linecap:round;paint-order:fill markers stroke"
+       id="rect2"
+       width="111.16256"
+       height="111.16256"
+       x="-328.60629"
+       y="137.56644" /><path
+       d="m -313.99158,248.729 h -14.61471 l -3.3e-4,-32.21952 c 20.96299,-4.87168 34.02795,-15.27936 39.19488,-31.22304 h -39.19455 v -29.45152 h 40.85535 l 0.11072,-18.48992 29.3408,0.22144 -0.11072,18.26848 h 40.96641 v 29.45152 h -39.41633 c 5.31456,15.72224 18.45333,26.12992 39.41632,31.22304 l 1e-5,32.21952 h -14.61505 c -8.78379,-3.10016 -16.75563,-8.19328 -23.91552,-15.27936 -7.15989,-7.08608 -12.84352,-15.46389 -17.05088,-25.13344 -4.13355,9.52192 -9.85408,17.86283 -17.1616,25.02272 -7.23371,7.15989 -15.16864,12.28992 -23.8048,15.39008 z"
+       id="text3"
+       style="-inkscape-font-specification:'GenEi Kiwami Gothic';fill:#ffffff;stroke-width:11.2;stroke-linecap:round;paint-order:fill markers stroke"
+       aria-label="大" /><rect
+       style="fill:none;stroke:#000000;stroke-width:4.3;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect4"
+       width="111.16256"
+       height="111.16256"
+       x="-328.60629"
+       y="137.56644" /></g></svg>

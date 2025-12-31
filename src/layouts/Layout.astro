@@ -1,4 +1,4 @@
----
+﻿---
 import { SEO } from "astro-seo";
 import Footer from "@/components/footer.astro";
 import Navbar from "@/components/navbar/navbar.astro";
@@ -11,7 +11,7 @@ export interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
 const resolvedImageWithDomain = new URL(
-  "/opengraph.jpg",
+  "/images/ogp.webp",
   Astro.site
 ).toString();
 
@@ -33,14 +33,13 @@ const makeTitle = title
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
 
-    <!-- <link rel="preload" as="image" href={src} alt="Hero" /> -->
     <SEO
       title={makeTitle}
-      description="VRChatで使える軽量・Quest対応のワールドアセットを開発。居酒屋イベント「けものバーずんどこ」も定期開催中。"
+      description="VRChatで使える軽量・Quest対応ワールドアセットを開発。居酒屋イベント「KemonoBarずんどこ」も定期開催中！"
       canonical={canonicalURL}
       twitter={{
-        creator: "@osakikun_vrc",
-        site: "@osakikun_vrc",
+        creator: "@osaki_shokai",
+        site: "@osaki_shokai",
         card: "summary_large_image",
       }}
       openGraph={{
@@ -51,7 +50,7 @@ const makeTitle = title
           image: resolvedImageWithDomain,
         },
         image: {
-          alt: "大崎商会 公式サイト",
+          alt: "大崎商会公式サイト",
         },
       }}
     />
@@ -61,10 +60,13 @@ const makeTitle = title
     <slot />
     <Footer />
     <style is:global>
-      /* Improve Page speed */
-      /* https://css-tricks.com/almanac/properties/c/content-visibility/ */
       img {
         content-visibility: auto;
+      }
+      /* Custom selection color using theme variables */
+      ::selection {
+        background-color: var(--main-color);
+        color: white;
       }
     </style>
   </body>

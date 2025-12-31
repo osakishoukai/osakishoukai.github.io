@@ -7,6 +7,28 @@
     'Zen Maru Gothic', ui-sans-serif,
     system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* Theme color aliases */
+  --color-brand-bg: var(--bg-color);
+  --color-brand-main: var(--main-color);
+  --color-brand-sub: var(--sub-color);
+  --color-brand-accent: var(--accent-color);
+}
+
+:root {
+  /* Default Theme: Red Theme */
+  --bg-color: #FFFFFF;
+  --main-color: #CF3D31;
+  --sub-color: #3E5F8A;
+  --accent-color: #F2A516;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-color);
+    color: var(--sub-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 }
 
 /*
