@@ -470,10 +470,94 @@
         "events\\20250523\\001.webp",
         "events\\20250523\\002.webp"
       ]
+    },
+    {
+      "date": "2025-05-16",
+      "participants": 52,
+      "staff": [
+        "おおさき",
+        "灰竜とたく",
+        "かぢ",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250516\\001.webp",
+        "events\\20250516\\002.webp"
+      ]
+    },
+    {
+      "date": "2025-05-02",
+      "participants": 31,
+      "staff": [
+        "おおさき",
+        "いぬろう",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250502\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-04-25",
+      "participants": 18,
+      "staff": [
+        "おおさき",
+        "かぢ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250425\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-04-18",
+      "participants": 13,
+      "staff": [
+        "おおさき",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250418\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-04-11",
+      "participants": 21,
+      "staff": [
+        "おおさき",
+        "かぢ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250411\\001.webp",
+        "events\\20250411\\002.webp"
+      ]
+    },
+    {
+      "date": "2025-04-04",
+      "participants": 30,
+      "staff": [
+        "おおさき",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250404\\001.webp",
+        "events\\20250404\\002.webp"
+      ]
     }
   ],
   "metadata": {
-    "last_updated": "2025-12-31T13:38:43.908765",
-    "total_events": 31
+    "last_updated": "2025-12-31T13:48:11.640118",
+    "total_events": 37
   }
 }
