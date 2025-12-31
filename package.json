@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.0",
+    "@astrojs/rss": "^4.0.0",
     "@astrojs/sitemap": "^3.2.1",
     "@astropub/md": "^1.0.0",
     "@fontsource-variable/bricolage-grotesque": "^5.2.5",

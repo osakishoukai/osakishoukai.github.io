@@ -5,7 +5,11 @@ import { Icon } from "astro-icon/components";
 import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 ---
 
-<Layout title="大崎商会について">
+<Layout 
+  title="大崎商会について"
+  description="大崎商会は個人クリエイター「おおさきくん」が運営。VRChat向け軽量アセット開発と居酒屋イベント「KemonoBarずんどこ」運営を両立。Quest対応・軽量化への徹底したこだわり。"
+  keywords={["大崎商会", "おおさきくん", "VRChat クリエイター", "ワールドアセット", "Quest対応", "軽量化", "KemonoBar", "VRChat 開発者"]}
+>
   <!-- Vision Section -->
   <Container>
     <Breadcrumbs items={[{ label: "大崎商会について" }]} />

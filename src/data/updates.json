@@ -1,0 +1,20 @@
+{
+  "updates": [
+    {
+      "date": "2025-01-01",
+      "category": "info",
+      "title": "公式サイトをリニューアルしました",
+      "link": "/about"
+    },
+    {
+      "date": "2024-12-28",
+      "category": "info",
+      "title": "イベント開催記録ページを公開しました",
+      "link": "/events/archive"
+    }
+  ],
+  "metadata": {
+    "description": "手動で追加するお知らせ。category: 'info'(お知らせ), 'update'(更新), 'important'(重要)",
+    "last_updated": "2025-01-01"
+  }
+}

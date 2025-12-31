@@ -6,54 +6,177 @@ import "../styles/global.css";
 
 export interface Props {
   title: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
+  keywords?: string[];
+  noindex?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
-const resolvedImageWithDomain = new URL(
-  "/images/ogp.webp",
-  Astro.site
-).toString();
+const { 
+  title, 
+  description = "VRChatで使える軽量・Quest対応ワールドアセットを開発。居酒屋イベント「KemonoBarずんどこ」も定期開催中！",
+  ogImage = "/images/ogp.webp",
+  ogType = "website",
+  keywords = ["VRChat", "ワールドアセット", "Quest対応", "軽量", "居酒屋", "KemonoBar", "大崎商会", "VRC"],
+  noindex = false
+} = Astro.props;
 
-const { title } = Astro.props;
+const resolvedImageWithDomain = new URL(ogImage, Astro.site).toString();
 
 const makeTitle = title
   ? title + " | " + "大崎商会"
   : "大崎商会 - みんなVRでたのしくくらそう";
+
+// 構造化データ（JSON-LD）
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "大崎商会",
+  "alternateName": "Osaki Shokai",
+  "url": "https://osakishoukai.github.io",
+  "logo": "https://osakishoukai.github.io/images/logo.svg",
+  "description": "VRChatで使える軽量・Quest対応ワールドアセットを開発。居酒屋イベント「KemonoBarずんどこ」も定期開催中！",
+  "founder": {
+    "@type": "Person",
+    "name": "おおさきくん"
+  },
+  "sameAs": [
+    "https://twitter.com/osaki_vrc",
+    "https://osaki-shokai.booth.pm/"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "url": "https://osakishoukai.github.io/support"
+  }
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "大崎商会",
+  "url": "https://osakishoukai.github.io",
+  "description": description,
+  "publisher": {
+    "@type": "Organization",
+    "name": "大崎商会"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://osakishoukai.github.io/products?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+};
+
+// パンくずリスト用のページパス解析
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const breadcrumbItems = [
+  { name: "ホーム", url: "https://osakishoukai.github.io/" }
+];
+
+const pathMap: Record<string, string> = {
+  "products": "商品一覧",
+  "events": "イベント",
+  "about": "大崎商会について",
+  "support": "サポート",
+  "archive": "アーカイブ",
+  "owner": "おおさきくん",
+  "philosophy": "理念",
+  "license": "ライセンス"
+};
+
+let currentPath = "";
+pathSegments.forEach((segment, index) => {
+  currentPath += `/${segment}`;
+  const name = pathMap[segment] || segment;
+  breadcrumbItems.push({
+    name,
+    url: `https://osakishoukai.github.io${currentPath}`
+  });
+});
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbItems.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "item": item.url
+  }))
+};
 ---
 
 <!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Additional SEO meta tags -->
+    <meta name="keywords" content={keywords.join(", ")} />
+    <meta name="author" content="おおさきくん" />
+    <meta name="theme-color" content="#FF8C00" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="大崎商会 - 更新情報" href="/rss.xml" />
+    
+    <!-- Robots -->
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <SEO
       title={makeTitle}
-      description="VRChatで使える軽量・Quest対応ワールドアセットを開発。居酒屋イベント「KemonoBarずんどこ」も定期開催中！"
+      description={description}
       canonical={canonicalURL}
       twitter={{
-        creator: "@osaki_shokai",
-        site: "@osaki_shokai",
+        creator: "@osaki_vrc",
+        site: "@osaki_vrc",
         card: "summary_large_image",
       }}
       openGraph={{
         basic: {
           url: canonicalURL,
-          type: "website",
-          title: `大崎商会 - みんなVRでたのしくくらそう`,
+          type: ogType,
+          title: makeTitle,
           image: resolvedImageWithDomain,
+        },
+        optional: {
+          description: description,
+          locale: "ja_JP",
+          siteName: "大崎商会",
         },
         image: {
           alt: "大崎商会公式サイト",
+          width: 1200,
+          height: 630,
         },
       }}
     />
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSHP7D58DT"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XSHP7D58DT');
+    </script>
   </head>
   <body>
     <Navbar />

@@ -16,7 +16,11 @@ products.forEach(product => {
 const categories = ["すべて", ...Array.from(allTags)];
 ---
 
-<Layout title="商品一覧">
+<Layout 
+  title="商品一覧"
+  description="VRChat向け軽量・Quest対応ワールドアセット一覧。焼き鳥、おつまみ、お好み焼きなど居酒屋風アセットから便利なワールドギミックまで。すべて「KemonoBarずんどこ」で実証済み。"
+  keywords={["VRChat アセット", "ワールドアセット", "Quest対応", "軽量", "食べ物", "居酒屋", "焼き鳥", "おつまみ", "Booth", "大崎商会"]}
+>
   <Container>
     <Breadcrumbs items={[{ label: "ホーム", href: "/" }, { label: "商品一覧", href: "/products" }]} />
     

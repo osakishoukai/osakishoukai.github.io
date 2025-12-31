@@ -1,4 +1,11 @@
+# 大崎商会公式サイト robots.txt
+# https://osakishoukai.github.io
+
 User-agent: *
 Allow: /
 
-Sitemap: http://astroship.web3templates.com/sitemap-index.xml
+# Sitemap locations
+Sitemap: https://osakishoukai.github.io/sitemap-index.xml
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1

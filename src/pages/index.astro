@@ -2,9 +2,97 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Picture } from "astro:assets";
+
+// データを読み込む
+import productsData from "@/data/products.json";
+import eventsData from "@/data/events.json";
+import updatesData from "@/data/updates.json";
+
+// 日本語日付をパース（例: "2025年12月29日 22時30分" → Date）
+function parseJapaneseDate(dateStr: string): Date {
+  if (!dateStr) return new Date(0);
+  const match = dateStr.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+  if (match) {
+    return new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
+  }
+  return new Date(0);
+}
+
+// 日付をフォーマット（YYYY.MM.DD形式）
+function formatDate(date: Date): string {
+  return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+}
+
+// 新着情報を統合
+interface UpdateItem {
+  date: Date;
+  dateStr: string;
+  category: 'products' | 'events' | 'info';
+  title: string;
+  link: string;
+}
+
+const allUpdates: UpdateItem[] = [];
+
+// 商品から最新5件を追加
+const products = productsData.products || [];
+products.slice(0, 5).forEach(p => {
+  const date = parseJapaneseDate(p.published_at);
+  if (date.getTime() > 0) {
+    allUpdates.push({
+      date,
+      dateStr: formatDate(date),
+      category: 'products',
+      title: `新商品「${p.name.replace(/【.*?】/g, '').substring(0, 30)}...」をリリース`,
+      link: `/products/${p.id}`
+    });
+  }
+});
+
+// イベントから最新3件を追加
+const events = eventsData.events || [];
+events.slice(0, 3).forEach(e => {
+  const date = new Date(e.date);
+  allUpdates.push({
+    date,
+    dateStr: formatDate(date),
+    category: 'events',
+    title: `けものバーずんどこ ${e.date} 開催（${e.participants}名参加）`,
+    link: `/events/archive/${e.date}`
+  });
+});
+
+// 手動登録のお知らせを追加
+const manualUpdates = updatesData.updates || [];
+manualUpdates.forEach(u => {
+  const date = new Date(u.date);
+  allUpdates.push({
+    date,
+    dateStr: formatDate(date),
+    category: 'info',
+    title: u.title,
+    link: u.link
+  });
+});
+
+// 日付順にソートして最新5件を取得
+const latestUpdates = allUpdates
+  .sort((a, b) => b.date.getTime() - a.date.getTime())
+  .slice(0, 5);
+
+// カテゴリの表示名マッピング
+const categoryLabels: Record<string, string> = {
+  products: '商品',
+  events: 'イベント',
+  info: 'お知らせ'
+};
 ---
 
-<Layout title="ホーム">
+<Layout 
+  title="ホーム"
+  description="大崎商会は VRChat 向けの軽量・Quest対応ワールドアセットを開発しています。居酒屋イベント「KemonoBarずんどこ」も毎週金曜日に定期開催中！みんなVRでたのしくくらそう！"
+  keywords={["VRChat", "ワールドアセット", "Quest対応", "軽量アセット", "居酒屋", "KemonoBar", "ずんどこ", "大崎商会", "おおさきくん", "3Dモデル", "VRC"]}
+>
   <!-- Hero Section -->
   <Container>
     <div class="hero-section">
@@ -83,26 +171,18 @@ import { Picture } from "astro:assets";
     </div>
   </Container>
 
-  <!-- Latest Updates -->
+  <!-- Latest Updates (自動生成) -->
   <Container>
     <div class="updates-section">
       <h2 class="section-title">新着情報</h2>
       <div class="updates-list">
-        <div class="update-item">
-          <span class="update-date">2025.01.01</span>
-          <span class="update-category products">商品</span>
-          <a href="/products" class="update-link">公式サイトをリニューアルしました</a>
-        </div>
-        <div class="update-item">
-          <span class="update-date">2024.12.28</span>
-          <span class="update-category events">イベント</span>
-          <a href="/events/archive" class="update-link">イベント開催記録ページを公開しました</a>
-        </div>
-        <div class="update-item">
-          <span class="update-date">2024.12.15</span>
-          <span class="update-category products">商品</span>
-          <a href="/products" class="update-link">新商品「おつまみセット」をリリース</a>
-        </div>
+        {latestUpdates.map(update => (
+          <div class="update-item">
+            <span class="update-date">{update.dateStr}</span>
+            <span class={`update-category ${update.category}`}>{categoryLabels[update.category]}</span>
+            <a href={update.link} class="update-link">{update.title}</a>
+          </div>
+        ))}
       </div>
     </div>
   </Container>
@@ -347,6 +427,11 @@ import { Picture } from "astro:assets";
 
   .update-category.events {
     background: var(--accent-color);
+    color: white;
+  }
+
+  .update-category.info {
+    background: #3b82f6;
     color: white;
   }
 
