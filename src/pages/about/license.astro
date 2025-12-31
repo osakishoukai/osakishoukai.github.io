@@ -6,17 +6,24 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 ---
 
 <Layout title="ライセンス">
-  <div class="page-header">
-    <Container>
-      <Breadcrumbs items={[
-        { label: "ライセンス" }
-      ]} />
-      <h1 class="page-title">大崎商会 製品利用規約</h1>
-      <p class="page-description">
-        本製品をご利用いただく際は、本規約に同意したものとみなします。
-      </p>
-    </Container>
-  </div>
+  <Container>
+    <Breadcrumbs items={[
+      { label: "ライセンス" }
+    ]} />
+    
+    <div class="hero-section">
+      <div class="hero-content-wrapper">
+        <div class="hero-text-box">
+          <h1 class="hero-title">
+            大崎商会 製品利用規約
+          </h1>
+          <p class="hero-intro">
+            本製品をご利用いただく際は、本規約に同意したものとみなします。
+          </p>
+        </div>
+      </div>
+    </div>
+  </Container>
 
   <Container>
     <div class="license-content">
@@ -88,7 +95,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
               <Icon name="mdi:shopping" class="button-icon" />
               Boothで確認
             </a>
-            <a href="/support" class="contact-button secondary">
+            <a href="/support#contact" class="contact-button secondary">
               <Icon name="mdi:help-circle" class="button-icon" />
               サポートページ
             </a>
@@ -124,16 +131,64 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 </Layout>
 
 <style>
-  .page-header {
-    text-align: center;
-    padding: 4rem 0 3rem;
+  /* Hero Section */
+  .hero-section {
+    padding: 3rem 1.5rem;
+    position: relative;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/images/license.jpeg');
+    background-size: cover;
+    background-position: center;
+    border-radius: 2rem;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    border: 2px solid var(--main-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
   }
 
-  .page-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+  .hero-content-wrapper {
+    max-width: 800px;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .hero-text-box {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    padding: 3rem;
+    border-radius: 2rem;
+    border: 2px solid var(--main-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
     font-weight: 900;
-    margin-bottom: 1rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
     color: var(--main-color);
+    text-shadow: 2px 2px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
+  }
+
+  .hero-intro {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    color: var(--sub-color);
+    line-height: 1.8;
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 2rem 1rem;
+      min-height: 300px;
+    }
+
+    .hero-text-box {
+      padding: 2rem;
+    }
   }
 
   .license-content {
