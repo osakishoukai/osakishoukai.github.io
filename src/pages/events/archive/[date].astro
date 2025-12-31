@@ -27,9 +27,9 @@ function formatDate(dateStr) {
   return `${year}年${month}月${day}日(${weekday})`;
 }
 
-// Twitter URLからIDを抽出
+// Twitter URLからIDを抽出 (x.com / twitter.com 両対応)
 function getTwitterId(url) {
-  const match = url.match(/status\/(\d+)/);
+  const match = url.match(/(?:twitter\.com|x\.com)\/.+\/status\/(\d+)/);
   return match ? match[1] : null;
 }
 
@@ -41,7 +41,7 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
 
 <Layout title={`${formattedDate} 開催記録 - KemonoBarずんどこ`}>
   <Container>
-    <!-- パンくずリスト -->
+    <!-- パンくずリスト (省略) -->
     <nav class="breadcrumb">
       <a href="/">ホーム</a>
       <Icon name="mdi:chevron-right" class="breadcrumb-icon" />
@@ -129,10 +129,12 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
           {event.urls.map(url => {
             const twitterId = getTwitterId(url);
             if (twitterId) {
+              const displayUrl = url.replace('x.com', 'twitter.com');
               return (
                 <div class="tweet-container">
-                  <blockquote class="twitter-tweet" data-theme="light">
-                    <a href={url}></a>
+                  <blockquote class="twitter-tweet" data-lang="ja" data-theme="light" data-dnt="true">
+                    <p lang="ja" dir="ltr">開催記録の投稿です。</p>
+                    &mdash; 大崎商会 (@osaki_vrc) <a href={displayUrl}>{formattedDate}</a>
                   </blockquote>
                 </div>
               );
@@ -160,6 +162,48 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
 </Layout>
 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<script is:inline>
+  // Twitter X widgets loading helper
+  function initTwitterWidgets() {
+    if (window.twttr && window.twttr.widgets) {
+      window.twttr.widgets.load();
+    }
+  }
+
+  // 1. 通常のロード完了時
+  window.addEventListener('load', initTwitterWidgets);
+
+  // 2. Astroのページ遷移完了時
+  document.addEventListener('astro:page-load', initTwitterWidgets);
+  document.addEventListener('astro:after-swap', initTwitterWidgets);
+
+  // 3. スクリプトの読み込み遅延対策（ポーリング）
+  let pollCount = 0;
+  const poll = setInterval(() => {
+    pollCount++;
+    if (window.twttr && window.twttr.widgets) {
+      initTwitterWidgets();
+      clearInterval(poll);
+    }
+    if (pollCount > 20) clearInterval(poll); // 最大10秒待機
+  }, 500);
+</script>
+
+<style is:global>
+  /* ダークテーマ対応 */
+  :root {
+    --event-card-bg: #ffffff;
+    --event-section-bg: #ffffff;
+    --event-text-color: var(--sub-color);
+  }
+
+  [data-theme='dark'] {
+    --event-card-bg: #1a1a1a;
+    --event-section-bg: #1a1a1a;
+    --event-text-color: #eeeeee;
+  }
+</style>
 
 <style>
   /* パンくずリスト */
@@ -255,17 +299,18 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
   .summary-section,
   .screenshots-section,
   .social-section {
-    background: white;
+    background: var(--event-section-bg);
     border: 3px solid var(--main-color);
     border-radius: 2rem;
     padding: 2.5rem;
     margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
 
   .section-title {
     font-size: 1.5rem;
     font-weight: 900;
-    color: var(--sub-color);
+    color: var(--event-text-color);
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
@@ -308,7 +353,7 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
   /* スクリーンショット */
   .screenshots-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
   }
 
@@ -316,7 +361,7 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
     position: relative;
     border-radius: 1rem;
     overflow: hidden;
-    border: 2px solid var(--main-color);
+    border: 3px solid var(--main-color);
     background: var(--bg-color);
   }
 
@@ -336,9 +381,12 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    max-width: 550px;
+    margin: 0 auto;
   }
 
   .tweet-container {
+    width: 100%;
     display: flex;
     justify-content: center;
   }

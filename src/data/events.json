@@ -131,10 +131,101 @@
       "images": [
         "events\\20251107\\001.webp"
       ]
+    },
+    {
+      "date": "2025-10-31",
+      "participants": 7,
+      "staff": [
+        "おおさき",
+        "Keihan",
+        "灰竜とたく",
+        "いぬろう"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251031\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-10-24",
+      "participants": 30,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "虎貫　蒼"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251024\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-10-17",
+      "participants": 43,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "虎貫　蒼",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251017\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-10-10",
+      "participants": 45,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251010\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-10-03",
+      "participants": 42,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "虎貫　蒼",
+        "かぢ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251003\\002.webp",
+        "events\\20251003\\003.webp"
+      ]
+    },
+    {
+      "date": "2025-10-01",
+      "participants": 67,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）"
+      ],
+      "summary": "虎貫　蒼さんのお誕生日会を開催しました。\n（特別営業）",
+      "urls": [],
+      "images": [
+        "events\\20251001\\001.webp",
+        "events\\20251001\\002.webp"
+      ]
     }
   ],
   "metadata": {
-    "last_updated": "2025-12-31T12:54:56.968603",
-    "total_events": 8
+    "last_updated": "2025-12-31T13:06:04.570031",
+    "total_events": 14
   }
 }
