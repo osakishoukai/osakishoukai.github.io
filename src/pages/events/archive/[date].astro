@@ -1,0 +1,418 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import { Icon } from "astro-icon/components";
+
+// イベントデータを読み込む
+import eventsData from "@/data/events.json";
+
+export async function getStaticPaths() {
+  const events = eventsData.events || [];
+  return events.map(event => ({
+    params: { date: event.date },
+    props: { event }
+  }));
+}
+
+const { event } = Astro.props;
+
+// 日付フォーマット関数
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const weekday = weekdays[date.getDay()];
+  return `${year}年${month}月${day}日(${weekday})`;
+}
+
+// Twitter URLからIDを抽出
+function getTwitterId(url) {
+  const match = url.match(/status\/(\d+)/);
+  return match ? match[1] : null;
+}
+
+const formattedDate = formatDate(event.date);
+const hasImages = event.images && event.images.length > 0;
+const hasUrls = event.urls && event.urls.length > 0;
+const hasSummary = event.summary && event.summary.trim().length > 0;
+---
+
+<Layout title={`${formattedDate} 開催記録 - KemonoBarずんどこ`}>
+  <Container>
+    <!-- パンくずリスト -->
+    <nav class="breadcrumb">
+      <a href="/">ホーム</a>
+      <Icon name="mdi:chevron-right" class="breadcrumb-icon" />
+      <a href="/events">イベント</a>
+      <Icon name="mdi:chevron-right" class="breadcrumb-icon" />
+      <a href="/events/archive">開催記録</a>
+      <Icon name="mdi:chevron-right" class="breadcrumb-icon" />
+      <span>{formattedDate}</span>
+    </nav>
+
+    <!-- ヘッダー -->
+    <div class="event-header">
+      <h1 class="event-title">
+        <Icon name="mdi:calendar-star" class="title-icon" />
+        {formattedDate}
+      </h1>
+      <div class="event-meta">
+        <div class="meta-item">
+          <Icon name="mdi:account-group" class="meta-icon" />
+          <span class="meta-label">参加者</span>
+          <span class="meta-value">{event.participants}人</span>
+        </div>
+        <div class="meta-item">
+          <Icon name="mdi:account-supervisor" class="meta-icon" />
+          <span class="meta-label">スタッフ</span>
+          <span class="meta-value">{event.staff.length}名</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- スタッフ一覧 -->
+    <div class="staff-section">
+      <h2 class="section-title">
+        <Icon name="mdi:account-tie" class="section-icon" />
+        参加スタッフ
+      </h2>
+      <div class="staff-list">
+        {event.staff.map(staffName => (
+          <div class="staff-badge">{staffName}</div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 総括 -->
+    {hasSummary && (
+      <div class="summary-section">
+        <h2 class="section-title">
+          <Icon name="mdi:text-box" class="section-icon" />
+          イベント総括
+        </h2>
+        <div class="summary-content">
+          <p>{event.summary}</p>
+        </div>
+      </div>
+    )}
+
+    <!-- スクリーンショット -->
+    {hasImages && (
+      <div class="screenshots-section">
+        <h2 class="section-title">
+          <Icon name="mdi:camera" class="section-icon" />
+          スクリーンショット
+        </h2>
+        <div class="screenshots-grid">
+          {event.images.map(imgPath => {
+            const imageUrl = `/images/${imgPath.replace(/\\/g, '/')}`;
+            return (
+              <div class="screenshot-item">
+                <img src={imageUrl} alt="イベントの様子" class="screenshot-image" />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    )}
+
+    <!-- SNS投稿 -->
+    {hasUrls && (
+      <div class="social-section">
+        <h2 class="section-title">
+          <Icon name="mdi:twitter" class="section-icon" />
+          SNS投稿
+        </h2>
+        <div class="social-embeds">
+          {event.urls.map(url => {
+            const twitterId = getTwitterId(url);
+            if (twitterId) {
+              return (
+                <div class="tweet-container">
+                  <blockquote class="twitter-tweet" data-theme="light">
+                    <a href={url}></a>
+                  </blockquote>
+                </div>
+              );
+            } else {
+              return (
+                <a href={url} target="_blank" rel="noopener noreferrer" class="social-link">
+                  <Icon name="mdi:link-variant" class="link-icon" />
+                  {url}
+                </a>
+              );
+            }
+          })}
+        </div>
+      </div>
+    )}
+
+    <!-- ナビゲーション -->
+    <div class="navigation-section">
+      <a href="/events/archive" class="back-button">
+        <Icon name="mdi:arrow-left" class="arrow-icon" />
+        開催記録一覧に戻る
+      </a>
+    </div>
+  </Container>
+</Layout>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<style>
+  /* パンくずリスト */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+    color: var(--sub-color);
+  }
+
+  .breadcrumb a {
+    color: var(--sub-color);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--main-color);
+  }
+
+  .breadcrumb-icon {
+    width: 1rem;
+    height: 1rem;
+    opacity: 0.5;
+  }
+
+  /* ヘッダー */
+  .event-header {
+    background: linear-gradient(135deg, white 0%, var(--bg-color) 100%);
+    border: 3px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .event-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    color: var(--main-color);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .title-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .event-meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    border: 2px solid var(--main-color);
+  }
+
+  .meta-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--main-color);
+  }
+
+  .meta-label {
+    font-size: 0.875rem;
+    color: var(--sub-color);
+    font-weight: 700;
+  }
+
+  .meta-value {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--main-color);
+  }
+
+  /* セクション共通 */
+  .staff-section,
+  .summary-section,
+  .screenshots-section,
+  .social-section {
+    background: white;
+    border: 3px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--main-color);
+  }
+
+  /* スタッフリスト */
+  .staff-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .staff-badge {
+    background: var(--bg-color);
+    border: 2px solid var(--main-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    font-size: 1rem;
+  }
+
+  /* 総括 */
+  .summary-content {
+    background: var(--bg-color);
+    padding: 2rem;
+    border-radius: 1rem;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: var(--sub-color);
+  }
+
+  /* スクリーンショット */
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .screenshot-item {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 2px solid var(--main-color);
+    background: var(--bg-color);
+  }
+
+  .screenshot-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .screenshot-item:hover .screenshot-image {
+    transform: scale(1.05);
+  }
+
+  /* SNS投稿 */
+  .social-embeds {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .tweet-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: var(--bg-color);
+    border: 2px solid var(--main-color);
+    border-radius: 1rem;
+    color: var(--main-color);
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+  }
+
+  .social-link:hover {
+    background: var(--main-color);
+    color: white;
+  }
+
+  .link-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* ナビゲーション */
+  .navigation-section {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: white;
+    border: 3px solid var(--main-color);
+    border-radius: 2rem;
+    color: var(--main-color);
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  .back-button:hover {
+    background: var(--main-color);
+    color: white;
+    transform: translateX(-4px);
+  }
+
+  .arrow-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .event-header {
+      padding: 2rem 1.5rem;
+    }
+
+    .screenshots-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .staff-section,
+    .summary-section,
+    .screenshots-section,
+    .social-section {
+      padding: 1.5rem;
+    }
+  }
+</style>

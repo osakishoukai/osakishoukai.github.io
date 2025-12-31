@@ -1,0 +1,326 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import { Icon } from "astro-icon/components";
+
+// イベントデータを読み込む
+import eventsData from "@/data/events.json";
+const events = eventsData.events || [];
+
+// 年ごとにグループ化
+const eventsByYear = events.reduce((acc, event) => {
+  const year = event.date.substring(0, 4);
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(event);
+  return acc;
+}, {});
+
+const years = Object.keys(eventsByYear).sort().reverse();
+
+// 統計情報
+const totalEvents = events.length;
+const totalParticipants = events.reduce((sum, e) => sum + e.participants, 0);
+const avgParticipants = totalEvents > 0 ? (totalParticipants / totalEvents).toFixed(1) : 0;
+
+// 日付フォーマット関数
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const weekday = weekdays[date.getDay()];
+  return `${year}年${month}月${day}日(${weekday})`;
+}
+---
+
+<Layout title="イベント開催記録 - KemonoBarずんどこ">
+  <Container>
+    <div class="archive-hero">
+      <h1 class="page-title">
+        <Icon name="mdi:calendar-clock" class="title-icon" />
+        イベント開催記録
+      </h1>
+      <p class="page-description">
+        KemonoBarずんどこで開催されたイベントの記録です
+      </p>
+    </div>
+
+    <!-- 統計情報 -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <Icon name="mdi:calendar-check" class="stat-icon" />
+        <div class="stat-value">{totalEvents}</div>
+        <div class="stat-label">開催回数</div>
+      </div>
+      <div class="stat-card">
+        <Icon name="mdi:account-group" class="stat-icon" />
+        <div class="stat-value">{totalParticipants}</div>
+        <div class="stat-label">総参加者数</div>
+      </div>
+      <div class="stat-card">
+        <Icon name="mdi:account-multiple" class="stat-icon" />
+        <div class="stat-value">{avgParticipants}</div>
+        <div class="stat-label">平均参加者数</div>
+      </div>
+    </div>
+
+    <!-- イベント一覧 -->
+    {years.map(year => (
+      <div class="year-section">
+        <h2 class="year-title">{year}年</h2>
+        <div class="events-grid">
+          {eventsByYear[year].map(event => {
+            const hasImages = event.images && event.images.length > 0;
+            const hasUrls = event.urls && event.urls.length > 0;
+            const imageUrl = hasImages 
+              ? `/images/${event.images[0].replace(/\\/g, '/')}`
+              : '/images/bar-bg.png';
+            
+            return (
+              <a href={`/events/archive/${event.date}`} class="event-card">
+                <div class="event-image-wrapper">
+                  <img src={imageUrl} alt={`${formatDate(event.date)}のイベント`} class="event-image" />
+                  <div class="event-date-badge">{formatDate(event.date)}</div>
+                </div>
+                <div class="event-content">
+                  <div class="event-stats">
+                    <div class="stat-item">
+                      <Icon name="mdi:account" class="stat-icon-small" />
+                      <span>{event.participants}人</span>
+                    </div>
+                    <div class="stat-item">
+                      <Icon name="mdi:account-supervisor" class="stat-icon-small" />
+                      <span>スタッフ{event.staff.length}名</span>
+                    </div>
+                  </div>
+                  {event.summary && (
+                    <p class="event-summary">{event.summary}</p>
+                  )}
+                  {hasUrls && (
+                    <div class="event-has-link">
+                      <Icon name="mdi:link-variant" class="link-icon" />
+                      SNS投稿あり
+                    </div>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </Container>
+</Layout>
+
+<style>
+  .archive-hero {
+    text-align: center;
+    padding: 4rem 1.5rem 3rem;
+    background: linear-gradient(135deg, white 0%, var(--bg-color) 100%);
+    border-radius: 2rem;
+    border: 3px solid var(--main-color);
+    margin-bottom: 3rem;
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    color: var(--main-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .title-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .page-description {
+    font-size: 1.25rem;
+    color: var(--sub-color);
+    font-weight: 700;
+  }
+
+  /* 統計情報 */
+  .stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .stat-card {
+    background: white;
+    border: 3px solid var(--main-color);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  }
+
+  .stat-icon {
+    width: 3rem;
+    height: 3rem;
+    color: var(--main-color);
+    margin-bottom: 1rem;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--main-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--sub-color);
+    font-weight: 700;
+  }
+
+  /* 年セクション */
+  .year-section {
+    margin-bottom: 4rem;
+  }
+
+  .year-title {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--main-color);
+  }
+
+  /* イベントグリッド */
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .event-card {
+    background: white;
+    border: 3px solid var(--main-color);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .event-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+  }
+
+  .event-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 60%;
+    overflow: hidden;
+    background: var(--bg-color);
+  }
+
+  .event-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .event-card:hover .event-image {
+    transform: scale(1.05);
+  }
+
+  .event-date-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: 900;
+    color: var(--main-color);
+    font-size: 0.875rem;
+    border: 2px solid var(--main-color);
+  }
+
+  .event-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .event-stats {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--sub-color);
+    background: var(--bg-color);
+    padding: 0.35rem 0.75rem;
+    border-radius: 2rem;
+  }
+
+  .stat-icon-small {
+    width: 1rem;
+    height: 1rem;
+    color: var(--main-color);
+  }
+
+  .event-summary {
+    font-size: 0.875rem;
+    color: var(--sub-color);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .event-has-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--main-color);
+    font-weight: 700;
+  }
+
+  .link-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .events-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-section {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

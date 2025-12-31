@@ -1,0 +1,140 @@
+{
+  "events": [
+    {
+      "date": "2025-12-26",
+      "participants": 41,
+      "staff": [
+        "おおさき",
+        "Keihan",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく"
+      ],
+      "summary": "",
+      "urls": [
+        "https://x.com/osaki_vrc/status/2004616172168511493"
+      ],
+      "images": [
+        "events\\20251226\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-12-19",
+      "participants": 12,
+      "staff": [
+        "おおさき",
+        "Keihan",
+        "灰竜とたく",
+        "Winter_Same"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251219\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-12-12",
+      "participants": 16,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "まろいぬ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251212\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-12-05",
+      "participants": 66,
+      "staff": [
+        "おおさき",
+        "Keihan",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "Winter_Same",
+        "虎貫　蒼"
+      ],
+      "summary": "販売アセット「酒泉-Shusen-」を導入いたしました。",
+      "urls": [],
+      "images": [
+        "events\\20251205\\001.webp",
+        "events\\20251205\\002.webp",
+        "events\\20251205\\003.webp"
+      ]
+    },
+    {
+      "date": "2025-11-28",
+      "participants": 31,
+      "staff": [
+        "おおさき",
+        "Keihan",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "Winter_Same",
+        "まろいぬ",
+        "虎貫　蒼"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251128\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-11-21",
+      "participants": 78,
+      "staff": [
+        "おおさき",
+        "Keihan",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "Winter_Same",
+        "まろいぬ",
+        "虎貫　蒼"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251121\\001.webp",
+        "events\\20251121\\002.webp"
+      ]
+    },
+    {
+      "date": "2025-11-14",
+      "participants": 49,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "まろいぬ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251114\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-11-07",
+      "participants": 33,
+      "staff": [
+        "おおさき",
+        "灰竜とたく",
+        "虎貫　蒼",
+        "かぢ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20251107\\001.webp"
+      ]
+    }
+  ],
+  "metadata": {
+    "last_updated": "2025-12-31T12:54:56.968603",
+    "total_events": 8
+  }
+}
