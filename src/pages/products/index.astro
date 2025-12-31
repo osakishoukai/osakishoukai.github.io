@@ -22,7 +22,7 @@ const categories = ["すべて", ...Array.from(allTags)];
   keywords={["VRChat アセット", "ワールドアセット", "Quest対応", "軽量", "食べ物", "居酒屋", "焼き鳥", "おつまみ", "Booth", "大崎商会"]}
 >
   <Container>
-    <Breadcrumbs items={[{ label: "ホーム", href: "/" }, { label: "商品一覧", href: "/products" }]} />
+    <Breadcrumbs items={[{ label: "商品一覧" }]} />
     
     <div class="hero-section">
       <div class="hero-content-wrapper">
@@ -40,18 +40,26 @@ const categories = ["すべて", ...Array.from(allTags)];
   </Container>
 
   <Container>
-    <!-- Filter and Search -->
+    <!-- Filter and Search (Collapsible) -->
     <div class="filter-section">
-      <div class="filter-tags">
-        {categories.map((category) => (
-          <button class={`filter-tag ${category === "すべて" ? "active" : ""}`}>
-            {category}
-          </button>
-        ))}
-      </div>
-      <div class="search-box">
-        <Icon name="mdi:magnify" class="search-icon" />
-        <input type="text" placeholder="キーワードで検索" class="search-input" />
+      <button class="filter-toggle" id="filterToggle">
+        <Icon name="mdi:filter-variant" class="toggle-icon" />
+        <span>カテゴリ・検索で絞り込む</span>
+        <Icon name="mdi:chevron-down" class="chevron-icon" />
+      </button>
+      
+      <div class="filter-content" id="filterContent">
+        <div class="filter-tags">
+          {categories.map((category) => (
+            <button class={`filter-tag ${category === "すべて" ? "active" : ""}`}>
+              {category}
+            </button>
+          ))}
+        </div>
+        <div class="search-box">
+          <Icon name="mdi:magnify" class="search-icon" />
+          <input type="text" placeholder="キーワードで検索" class="search-input" />
+        </div>
       </div>
     </div>
 
@@ -107,6 +115,26 @@ const categories = ["すべて", ...Array.from(allTags)];
 <script>
   // Filter logic
   document.addEventListener('DOMContentLoaded', () => {
+    // Filter toggle functionality
+    const filterToggle = document.getElementById('filterToggle');
+    const filterContent = document.getElementById('filterContent');
+    const chevronIcon = filterToggle?.querySelector('.chevron-icon');
+    
+    if (filterToggle && filterContent) {
+      filterToggle.addEventListener('click', () => {
+        const isOpen = filterContent.classList.contains('open');
+        
+        if (isOpen) {
+          filterContent.classList.remove('open');
+          chevronIcon?.classList.remove('rotate');
+        } else {
+          filterContent.classList.add('open');
+          chevronIcon?.classList.add('rotate');
+        }
+      });
+    }
+
+    // Filter and search functionality
     const filterTags = document.querySelectorAll('.filter-tag');
     const searchInput = document.querySelector('.search-input') as HTMLInputElement;
     const productCards = document.querySelectorAll('.product-card');
@@ -215,8 +243,60 @@ const categories = ["すべて", ...Array.from(allTags)];
   }
 
   .page-description { font-size: clamp(1rem, 2vw, 1.25rem); color: var(--sub-color); line-height: 1.8; }
-  .filter-section { display: flex; justify-content: space-between; align-items: center; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap; }
-  .filter-tags { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  
+  /* Filter Section - Collapsible */
+  .filter-section { margin-bottom: 3rem; }
+  
+  .filter-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: white;
+    border: 2px solid var(--main-color);
+    border-radius: 1rem;
+    color: var(--sub-color);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-toggle:hover {
+    background: var(--bg-color);
+    transform: translateY(-2px);
+  }
+  
+  .toggle-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--main-color);
+  }
+  
+  .chevron-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .chevron-icon.rotate {
+    transform: rotate(180deg);
+  }
+  
+  .filter-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .filter-content.open {
+    max-height: 1000px;
+  }
+  
+  .filter-tags { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
   .filter-tag { padding: 0.5rem 1.25rem; border: 2px solid var(--main-color); border-radius: 2rem; background: white; color: var(--sub-color); font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
   .filter-tag:hover, .filter-tag.active { background: var(--main-color); color: white; }
   .search-box { position: relative; display: flex; align-items: center; }
