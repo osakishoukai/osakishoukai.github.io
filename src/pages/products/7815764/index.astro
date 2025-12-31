@@ -1,0 +1,577 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Container from '../../../components/container.astro';
+import Breadcrumbs from '../../../components/ui/Breadcrumbs.astro';
+
+const item = {
+  id: "7815764",
+  name: "おつまみ20",
+  booth_url: "https://booth.pm/ja/items/7815764",
+  sample_world_url: "https://vrchat.com/home/launch?worldId=wrld_9f182d11-2de0-4cfd-8838-ad503cbf3c39",
+  published_at: "2025年12月29日 22時30分",
+  main_image: "/images/products/7815764/1.webp",
+  tags: ["3Dモデル", "3D環境・ワールド", "インテリア", "食べ物", "ワールド", "おにぎり", "おつまみ", "焼き鳥", "刺身", "VRChat", "ワールド小物", "VRC想定モデル", "VRChat向け", "居酒屋風", "ワールドアセット", "ワールドギミック", "インテリア x 3D環境・ワールド"]
+};
+
+const description = `VRChatワールド向け、お箸でリアルにつかんで食べられる20種類のおつまみセット 居酒屋ワールドやチル空間に最適！
+
+# ⭐リリース記念セール中！⭐
+本アセット販売を記念いたしまして、2025年12/29(月)～2026年1/18(日)まで、DX版を通常販売価格2000円のところ、980円にて販売させていただきます！
+この機会に当ショップのアセットやギミックを導入されてみてはいかがでしょうか？
+
+# ⭐特徴⭐
+・直観的な操作で豊富な種類のおつまみを食べることができます
+・複数人で同時に食べたり、途中で食べる人を交代したりすることが可能です
+・レイトジョイナー対応：後から入場した人にも食べ物の状態が同期されます
+・VRC標準シェーダーのみを使用しており、Quest完全対応です
+
+# 🌏 サンプルワールド
+Otumami20 Test World
+https://vrchat.com/home/launch?worldId=wrld_9f182d11-2de0-4cfd-8838-ad503cbf3c39
+
+# 📦製品バリエーション
+本製品は2つのバージョンからお選びいただけます：
+⭐通常版 おつまみ本体は勿論、机、箸、メニュー、木札など全て入っています。とりあえず使いたい人にお勧めです。
+✨DX版 通常版に加えて、100種類のデザイン箸袋付きお箸が付属します。ワールドや季節に合わせて拘りたい方へ！
+
+# 📥導入方法
+1. Assets/Osaki/Otumami20 にあるプレハブをシーン内に配置してください。
+  ・通常版：Otumami_Normal.prefab（通常のプレハブ）
+  ・DX版：Otumami_DX.prefab（100種類の箸袋バリエーション付き）
+2. 配置するだけで完了です。特別な設定は不要です。
+
+# 📊アップロード容量（目安）
+通常：8.2MB
+DX：11.4MB
+※サンプルプレハブをそのまま使った場合の数値です。木札やメニュー・箸袋を減らすことで容量を減らすことができます
+※DX版はOtumami_DXの直下にある「ChopWithSleeve」を削除すると通常と同じサイズになります
+
+# 📐ポリゴン数（目安）
+・おつまみセット(通常)...△88,750
+・おつまみセット(DX)...△95,150
+・箸...△76
+・机...△1,580
+・メニュー...△4
+・木札...△12
+・食べ物
+  - 揚げ出し豆腐...△3,720
+  - 厚焼き玉子...△2,950
+  - コロッケ...△4,760
+  - 枝豆...△4,870
+  - フライドポテト...△3,870
+  - きゅうり...△2,810
+  - まぐろ刺身...△2,650
+  - お好み焼き...△2,690
+  - おにぎり...△2,990
+  - ポテトサラダ...△3,540
+  - 焼きさば...△2,690
+  - サーモン刺身...△2,650
+  - たこわさび...△3,570
+  - 磯辺揚げ...△3,230
+  - 冷奴...△3,540
+  - 焼きそば...△3,450
+  - 焼き鳥（バラ串）...△8,870
+  - 焼き鳥（もも串）...△5,060
+  - 焼き鳥（ねぎま串）...△7,980
+  - 焼き鳥（つくね串）...△5,060
+
+# 📦同梱物
+## ⭐机セット
+・机、小物、メニュー、箸立てのセットです。
+・箸は掴んでいない状態で手を放すと、一定時間後に元の場所へ戻ります。
+
+## ⭐100種箸袋付きの箸（DX版のみ）
+・袋をUseすることで、箸を取り出すギミック付きです。
+・取り出した箸は通常の箸として使用可能です。
+
+## ⭐食べ物（20種類）
+・お箸で食べるもの、手でつかんで食べるものなど、合計20種類のおつまみを同梱。
+・お皿を持って運ぶことができ、食べ終わると自動的に元の位置に戻ります。
+・お皿が元の場所にない場合、最大5個まで自動生成されます。
+
+## ⭐木札
+・すべての食べ物の名前が書かれた木札です。
+・居酒屋ワールド等のワールド制作時にご利用ください。
+（設置してある食べ物のものだけ使用したほうがベストです）
+
+## ⭐メニュー
+・すべての食べ物の名前が入ったメニューが同梱されています(20種類)。
+・居酒屋ワールド等のワールド制作時にご利用ください。
+（設置してある食べ物のものだけ使用したほうがベストです）
+
+# 🎨カスタマイズ
+## [重要な注意事項]
+OtumamiSetオブジェクトにはFoodManagerというコンポーネントがついています。全ての食べ物と箸はその子になければなりません。外にあると、掴むことができません。
+
+## [サンプルプレハブの構成]
+OtumamiSetの下には次のものがあります。
+・WoodMenu：木札です。ワールド飾り用。OtumamiSetの外に出したり・消したりしても影響ありません。
+・Posters_Grid/Random：一品メニューです。ワールド飾り用。OtumamiSetの外に出したり・消したりしても影響ありません。
+・Desks：机や食べ物が入っています。OtumamiSetの外に出すと動作しなくなります。
+・Pools：音やパーティクルの再生をします。変更や移動をしないでください。（エフェクトがでなくなることがあります）
+・ChopWithSleeve：DX版のみ。円形に並べた袋付きの箸です。OtumamiSetの外に出さないでください。使わない場合は、削除しても影響ありません。
+
+## [改変例：机を使わずに食べ物だけ使いたい場合]
+OtumamiSetを置きます
+中身をすべて削除します
+Assets/Osaki/Otumami20/unitフォルダに各食べ物・箸などのプレハブがあります
+好きなものをシーンに配置します（※必ずOtumamiSetの子にしてください）
+
+## [改変例（DX版）：袋付きの箸をおきたい場合]
+Assets/Osaki/Otumami20/ChopStickフォルダに各袋の箸のプレハブがあります
+好きなものをシーンに配置します（※必ずOtumamiSetの子にしてください）
+
+# ❓よくある質問
+Q. 食べ物が補充されない
+A. 食べ物を食べきらないと補充されません。また、全自動補充には約10秒ほど時間がかかる場合があります。
+
+Q. 箸が掴めない
+A. 箸や食べ物が「OtumamiSet」の子にあるか確認してください。
+
+Q. 途中参加した際に状態がおかしい
+A. 参加後4〜8秒程度で自動同期されます。しばらくお待ちください。
+
+# 🤖Creative Assistance Disclosure
+This project was developed with the assistance of various generative AI technologies:
+Code: Antigravity, GitHub Copilot
+Graphics: Genspark AI, Google Gemini
+Sounds: Powered by Stability AI
+
+
+# 📜利用規約
+本製品をご利用いただく際は、本規約に同意したものとみなします。
+
+1. 利用許諾
+本製品は、VRChat等のメタバース空間におけるワールドやアバター用アセットとしての利用を想定しています。各部品の個別使用や改変も自由です。
+
+こんな使い方ができます：
+VRChat、cluster、Resonite等のメタバースプラットフォームでの利用
+ワールドやアバターへの組み込み（想定外の使い方をした場合のサポートはできませんが、使うこと自体はOKです）
+収益化イベントや収益化配信での使用
+企業・法人による利用
+改変・テクスチャ等の素材抽出
+Unity、Unreal Engine等でのゲーム制作
+スクリーンショットや動画のSNS投稿
+アバターのクローン許可設定やPublicワールドでの使用
+
+2. 禁止事項
+やっちゃダメなこと：
+本製品データの二次配布（再配布・転売）
+本製品を使ったワールド/アバターを他人に配布すること
+※実体データ（モデル、テクスチャ、音源、Udon等）を含まないPrefabのみなら配布OK
+音源データのみを抽出して転用すること
+製作者へのなりすまし
+法令違反な使い方
+
+3. 免責事項
+本製品の配布は予告なく終了する場合があります。購入後はすぐにダウンロード＆バックアップをお願いします
+使ったこと/使えなかったこと等によって生じた損害について、製作者は責任を負いません
+ダウンロード商品のため、返品・返金には対応できません
+
+4. 外部素材について
+本製品には第三者提供の素材（効果音、画像、AI生成物等）が含まれる場合があります。それらの権利は各権利者に帰属します。
+
+5. 規約の変更
+本規約は予告なく変更される場合があります。最新版はBOOTHの商品ページをご確認ください。
+
+6. お問い合わせ
+アップデート情報は商品ページを、不具合報告や質問はBOOTHのメッセージ機能からお気軽にどうぞ。`;
+const faq = ``;
+
+// Markdownを簡易的にHTMLに変換
+function parseMarkdown(md: string): string {
+  if (!md) return '';
+  
+  let html = md
+    // 見出し（改行も一緒に処理）
+    .replace(/^### (.+?)\n/gm, '<h3>$1</h3>')
+    .replace(/^## (.+?)\n/gm, '<h2>$1</h2>')
+    .replace(/^# (.+?)\n/gm, '<h1>$1</h1>')
+    // 末尾の見出し（改行なし）
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    // リスト
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    // 段落（2つ以上の改行）
+    .replace(/\n\n+/g, '</p><p>')
+    // 単一改行をbrに（ただし、タグの直後は除く）
+    .replace(/([^>])\n/g, '$1<br>');
+  
+  // リストをulで囲む
+  html = html.replace(/(<li>.*?<\/li>)/gs, (match) => {
+    return '<ul>' + match + '</ul>';
+  });
+  
+  // 見出しタグの直後の<br>を削除
+  html = html.replace(/(<\/h[123]>)<br>/g, '$1');
+  
+  // 段落タグで囲む
+  if (!html.startsWith('<h') && !html.startsWith('<ul')) {
+    html = '<p>' + html + '</p>';
+  }
+  
+  return html;
+}
+
+const breadcrumbs = [
+  { label: 'ホーム', href: '/' },
+  { label: '商品一覧', href: '/products' },
+  { label: item.name, href: `/products/${item.id}` }
+];
+---
+
+<Layout title={item.name}>
+  <Container>
+    <Breadcrumbs items={breadcrumbs} />
+  </Container>
+  
+  <main class="product-detail">
+    <div class="product-header">
+      <div class="product-image">
+        <img src={item.main_image} alt={item.name} />
+      </div>
+      
+      <div class="product-info">
+        <h1>{item.name}</h1>
+        
+        {item.published_at && (
+          <p class="published-date">📅 公開日: {item.published_at}</p>
+        )}
+        
+        <div class="action-buttons">
+          {item.booth_url && (
+            <a href={item.booth_url} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              🛒 Boothで購入
+            </a>
+          )}
+          
+          {item.sample_world_url && (
+            <a href={item.sample_world_url} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              🌍 サンプルワールドを見る
+            </a>
+          )}
+        </div>
+        
+        {item.tags && item.tags.length > 0 && (
+          <div class="tags">
+            {item.tags.map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+    
+    <section class="product-variations">
+      <h2>💰 価格・バリエーション</h2>
+      <div class="variations">
+  <div class="variation-item">
+    <h4>通常版</h4>
+    <p class="price">¥1,200</p>
+    <p class="detail">アップロードサイズ: 82 MB</p>
+    <p class="detail">ポリゴン数: △88,750</p>
+  </div>
+  <div class="variation-item">
+    <h4>【セール中！】DX版(箸袋100点セット付)</h4>
+    <p class="price">¥980</p>
+    <p class="detail">アップロードサイズ: 11.4 MB</p>
+    <p class="detail">ポリゴン数: △95,150</p>
+  </div>
+</div>
+    </section>
+    
+    <section class="product-description">
+      <h2>📝 商品説明</h2>
+      <div class="description-content" set:html={parseMarkdown(description)}></div>
+    </section>
+    
+    <section class="image-gallery">
+<h2>📷 ギャラリー</h2>
+<div class="gallery-grid">
+  <img src="/images/products/7815764/1.webp" alt="おつまみ20" />
+  <img src="/images/products/7815764/4.webp" alt="おつまみ20" />
+  <img src="/images/products/7815764/3.webp" alt="おつまみ20" />
+  <img src="/images/products/7815764/2.webp" alt="おつまみ20" />
+  <img src="/images/products/7815764/0.webp" alt="おつまみ20" />
+  <img src="/images/products/7815764/5.webp" alt="おつまみ20" />
+  <img src="/images/products/7815764/6.webp" alt="おつまみ20" />
+</div>
+</section>
+
+    
+    
+    
+  </main>
+</Layout>
+
+<style>
+  .product-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .product-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .product-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-info h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-heading);
+  }
+  
+  .published-date {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+  }
+  
+  .btn-secondary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(240, 147, 251, 0.4);
+  }
+  
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tag {
+    background: var(--color-bg-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+  
+  section {
+    margin-bottom: 3rem;
+  }
+  
+  section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-heading);
+  }
+  
+  .variations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .variation-item {
+    background: var(--color-bg-secondary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+  
+  .variation-item:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-4px);
+  }
+  
+  .variation-item h4 {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-heading);
+  }
+  
+  .variation-item .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .variation-item .detail {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0.25rem 0;
+  }
+  
+  /* Markdown content styling */
+  .description-content,
+  .faq-content {
+    line-height: 1.8;
+    color: var(--color-text);
+  }
+  
+  .description-content :global(h1),
+  .faq-content :global(h1) {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--main-color);
+    border-bottom: 3px solid var(--main-color);
+    padding-bottom: 0.5rem;
+  }
+  
+  .description-content :global(h2),
+  .faq-content :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1.75rem;
+    margin-bottom: 0.625rem;
+    color: var(--sub-color);
+    border-left: 4px solid var(--main-color);
+    padding-left: 1rem;
+  }
+  
+  .description-content :global(h3),
+  .faq-content :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--sub-color);
+  }
+  
+  .description-content :global(p),
+  .faq-content :global(p) {
+    margin-bottom: 1rem;
+  }
+  
+  .description-content :global(ul),
+  .description-content :global(ol),
+  .faq-content :global(ul),
+  .faq-content :global(ol) {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+  }
+  
+  .description-content :global(li),
+  .faq-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  
+  .description-content :global(code),
+  .faq-content :global(code) {
+    background: var(--bg-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  
+  .description-content :global(pre),
+  .faq-content :global(pre) {
+    background: var(--bg-color);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .description-content :global(blockquote),
+  .faq-content :global(blockquote) {
+    border-left: 4px solid var(--main-color);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: var(--sub-color);
+  }
+  
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  
+  .gallery-grid img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .gallery-grid img:hover {
+    transform: scale(1.05);
+  }
+  
+  .tech-info {
+    background: var(--color-bg-secondary);
+    padding: 2rem;
+    border-radius: 12px;
+  }
+  
+  .tech-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-heading);
+  }
+  
+  .tech-info ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .tech-info li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .tech-info li:last-child {
+    border-bottom: none;
+  }
+  
+  .faq-content {
+    line-height: 1.8;
+  }
+  
+  @media (max-width: 768px) {
+    .product-header {
+      grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .btn {
+      text-align: center;
+    }
+  }
+</style>
