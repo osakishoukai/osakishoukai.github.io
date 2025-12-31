@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 
 // イベントデータを読み込む
 import eventsData from "@/data/events.json";
@@ -36,6 +37,11 @@ function formatDate(dateStr) {
 
 <Layout title="イベント開催記録 - KemonoBarずんどこ">
   <Container>
+    <Breadcrumbs items={[
+      { label: "イベント", href: "/events" },
+      { label: "開催記録" }
+    ]} />
+
     <div class="archive-hero">
       <h1 class="page-title">
         <Icon name="mdi:calendar-clock" class="title-icon" />
@@ -116,7 +122,7 @@ function formatDate(dateStr) {
 <style>
   .archive-hero {
     text-align: center;
-    padding: 4rem 1.5rem 3rem;
+    padding: 1.5rem 1.5rem 3rem;
     background: linear-gradient(135deg, white 0%, var(--bg-color) 100%);
     border-radius: 2rem;
     border: 3px solid var(--main-color);

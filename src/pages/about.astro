@@ -2,11 +2,13 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 ---
 
 <Layout title="大崎商会について">
   <!-- Vision Section -->
   <Container>
+    <Breadcrumbs items={[{ label: "大崎商会について" }]} />
     <div class="hero-section">
       <div class="hero-content-wrapper">
         <div class="hero-text-box">

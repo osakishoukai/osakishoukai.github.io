@@ -4,10 +4,12 @@ import Container from "@/components/container.astro";
 import Sectionhead from "@/components/sectionhead.astro";
 import Layout from "@/layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 ---
 
 <Layout title="Contact">
   <Container>
+    <Breadcrumbs items={[{ label: "お問い合わせ" }]} />
     <Sectionhead>
       <Fragment slot="title">Contact</Fragment>
       <Fragment slot="desc">We are a here to help.</Fragment>

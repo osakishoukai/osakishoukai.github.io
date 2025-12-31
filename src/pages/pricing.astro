@@ -3,6 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import Sectionhead from "@/components/sectionhead.astro";
 import PricingCard from "@/components/pricing.astro";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 
 const pricing = [
   {
@@ -66,6 +67,7 @@ const pricing = [
 
 <Layout title="Pricing">
   <Container>
+    <Breadcrumbs items={[{ label: "料金プラン" }]} />
     <Sectionhead>
       <Fragment slot="title">Pricing</Fragment>
       <Fragment slot="desc">

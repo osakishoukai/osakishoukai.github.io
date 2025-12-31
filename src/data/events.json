@@ -222,10 +222,211 @@
         "events\\20251001\\001.webp",
         "events\\20251001\\002.webp"
       ]
+    },
+    {
+      "date": "2025-09-26",
+      "participants": 27,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "虎貫　蒼"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250926\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-09-19",
+      "participants": 32,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "かぢ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250919\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-09-12",
+      "participants": 38,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "虎貫　蒼"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250912\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-08-29",
+      "participants": 26,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250829\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-08-22",
+      "participants": 44,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "虎貫　蒼",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250822\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-08-15",
+      "participants": 47,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250815\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-08-01",
+      "participants": 40,
+      "staff": [
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "虎貫　蒼",
+        "かぢ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250801\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-07-25",
+      "participants": 33,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250725\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-07-18",
+      "participants": 61,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "虎貫　蒼"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250718\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-07-11",
+      "participants": 27,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250711\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-07-04",
+      "participants": 51,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "灰竜とたく",
+        "かぢ"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250704\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-06-27",
+      "participants": 33,
+      "staff": [
+        "おおさき",
+        "灰竜とたく"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250627\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-06-20",
+      "participants": 22,
+      "staff": [
+        "灰竜とたく"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250620\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-06-13",
+      "participants": 29,
+      "staff": [
+        "おおさき",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250613\\001.webp"
+      ]
     }
   ],
   "metadata": {
-    "last_updated": "2025-12-31T13:06:04.570031",
-    "total_events": 14
+    "last_updated": "2025-12-31T13:29:26.347635",
+    "total_events": 28
   }
 }

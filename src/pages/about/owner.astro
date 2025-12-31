@@ -2,10 +2,15 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 ---
 
 <Layout title="おおさきくん自己紹介">
   <Container>
+    <Breadcrumbs items={[
+      { label: "大崎商会について", href: "/about" },
+      { label: "おおさきくん自己紹介" }
+    ]} />
     <!-- Page Header -->
     <div class="page-header">
       <h1 class="page-title">おおさきくん自己紹介</h1>

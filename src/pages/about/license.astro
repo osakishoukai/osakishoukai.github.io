@@ -2,11 +2,16 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 ---
 
 <Layout title="ライセンス">
   <div class="page-header">
     <Container>
+      <Breadcrumbs items={[
+        { label: "大崎商会について", href: "/about" },
+        { label: "ライセンス" }
+      ]} />
       <h1 class="page-title">大崎商会 製品利用規約</h1>
       <p class="page-description">
         本製品をご利用いただく際は、本規約に同意したものとみなします。

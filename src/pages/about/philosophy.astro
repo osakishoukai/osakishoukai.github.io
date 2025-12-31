@@ -2,11 +2,16 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 ---
 
 <Layout title="理念">
   <div class="page-header">
     <Container>
+      <Breadcrumbs items={[
+        { label: "大崎商会について", href: "/about" },
+        { label: "理念" }
+      ]} />
       <h1 class="page-title">大崎商会の理念</h1>
       <p class="page-subtitle">
         私たちが大切にしていること、そして目指している未来について。

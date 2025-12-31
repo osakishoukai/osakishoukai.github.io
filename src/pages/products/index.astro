@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 
 const categories = ["すべて", "食べ物", "飲み物", "食器", "ギミック"];
 ---
@@ -9,6 +10,7 @@ const categories = ["すべて", "食べ物", "飲み物", "食器", "ギミッ�
 <Layout title="商品一覧">
   <div class="page-header">
     <Container>
+      <Breadcrumbs items={[{ label: "商品一覧" }]} />
       <h1 class="page-title">商品一覧</h1>
       <p class="page-description">
         「みんなVRでたのしくくらそう」を支える、<br />
@@ -154,7 +156,7 @@ const categories = ["すべて", "食べ物", "飲み物", "食器", "ギミッ�
 </Layout>
 
 <style>
-  .page-header { text-align: center; padding: 4rem 0 3rem; }
+  .page-header { text-align: center; padding: 1.5rem 0 3rem; }
   .page-title { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; margin-bottom: 1rem; color: var(--main-color); }
   .page-description { font-size: clamp(1rem, 2vw, 1.25rem); color: var(--sub-color); line-height: 1.8; }
   .filter-section { display: flex; justify-content: space-between; align-items: center; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap; }

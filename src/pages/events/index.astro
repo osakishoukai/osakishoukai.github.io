@@ -2,10 +2,27 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
+
+// イベントデータを読み込む
+import eventsData from "@/data/events.json";
+
+// 最新の2件を取得
+const latestEvents = [...(eventsData.events || [])]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 2);
+
+// 日付フォーマット
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+}
 ---
 
 <Layout title="イベント参加">
   <Container>
+    <Breadcrumbs items={[{ label: "イベント" }]} />
+    
     <div class="hero-section">
       <div class="hero-content-wrapper">
         <div class="hero-text-box">
@@ -46,32 +63,20 @@ import { Icon } from "astro-icon/components";
     <div class="archive-section">
       <h2 class="section-title">過去の開催レポート</h2>
       <div class="archive-grid">
-        <a href="/events/archive/20241228" class="archive-card">
-          <div class="archive-date">2024.12.28</div>
-          <h3 class="archive-title">年末感謝祭イベント</h3>
-          <div class="archive-stats">
-            <div class="stat">
-              <Icon name="mdi:account" class="stat-icon" />
-              <span>45人参加</span>
-            </div>
-          </div>
-          <div class="archive-preview">
-            2024年最後の開催。たくさんの方にお越しいただき、大盛況の忘年会となりました。
-          </div>
-        </a>
-        <a href="/events/archive/20241221" class="archive-card">
-          <div class="archive-date">2024.12.21</div>
-          <h3 class="archive-title">クリスマス限定メニュー</h3>
-          <div class="archive-stats">
-            <div class="stat">
-              <Icon name="mdi:account" class="stat-icon" />
-              <span>38人参加</span>
-            </div>
-          </div>
-          <div class="archive-preview">
-            クリスマスムード満載のイベント。特別メニューも好評でした。
-          </div>
-        </a>
+        {latestEvents.map(event => {
+          const firstImage = event.images && event.images.length > 0 
+            ? `/images/${event.images[0].replace(/\\/g, '/')}`
+            : '/images/bar-bg.png';
+          
+          return (
+            <a href={`/events/archive/${event.date}`} class="simple-archive-card">
+              <div class="card-image-wrapper">
+                <img src={firstImage} alt={`${event.date}の様子`} class="card-image" />
+                <div class="card-date-badge">{formatDate(event.date)}</div>
+              </div>
+            </a>
+          );
+        })}
       </div>
       <div class="archive-cta">
         <a href="/events/archive" class="btn-outline">
@@ -256,14 +261,55 @@ import { Icon } from "astro-icon/components";
 
   .archive-section { margin-bottom: 5rem; }
   .archive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
-  .archive-card { background: white; padding: 2rem; border: 2px solid var(--main-color); border-radius: 1.5rem; text-decoration: none; color: inherit; transition: all 0.3s ease; }
-  .archive-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
-  .archive-date { display: inline-block; padding: 0.25rem 0.75rem; background: var(--bg-color); border-radius: 2rem; font-size: 0.875rem; font-weight: 900; color: var(--main-color); margin-bottom: 1rem; }
-  .archive-title { font-size: 1.25rem; font-weight: 900; margin-bottom: 1rem; color: var(--sub-color); }
-  .archive-stats { display: flex; gap: 1rem; margin-bottom: 1rem; }
-  .stat { display: flex; align-items: center; gap: 0.35rem; font-size: 0.875rem; color: var(--sub-color); opacity: 0.8; }
-  .stat-icon { width: 1rem; height: 1rem; color: var(--main-color); }
-  .archive-preview { font-size: 0.875rem; color: var(--sub-color); line-height: 1.6; }
+  
+  /* Simple Archive Card */
+  .simple-archive-card {
+    display: block;
+    text-decoration: none;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    border: 3px solid var(--main-color);
+    transition: all 0.3s ease;
+    background: var(--bg-color);
+  }
+
+  .simple-archive-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  }
+
+  .card-image-wrapper {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .simple-archive-card:hover .card-image {
+    transform: scale(1.1);
+  }
+
+  .card-date-badge {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    color: var(--main-color);
+    font-weight: 900;
+    font-size: 1rem;
+    border: 2px solid var(--main-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
   .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 2rem; border: 2px solid var(--main-color); border-radius: 3rem; color: var(--main-color); text-decoration: none; font-weight: 900; transition: all 0.3s ease; }
   .btn-outline:hover { background: var(--main-color); color: white; }
   .guide-section { background: linear-gradient(135deg, white 0%, var(--bg-color) 100%); padding: 4rem; border-radius: 2rem; border: 2px solid var(--main-color); margin-bottom: 4rem; }

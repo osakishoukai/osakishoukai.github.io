@@ -1,0 +1,77 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  items: {
+    label: string;
+    href?: string;
+  }[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ul class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <a href="/">ホーム</a>
+    </li>
+    {items.map((item) => (
+      <>
+        <li class="breadcrumb-separator">
+          <Icon name="mdi:chevron-right" class="breadcrumb-icon" />
+        </li>
+        <li class="breadcrumb-item">
+          {item.href ? (
+            <a href={item.href}>{item.label}</a>
+          ) : (
+            <span aria-current="page">{item.label}</span>
+          )}
+        </li>
+      </>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 2rem;
+  }
+  
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--sub-color);
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb-item a {
+    color: var(--sub-color);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .breadcrumb-item a:hover {
+    color: var(--main-color);
+  }
+
+  .breadcrumb-separator {
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+  }
+
+  .breadcrumb-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .breadcrumb-item span {
+    font-weight: normal;
+  }
+</style>
