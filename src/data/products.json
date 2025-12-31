@@ -2,9 +2,9 @@
   "products": [
     {
       "id": "7815764",
-      "name": "1/18日までDX版半額セール中！【VRChat想定ワールドアセット】「おつまみ20」(+DX版は箸袋100点セット同梱)",
+      "name": "【VRChat想定ワールドアセット】「おつまみ20」(+DX版は箸袋100点セット同梱)",
       "main_image": "/images/products/7815764/1.webp",
-      "min_price": null,
+      "min_price": 980,
       "published_at": "2025年12月29日 22時30分",
       "tags": [
         "3Dモデル",
@@ -25,7 +25,102 @@
         "ワールドギミック",
         "インテリア x 3D環境・ワールド"
       ],
-      "booth_url": "https://booth.pm/ja/items/7815764"
+      "booth_url": "https://booth.pm/ja/items/7815764",
+      "sample_world_url": "https://vrchat.com/home/launch?worldId=wrld_9f182d11-2de0-4cfd-8838-ad503cbf3c39"
+    },
+    {
+      "id": "7719990",
+      "name": "大崎商会\n【VRChat想定ワールドアセット】「酒泉-Shusen-」",
+      "main_image": "/images/products/7719990/1.webp",
+      "min_price": 800,
+      "published_at": "2025年12月2日 14時00分",
+      "tags": [
+        "3Dモデル",
+        "3D環境・ワールド",
+        "インテリア",
+        "酒",
+        "飲み物",
+        "ワールド",
+        "蛇口",
+        "VRChat",
+        "ワールド小物",
+        "VRC想定モデル",
+        "VRChat想定モデル",
+        "VRChat向け",
+        "ワールドアセット",
+        "ワールドギミック",
+        "インテリア x 3D環境・ワールド"
+      ],
+      "booth_url": "https://booth.pm/ja/items/7719990",
+      "sample_world_url": "https://vrchat.com/home/launch?worldId=wrld_d8eba0a9-02e1-4cd5-a114-f4ff3c45887c"
+    },
+    {
+      "id": "7531514",
+      "name": "【VRChat想定ワールドアセット】「焼き鳥10種盛り合わせ(+缶ビール&ポテチ)」",
+      "main_image": "/images/products/7531514/1.webp",
+      "min_price": 700,
+      "published_at": "2025年10月12日 19時30分",
+      "tags": [
+        "3Dモデル",
+        "3D環境・ワールド",
+        "インテリア",
+        "ごはん",
+        "ワールド",
+        "焼き鳥",
+        "VRChat",
+        "ワールド小物",
+        "VRC想定モデル",
+        "VRChat想定モデル",
+        "VRChat向け",
+        "ワールドアセット",
+        "ワールドギミック",
+        "インテリア x 3D環境・ワールド"
+      ],
+      "booth_url": "https://booth.pm/ja/items/7531514",
+      "sample_world_url": "https://vrchat.com/home/launch?worldId=wrld_3c0fa125-7ada-4a80-9a3c-993028615998"
+    },
+    {
+      "id": "7502924",
+      "name": "【VRChat想定ワールドアセット】URL CARD【ワールドでの各種案内に是非！】",
+      "main_image": "/images/products/7502924/1.webp",
+      "min_price": 250,
+      "published_at": "2025年10月4日 22時00分",
+      "tags": [
+        "3Dモデル",
+        "3D環境・ワールド",
+        "インテリア",
+        "ワールド",
+        "VRChat",
+        "VRC想定モデル",
+        "ワールドアセット",
+        "ワールドギミック",
+        "宣伝素材",
+        "インテリア x 3D環境・ワールド"
+      ],
+      "booth_url": "https://booth.pm/ja/items/7502924",
+      "sample_world_url": "https://vrchat.com/home/launch?worldId=wrld_82d07a01-51f3-4830-9fad-e2612a05cc2a"
+    },
+    {
+      "id": "7266933",
+      "name": "【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」",
+      "main_image": "/images/products/7266933/1.webp",
+      "min_price": 700,
+      "published_at": "2025年8月5日 20時45分",
+      "tags": [
+        "3Dモデル",
+        "3D環境・ワールド",
+        "インテリア",
+        "ごはん",
+        "ワールド",
+        "お好み焼き",
+        "VRChat",
+        "VRC想定モデル",
+        "ワールドアセット",
+        "ワールドギミック",
+        "インテリア x 3D環境・ワールド"
+      ],
+      "booth_url": "https://booth.pm/ja/items/7266933",
+      "sample_world_url": "https://vrchat.com/home/launch?worldId=wrld_623e31c4-b979-416d-bbdb-ba546b685fd6"
     }
   ]
 }
