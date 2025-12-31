@@ -423,10 +423,57 @@
       "images": [
         "events\\20250613\\001.webp"
       ]
+    },
+    {
+      "date": "2025-06-06",
+      "participants": 30,
+      "staff": [
+        "おおさき",
+        "灰竜とたく",
+        "アルディス"
+      ],
+      "summary": "販売アセット「舩盛りからあげ」のテスト導入を行いました。",
+      "urls": [],
+      "images": [
+        "events\\20250606\\001.webp"
+      ]
+    },
+    {
+      "date": "2025-05-30",
+      "participants": 51,
+      "staff": [
+        "おおさき",
+        "灰竜とたく",
+        "かぢ",
+        "いぬろう",
+        "アルディス"
+      ],
+      "summary": "",
+      "urls": [],
+      "images": [
+        "events\\20250530\\001.webp",
+        "events\\20250530\\002.webp"
+      ]
+    },
+    {
+      "date": "2025-05-23",
+      "participants": 18,
+      "staff": [
+        "おおさき",
+        "かぢ",
+        "いぬろう",
+        "アルディス"
+      ],
+      "summary": "販売アセット「核-Kaku-ハイボール」の導入を実施いたしました。",
+      "urls": [],
+      "images": [
+        "events\\20250523\\001.webp",
+        "events\\20250523\\002.webp"
+      ]
     }
   ],
   "metadata": {
-    "last_updated": "2025-12-31T13:29:26.347635",
-    "total_events": 28
+    "last_updated": "2025-12-31T13:38:43.908765",
+    "total_events": 31
   }
 }

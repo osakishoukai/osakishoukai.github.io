@@ -124,8 +124,8 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
     {hasSummary && (
       <div class="summary-section">
         <h2 class="section-title">
-          <Icon name="mdi:text-box" class="section-icon" />
-          イベント総括
+          <Icon name="mdi:note-text" class="section-icon" />
+          おおさきくんのメモ
         </h2>
         <div class="summary-content">
           <p>{event.summary}</p>
@@ -140,7 +140,7 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
           <Icon name="mdi:camera" class="section-icon" />
           スクリーンショット (クリックで拡大)
         </h2>
-        <div class="screenshots-grid">
+        <div class:list={["screenshots-grid", event.images.length === 1 && "is-single"]}>
           {event.images.map(imgPath => {
             const imageUrl = `/images/${imgPath.replace(/\\/g, '/')}`;
             return (
@@ -457,17 +457,15 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
   .social-section {
     background: var(--event-section-bg);
     border: 3px solid var(--main-color);
-    border-radius: 2rem;
-    padding: 2.5rem;
-    margin-bottom: 2rem;
+    border-radius: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 1rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
 
   .section-title {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--event-text-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.25rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -498,13 +496,16 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
 
   /* 総括 */
   .summary-content {
-    background: var(--bg-color);
-    padding: 2rem;
-    border-radius: 1rem;
-    line-height: 1.8;
-    font-size: 1.1rem;
+    background: transparent;
+    padding: 0 0.5rem;
+    line-height: 1.5;
+    font-size: 0.95rem;
     color: var(--sub-color);
     white-space: pre-wrap; /* 改行を反映 */
+  }
+
+  .summary-content p {
+    margin: 0;
   }
 
   /* スクリーンショット */
@@ -512,6 +513,12 @@ const hasSummary = event.summary && event.summary.trim().length > 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
+  }
+
+  .screenshots-grid.is-single {
+    grid-template-columns: 1fr;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .screenshot-item {
