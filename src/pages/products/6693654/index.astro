@@ -1,0 +1,645 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Container from '../../../components/container.astro';
+import Breadcrumbs from '../../../components/ui/Breadcrumbs.astro';
+
+const item = {
+  id: "6693654",
+  name: "【VRChat想定】メスシリンダー1L(Messzylinder)",
+  booth_url: "https://booth.pm/ja/items/6693654",
+  sample_world_url: "https://vrchat.com/home/launch?worldId=wrld_935ba54d-727a-45a3-b81d-107f0fa860d1",
+  published_at: "2025年3月16日 18時02分",
+  main_image: "/images/products/6693654/1.webp",
+  tags: ["3Dモデル", "3Dモデル（その他）", "酒", "ビール", "VRChat", "VRCワールドギミック", "酒 x 3Dモデル（その他）"]
+};
+
+const description = `VRChatterならお馴染み、某ブリティッシュパブにありそうな大きなメスシリンダーです。
+番台うるし様製作の「【VRChat想定】ビールサーバー＆瓶ビールシステム」を使用してビールを注ぎ、飲むことが出来ます。
+ワールドギミックとして動作させる場合は、番台うるし様製作の「【VRChat想定】ビールサーバー＆瓶ビールシステム」が必須です。
+https://bandaiurusi.booth.pm/items/1808463
+飲用として使用しない、アバターに仕込みたい等の目的であれば不要です。
+
+居酒屋ワールドやBarワールドに設置したら話のネタになるかも！？
+理科の実験に使ってもいいかもしれませんね…！
+
+配布物は、次の通りです。
+- モデル(メスシリンダー1L)にBDBeer_Glassに準じるコンポーネントをつけたものです。[画像①]
+- 番台うるし様が制作された物（コード、アニメータ、効果音、モデル等）を含みません。[画像②]
+- 番台うるし様の制作物を参照しているため、飲用として動作させるには「【VRChat想定】ビールサーバー＆瓶ビールシステム」が必須です。
+- アバターに着装する場合やメスシリンダー1Lだけをモデルとして使用される場合は、購入後にDLしたZipファイル内にあります「Nogimmick.unitypackage」をご使用ください。
+（PC専用アバター向けビール飲酒ギミックは、後日頒布予定です）
+
+動作は以下ワールドにてお試しいただけます。
+KemonoBarずんどこ
+https://vrchat.com/home/world/wrld_935ba54d-727a-45a3-b81d-107f0fa860d1
+
+<販売物についての禁止事項>
+二次配布、法令に反する使用、製作者のなりすまし行為
+
+<免責事項>
+本製品を利用又は利用する準備をしたことによって生じるいかなる損害に対して当方は一切責任を負いません。
+動作には他のアセットが必要になるため、説明を熟読のうえお買い求めください。
+使用は自己責任でお願い致します。
+一切の返品返金には応じることは出来ません。
+
+次の環境で動作を確認しています。
+- VRChat SDK 3.3.0
+- Unity2019, 2022で動作を確認しています。`;
+const faq = ``;
+
+// Markdownを簡易的にHTMLに変換
+function parseMarkdown(md: string): string {
+  if (!md) return '';
+  
+  const lines = md.split('\n');
+  const result: string[] = [];
+  let listStack: number[] = []; // インデントレベルのスタック
+  
+  const getIndent = (line: string): number => {
+    if (line.startsWith('      - ')) return 3;
+    if (line.startsWith('    - ')) return 2;
+    if (line.startsWith('  - ')) return 1;
+    if (line.trim().startsWith('- ')) return 0;
+    return -1;
+  };
+  
+  const closeListsToLevel = (targetLevel: number) => {
+    while (listStack.length > 0 && listStack[listStack.length - 1] >= targetLevel) {
+      listStack.pop();
+      result.push('</ul>');
+    }
+  };
+  
+  const closeAllLists = () => {
+    while (listStack.length > 0) {
+      listStack.pop();
+      result.push('</ul>');
+    }
+  };
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    const indent = getIndent(line);
+    
+    // 空行の処理
+    if (!trimmed) {
+      closeAllLists();
+      result.push('');
+      continue;
+    }
+    
+    // 見出しの処理
+    if (trimmed.startsWith('### ')) {
+      closeAllLists();
+      result.push('<h3>' + trimmed.substring(4) + '</h3>');
+      continue;
+    }
+    if (trimmed.startsWith('## ')) {
+      closeAllLists();
+      result.push('<h2>' + trimmed.substring(3) + '</h2>');
+      continue;
+    }
+    if (trimmed.startsWith('# ')) {
+      closeAllLists();
+      result.push('<h1>' + trimmed.substring(2) + '</h1>');
+      continue;
+    }
+    
+    // リストの処理
+    if (indent >= 0) {
+      const content = trimmed.substring(2);
+      
+      // 現在のインデントレベルより深い場合、リストを閉じる
+      if (listStack.length > 0 && indent < listStack[listStack.length - 1]) {
+        closeListsToLevel(indent + 1);
+      }
+      
+      // 新しいレベルの場合、ulを開く
+      if (listStack.length === 0 || indent > listStack[listStack.length - 1]) {
+        result.push('<ul>');
+        listStack.push(indent);
+      }
+      
+      // リスト項目を追加
+      result.push('<li>' + content);
+      
+      // 次の行を先読みして、子リストがあるかチェック
+      const nextIndent = i + 1 < lines.length ? getIndent(lines[i + 1]) : -1;
+      if (nextIndent <= indent || nextIndent === -1) {
+        result.push('</li>');
+      }
+      
+      continue;
+    }
+    
+    // その他の行（リストを終了）
+    closeAllLists();
+    
+    // 通常の段落
+    result.push('<p>' + trimmed + '</p>');
+  }
+  
+  // 最後にリストが残っている場合
+  closeAllLists();
+  
+  return result.join('\n');
+}
+
+const breadcrumbs = [
+  { label: 'ホーム', href: '/' },
+  { label: '商品一覧', href: '/products' },
+  { label: item.name, href: `/products/${item.id}` }
+];
+---
+
+<Layout title={item.name}>
+  <Container>
+    <Breadcrumbs items={breadcrumbs} />
+  </Container>
+  
+  <main class="product-detail">
+    <div class="product-header">
+      <div class="product-image">
+        <img src={item.main_image} alt={item.name} />
+      </div>
+      
+      <div class="product-info">
+        <h1>{item.name}</h1>
+        
+        {item.published_at && (
+          <p class="published-date">📅 公開日: {item.published_at}</p>
+        )}
+        
+        <div class="action-buttons">
+          {item.booth_url && (
+            <a href={item.booth_url} target="_blank" rel="noopener noreferrer" class="booth-link">
+              <img src="/images/booth-icon.svg" alt="Booth" class="booth-svg booth-icon" />
+            </a>
+          )}
+          
+          {item.sample_world_url && (
+            <a href={item.sample_world_url} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              <img src="/images/world.svg" alt="World" class="btn-icon" />
+              サンプルワールド
+            </a>
+          )}
+        </div>
+        
+        {item.tags && item.tags.length > 0 && (
+          <div class="tags">
+            {item.tags.map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+    
+    <section class="product-variations">
+      <h2>💰 価格・バリエーション</h2>
+      <div class="variations">
+  <div class="variation-item">
+    <h4></h4>
+    <div class="price">¥150</div>
+  </div>
+</div>
+
+    </section>
+    
+    <section class="product-description">
+      <h2>📝 商品説明</h2>
+      <div class="description-content" set:html={parseMarkdown(description)}></div>
+    </section>
+    
+    <section class="image-gallery">
+<h2>📷 ギャラリー</h2>
+<div class="gallery-grid">
+  <img src="/images/products/6693654/1.webp" alt="【VRChat想定】メスシリンダー1L(Messzylinder)" />
+  <img src="/images/products/6693654/0.webp" alt="【VRChat想定】メスシリンダー1L(Messzylinder)" />
+</div>
+</section>
+
+    
+    
+    
+  </main>
+    <div id="image-modal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="modal-img">
+    </div>
+  </main>
+</Layout>
+
+<script is:inline>
+  // Get the modal
+  var modal = document.getElementById("image-modal");
+  var modalImg = document.getElementById("modal-img");
+  
+  // Get all gallery images
+  var images = document.querySelectorAll('.gallery-grid img');
+  
+  images.forEach(function(img) {
+    img.onclick = function() {
+      if (modal && modalImg) {
+        modal.style.display = "flex";
+        modalImg.src = this.src;
+      }
+    }
+  });
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  if (span) {
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+  }
+  
+  // Close on click outside
+  if (modal) {
+    modal.onclick = function(event) {
+      if (event.target === modal) {
+          modal.style.display = "none";
+      }
+    }
+  }
+  
+  // Close on Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape" && modal && modal.style.display === "flex") {
+        modal.style.display = "none";
+    }
+  });
+</script>
+
+<style>
+  .product-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .product-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .product-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-info h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-heading);
+  }
+  
+  .published-date {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+  }
+  
+  .booth-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    height: 48px;
+  }
+  
+  .booth-link:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  
+  .booth-svg {
+    height: 48px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+  
+  .btn-secondary {
+    background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 48px;
+  }
+  
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.4);
+  }
+  
+  .btn-icon {
+    height: 24px;
+    width: auto;
+  }
+  
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tag {
+    background: var(--color-bg-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+  
+  section {
+    margin-bottom: 3rem;
+  }
+  
+  section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-heading);
+  }
+  
+  .variations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .variation-item {
+    background: var(--color-bg-secondary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+  
+  .variation-item:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-4px);
+  }
+  
+  .variation-item h4 {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-heading);
+  }
+  
+  .variation-item .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .variation-item .detail {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0.25rem 0;
+  }
+  
+  /* Markdown content styling */
+  .description-content,
+  .faq-content {
+    line-height: 1.8;
+    color: var(--color-text);
+  }
+  
+  .description-content :global(h1),
+  .faq-content :global(h1) {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--main-color);
+    border-bottom: 3px solid var(--main-color);
+    padding-bottom: 0.5rem;
+  }
+  
+  .description-content :global(h2),
+  .faq-content :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1.75rem;
+    margin-bottom: 0.625rem;
+    color: var(--sub-color);
+    border-left: 4px solid var(--main-color);
+    padding-left: 1rem;
+  }
+  
+  .description-content :global(h3),
+  .faq-content :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--sub-color);
+  }
+  
+  .description-content :global(p),
+  .faq-content :global(p) {
+    margin-bottom: 1rem;
+  }
+  
+  .description-content :global(ul),
+  .description-content :global(ol),
+  .faq-content :global(ul),
+  .faq-content :global(ol) {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    list-style-position: outside;
+  }
+  
+  .description-content :global(ul) {
+    list-style-type: disc;
+  }
+  
+  .faq-content :global(ul) {
+    list-style-type: disc;
+  }
+  
+  .description-content :global(li),
+  .faq-content :global(li) {
+    margin-bottom: 0.5rem;
+    display: list-item;
+  }
+  
+  .description-content :global(code),
+  .faq-content :global(code) {
+    background: var(--bg-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  
+  .description-content :global(pre),
+  .faq-content :global(pre) {
+    background: var(--bg-color);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .description-content :global(blockquote),
+  .faq-content :global(blockquote) {
+    border-left: 4px solid var(--main-color);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: var(--sub-color);
+  }
+  
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  
+  .gallery-grid img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .gallery-grid img:hover {
+    transform: scale(1.05);
+  }
+  
+  .tech-info {
+    background: var(--color-bg-secondary);
+    padding: 2rem;
+    border-radius: 12px;
+  }
+  
+  .tech-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-heading);
+  }
+  
+  .tech-info ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .tech-info li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .tech-info li:last-child {
+    border-bottom: none;
+  }
+  
+  .faq-content {
+    line-height: 1.8;
+  }
+  
+  @media (max-width: 768px) {
+    .product-header {
+      grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .btn {
+      text-align: center;
+    }
+  }
+  /* Modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  
+  /* Animation */
+  .modal-content {
+    animation-name: zoom;
+    animation-duration: 0.3s;
+  }
+  
+  @keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+  }
+  
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .gallery-grid img {
+    cursor: pointer;
+  }
+</style>
