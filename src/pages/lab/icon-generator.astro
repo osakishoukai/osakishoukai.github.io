@@ -1,0 +1,390 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
+
+---
+
+<Layout 
+  title="マルチサイズアイコン一括作成 | あいこんめーかー - おおさきラボ" 
+  description="1つの元画像から、16px, 48px, 128pxなどの各種アイコンサイズを一括生成。SVG入力に対応し、ICO形式とPNG形式でまとめてダウンロードできます。"
+>
+  <Container>
+    <Breadcrumbs items={[
+      { label: "おおさきラボ", href: "/lab" },
+      { label: "あいこんめーかー" }
+    ]} />
+
+    <div class="tool-header-section">
+      <div class="tool-icon-wrapper">
+        <div class="tool-icon">🎨</div>
+      </div>
+      <div class="tool-info">
+        <h1 class="tool-title">あいこんめーかー</h1>
+        <p class="tool-description">
+          1つの画像から、様々な用途に使えるアイコンサイズ（16, 48, 128）を一括生成します。<br/>
+          SVG入力とマルチサイズICO出力に対応！
+        </p>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-content">
+        <div class="drop-zone" id="drop-zone">
+          <input type="file" id="file-input" accept="image/*" class="file-input" />
+          <div class="drop-zone-text">
+            <span class="upload-icon">📁</span>
+            <p>画像をドロップするか、クリックしてアップロード</p>
+            <span class="file-hint">PNG / JPG / WebP / SVG 対応</span>
+          </div>
+        </div>
+
+        <div id="preview-area" class="preview-area hidden">
+          <div class="previews-container">
+            <div class="preview-item">
+              <canvas id="canvas-128" width="128" height="128"></canvas>
+              <span class="preview-label">128x128</span>
+            </div>
+            <div class="preview-item">
+              <canvas id="canvas-48" width="48" height="48"></canvas>
+              <span class="preview-label">48x48</span>
+            </div>
+            <div class="preview-item">
+              <canvas id="canvas-16" width="16" height="16"></canvas>
+              <span class="preview-label">16x16</span>
+            </div>
+          </div>
+          
+          <div class="actions">
+            <button id="download-zip" class="btn btn-primary">
+              <span>💾</span> 保存
+            </button>
+            <button id="reset-tool" class="btn btn-secondary">リセット</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legal-note">
+      <a href="/about/legal#lab-terms">利用規約（権利と免責）を確認する &rarr;</a>
+    </div>
+  </Container>
+</Layout>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script>
+  // --- Tool 2: Extension Icon Generator ---
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input') as HTMLInputElement;
+  const previewArea = document.getElementById('preview-area');
+  const downloadZipBtn = document.getElementById('download-zip');
+  const resetBtn = document.getElementById('reset-tool');
+
+  const canvases = {
+    128: document.getElementById('canvas-128') as HTMLCanvasElement,
+    48: document.getElementById('canvas-48') as HTMLCanvasElement,
+    16: document.getElementById('canvas-16') as HTMLCanvasElement,
+  };
+
+  dropZone?.addEventListener('click', () => fileInput?.click());
+  dropZone?.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  ['dragleave', 'dragend'].forEach(t => dropZone?.addEventListener(t, () => dropZone.classList.remove('drag-over')));
+  dropZone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    if (e.dataTransfer?.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput?.addEventListener('change', () => {
+    if (fileInput.files?.length) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        Object.entries(canvases).forEach(([size, canvas]) => {
+          if (!canvas) return;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          }
+        });
+        dropZone?.classList.add('hidden');
+        previewArea?.classList.remove('hidden');
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  downloadZipBtn?.addEventListener('click', async () => {
+    // @ts-ignore
+    const zip = new JSZip();
+    
+    // Add PNGs
+    for (const [size, canvas] of Object.entries(canvases)) {
+      if (!canvas) continue;
+      const blob = await new Promise<Blob | null>(res => canvas.toBlob(res, 'image/png'));
+      if (blob) {
+        zip.file(`icon${size}.png`, blob);
+      }
+    }
+
+    if (canvases[128] && canvases[48] && canvases[16]) {
+        // Add ICO
+        const icoData = await generateICO([
+        canvases[128],
+        canvases[48],
+        canvases[16]
+        ]);
+        zip.file('favicon.ico', icoData);
+    }
+
+    const content = await zip.generateAsync({ 
+      type: 'blob',
+      compression: 'DEFLATE',
+      compressionOptions: { level: 9 }
+    });
+    const link = document.createElement('a');
+    link.download = 'icons.zip';
+    link.href = URL.createObjectURL(content);
+    link.click();
+  });
+
+  async function generateICO(canvasList: HTMLCanvasElement[]) {
+    const images = await Promise.all(canvasList.map(async (canvas) => {
+      const blob = await new Promise<Blob | null>(res => canvas.toBlob(res, 'image/png'));
+      if (!blob) throw new Error('Canvas conversion failed');
+      return {
+        data: new Uint8Array(await blob.arrayBuffer()),
+        width: canvas.width,
+        height: canvas.height
+      };
+    }));
+
+    const headerSize = 6;
+    const entrySize = 16;
+    const totalHeaderSize = headerSize + entrySize * images.length;
+    
+    let currentOffset = totalHeaderSize;
+    const entries = images.map(img => {
+      const entry = new DataView(new ArrayBuffer(entrySize));
+      entry.setUint8(0, img.width === 256 ? 0 : img.width);
+      entry.setUint8(1, img.height === 256 ? 0 : img.height);
+      entry.setUint8(2, 0); // Palette
+      entry.setUint8(3, 0); // Reserved
+      entry.setUint16(4, 1, true); // Planes
+      entry.setUint16(6, 32, true); // Bits per pixel
+      entry.setUint32(8, img.data.length, true);
+      entry.setUint32(12, currentOffset, true);
+      currentOffset += img.data.length;
+      return new Uint8Array(entry.buffer);
+    });
+
+    const header = new DataView(new ArrayBuffer(headerSize));
+    header.setUint16(0, 0, true);
+    header.setUint16(2, 1, true); // Icon type
+    header.setUint16(4, images.length, true);
+
+    const totalSize = currentOffset;
+    const result = new Uint8Array(totalSize);
+    result.set(new Uint8Array(header.buffer), 0);
+    entries.forEach((entry, i) => {
+      result.set(entry, headerSize + i * entrySize);
+    });
+    images.forEach((img, i) => {
+      const offset = new DataView(entries[i].buffer).getUint32(12, true);
+      result.set(img.data, offset);
+    });
+
+    return result;
+  }
+
+  resetBtn?.addEventListener('click', () => {
+    previewArea?.classList.add('hidden');
+    dropZone?.classList.remove('hidden');
+    if (fileInput) fileInput.value = '';
+  });
+</script>
+
+<style>
+  /* Common Tool Styles */
+  .tool-header-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .tool-icon-wrapper {
+    background: white;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .tool-icon {
+    font-size: 3rem;
+  }
+
+  .tool-title {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--main-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .tool-description {
+    font-size: 1.1rem;
+    color: var(--sub-color);
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+
+  .tool-card {
+    background: white;
+    border: 2px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+
+  .legal-note {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .legal-note a {
+    color: var(--sub-color);
+    text-decoration: underline;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  
+  .legal-note a:hover {
+    opacity: 1;
+  }
+
+  .drop-zone {
+    border: 3px dashed var(--main-color);
+    border-radius: 2rem;
+    padding: 4rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  .drop-zone:hover, .drop-zone.drag-over {
+    background: var(--bg-color);
+    border-color: var(--accent-color);
+    transform: scale(1.02);
+  }
+
+  .upload-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .file-hint {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.6;
+  }
+
+  .file-input { display: none; }
+  
+  .hidden { display: none !important; }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .btn-primary { background: var(--main-color); color: white; }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(207,61,49,0.3); }
+  .btn-secondary { background: white; border: 2px solid var(--main-color); color: var(--main-color); }
+  .btn-secondary:hover { background: var(--bg-color); }
+
+  /* Icon Generator Specific */
+  .preview-area {
+    text-align: center;
+    animation: slideUp 0.5s ease;
+  }
+
+  .previews-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    margin-bottom: 3rem;
+    padding: 3rem;
+    background: rgba(0,0,0,0.03);
+    border-radius: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .preview-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .preview-item canvas {
+    background: white;
+    border-radius: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  canvas[id^="canvas-"] { image-rendering: auto; }
+  #canvas-128 { width: 128px; height: 128px; }
+  #canvas-48 { width: 48px; height: 48px; }
+  #canvas-16 { width: 16px; height: 16px; }
+  
+  .preview-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--sub-color);
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @media (max-width: 600px) {
+    .previews-container {
+      gap: 2rem;
+    }
+  }
+</style>

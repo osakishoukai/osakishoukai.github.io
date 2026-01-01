@@ -30,18 +30,19 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
   <!-- Vision details -->
   <Container>
     <div class="vision-details-section">
+      <h2 class="section-title">活動方針</h2>
       <div class="vision-details">
-        <div class="vision-item">
-          <Icon name="mdi:heart" class="vision-icon" />
-          <p>軽くてリアルな食べ物で、みんなと笑いあえる時間を。</p>
-        </div>
         <div class="vision-item">
           <Icon name="mdi:chat" class="vision-icon" />
           <p>ちょっと会話が弾むような、日常に溶け込むアセットを。</p>
         </div>
         <div class="vision-item">
+          <Icon name="mdi:heart" class="vision-icon" />
+          <p>軽くてリアルな食べ物で、みんなと笑いあえる時間を。</p>
+        </div>
+        <div class="vision-item">
           <Icon name="mdi:feather" class="vision-icon" />
-          <p>使わなくても邪魔にならないほどの「軽さ」を。</p>
+          <p>創作の一歩を、もっと軽やかに。</p>
         </div>
       </div>
     </div>
@@ -52,32 +53,20 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     <div class="activities-section">
       <h2 class="section-title">取り組んでいること</h2>
       <div class="activities-grid">
-        <a href="/products" class="activity-card-link">
-          <div class="activity-card">
-            <div class="activity-icon">
-              <Icon name="mdi:cube-outline" class="icon" />
-            </div>
-            <h3>ワールドアセット開発</h3>
-            <p>居酒屋やバー、日常系ワールドで使える軽量な3Dモデルを制作しています。</p>
-            <div class="activity-link">
-              商品を見る
-              <Icon name="mdi:arrow-right" class="arrow-icon" />
-            </div>
+        <div class="activity-card">
+          <div class="activity-icon">
+            <Icon name="mdi:cube-outline" class="icon" />
           </div>
-        </a>
-        <a href="/events" class="activity-card-link">
-          <div class="activity-card">
-            <div class="activity-icon">
-              <Icon name="mdi:glass-mug-variant" class="icon" />
-            </div>
-            <h3>バーイベント運営</h3>
-            <p>VRChatにて「KemonoBarずんどこ」を定期開催。交流の場を提供しています。</p>
-            <div class="activity-link">
-              イベントを見る
-              <Icon name="mdi:arrow-right" class="arrow-icon" />
-            </div>
+          <h3>ワールドアセット開発</h3>
+          <p>居酒屋やバー、日常系ワールドで使える軽量な3Dモデルを制作しています。</p>
+        </div>
+        <div class="activity-card">
+          <div class="activity-icon">
+            <Icon name="mdi:glass-mug-variant" class="icon" />
           </div>
-        </a>
+          <h3>バーイベント運営</h3>
+          <p>VRChatにて「KemonoBarずんどこ」を定期開催。交流の場を提供しています。</p>
+        </div>
         <div class="activity-card">
           <div class="activity-icon">
             <Icon name="mdi:account-group" class="icon" />
@@ -229,28 +218,22 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
   }
 
   /* Vision Details Section */
+  .section-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 900; text-align: center; margin-bottom: 2rem; color: var(--sub-color); }
+  
   .vision-details-section {
     padding: 2rem 0 4rem;
   }
-  .vision-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; }
-  .vision-item { background: white; border: 2px solid var(--main-color); padding: 2rem; border-radius: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; color: var(--sub-color); font-weight: 700; }
-  .vision-icon { width: 2.5rem; height: 2.5rem; color: var(--main-color); }
+  .vision-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+  .vision-item { background: white; border: 2px solid var(--main-color); padding: 2.5rem; border-radius: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; color: var(--sub-color); font-weight: 700; }
+  .vision-icon { width: 3rem; height: 3rem; color: var(--main-color); }
   .activities-section { padding: 4rem 0; }
   .activities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
   
-  .activity-card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-  
-  .activity-card { background: white; padding: 2.5rem; border: 2px solid var(--main-color); border-radius: 2rem; transition: all 0.3s ease; }
-  .activity-card-link:hover .activity-card { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+  .activity-card { background: white; padding: 2.5rem; border: 2px solid var(--main-color); border-radius: 2rem; }
   .activity-icon { width: 4rem; height: 4rem; background: var(--bg-color); color: var(--main-color); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
   .icon { width: 2rem; height: 2rem; }
   .activity-card h3 { font-size: 1.5rem; font-weight: 900; margin-bottom: 1rem; color: var(--sub-color); }
-  .activity-card p { color: var(--sub-color); line-height: 1.7; margin-bottom: 1.5rem; opacity: 0.9; }
-  .activity-link { display: flex; align-items: center; gap: 0.5rem; color: var(--main-color); font-weight: 900; }
+  .activity-card p { color: var(--sub-color); line-height: 1.7; opacity: 0.9; }
   .commitment-section { padding: 4rem 0; }
   .commitment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
   .commitment-card { background: white; padding: 2.5rem; border: 2px solid #e2e8f0; border-radius: 2rem; }

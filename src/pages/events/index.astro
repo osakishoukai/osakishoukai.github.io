@@ -3,6 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import { Icon } from "astro-icon/components";
 import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
+import StandardContainer from "@/components/ui/StandardContainer.astro";
 
 // イベントデータを読み込む
 import eventsData from "@/data/events.json";
@@ -43,8 +44,8 @@ function formatDate(dateStr) {
 
   <Container>
     <div class="summary-section">
-      <h2 class="section-title">イベント概要</h2>
-      <div class="summary-card">
+      <StandardContainer>
+        <h2 class="section-title">イベント概要</h2>
         <div class="summary-content">
           <p class="summary-text">
             毎週金曜日 22:00〜<br />
@@ -58,7 +59,7 @@ function formatDate(dateStr) {
             </a>
           </div>
         </div>
-      </div>
+      </StandardContainer>
     </div>
   </Container>
 
@@ -66,36 +67,43 @@ function formatDate(dateStr) {
 
   <Container>
     <!-- Archive -->
+    <!-- Archive -->
     <div class="archive-section">
-      <h2 class="section-title">過去の開催レポート</h2>
-      <div class="archive-grid">
-        {latestEvents.map(event => {
-          const firstImage = event.images && event.images.length > 0 
-            ? `/images/${event.images[0].replace(/\\/g, '/')}`
-            : '/images/bar-bg.webp';
-          
-          return (
-            <a href={`/events/archive/${event.date}`} class="simple-archive-card">
-              <div class="card-image-wrapper">
-                <img src={firstImage} alt={`${event.date}の様子`} class="card-image" />
-                <div class="card-date-badge">{formatDate(event.date)}</div>
-              </div>
-            </a>
-          );
-        })}
-      </div>
-      <div class="archive-cta">
-        <a href="/events/archive" class="btn-outline">
-          アーカイブをもっと見る
-          <Icon name="mdi:arrow-right" class="arrow-icon" />
-        </a>
-      </div>
+      <StandardContainer>
+        <h2 class="section-title">過去の開催レポート</h2>
+        <div class="archive-grid">
+          {latestEvents.map(event => {
+            const firstImage = event.images && event.images.length > 0 
+              ? `/images/${event.images[0].replace(/\\/g, '/')}`
+              : '/images/bar-bg.webp';
+            
+            return (
+              <a href={`/events/archive/${event.date}`} class="simple-archive-card">
+                <div class="card-image-wrapper">
+                  <img src={firstImage} alt={`${event.date}の様子`} class="card-image" />
+                  <div class="card-overlay">
+                    <span class="overlay-text">開催レポート</span>
+                    <Icon name="mdi:arrow-right-circle" class="overlay-icon" />
+                  </div>
+                  <div class="card-date-badge">{formatDate(event.date)}</div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+        <div class="archive-cta">
+          <a href="/events/archive" class="btn-outline">
+            アーカイブをもっと見る
+            <Icon name="mdi:arrow-right" class="arrow-icon" />
+          </a>
+        </div>
+      </StandardContainer>
     </div>
 
     <!-- Media Section -->
     <div class="media-section">
-      <h2 class="section-title">メディア掲載</h2>
-      <div class="summary-card">
+      <StandardContainer>
+        <h2 class="section-title">メディア掲載</h2>
         <div class="summary-content">
           <p class="summary-text" style="font-size: 1.2rem;">
             フルトラ研のワールドナビ様に<br />
@@ -109,11 +117,11 @@ function formatDate(dateStr) {
             </a>
           </div>
         </div>
-      </div>
+      </StandardContainer>
     </div>
 
     <!-- Join Guide -->
-    <div id="guide" class="guide-section">
+    <StandardContainer id="guide">
       <h2 class="section-title">参加方法</h2>
       <div class="guide-steps">
         <div class="step">
@@ -138,7 +146,7 @@ function formatDate(dateStr) {
           <p class="step-description">開催時間にグループ画面から<br />Joinして遊びに来てね！</p>
         </div>
       </div>
-    </div>
+    </StandardContainer>
   </Container>
 </Layout>
 
@@ -159,6 +167,8 @@ function formatDate(dateStr) {
     align-items: center;
     min-height: 400px;
   }
+
+  .section-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 900; text-align: center; margin-bottom: 2rem; color: var(--sub-color); }
 
   .hero-content-wrapper {
     max-width: 800px;
@@ -233,19 +243,6 @@ function formatDate(dateStr) {
   }
 
   /* Summary Section */
-  .summary-section {
-    margin-bottom: 5rem;
-  }
-
-  .summary-card {
-    background: white;
-    border: 3px solid var(--main-color);
-    border-radius: 2rem;
-    padding: 3rem;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-    text-align: center;
-  }
-
   .summary-text {
     font-size: 1.5rem;
     line-height: 2;
@@ -285,8 +282,6 @@ function formatDate(dateStr) {
     filter: brightness(1.1);
   }
 
-  .media-section { margin-bottom: 5rem; }
-
   .archive-section { margin-bottom: 5rem; }
   .archive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
   
@@ -310,6 +305,38 @@ function formatDate(dateStr) {
     position: relative;
     aspect-ratio: 16/9;
     overflow: hidden;
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(var(--main-color-rgb, 207, 61, 49), 0.8); /* Use main color with opacity for consistency, or just black */
+    /* Let's use black/grey for neutral or main color for branding. Black/dark is standard for images. */
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .simple-archive-card:hover .card-overlay {
+    opacity: 1;
+  }
+
+  .overlay-text {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+
+  .overlay-icon {
+    color: white;
+    width: 1.75rem;
+    height: 1.75rem;
   }
 
   .card-image {
@@ -336,11 +363,12 @@ function formatDate(dateStr) {
     font-size: 1rem;
     border: 2px solid var(--main-color);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 20; 
   }
 
   .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 2rem; border: 2px solid var(--main-color); border-radius: 3rem; color: var(--main-color); text-decoration: none; font-weight: 900; transition: all 0.3s ease; }
   .btn-outline:hover { background: var(--main-color); color: white; }
-  .guide-section { background: linear-gradient(135deg, white 0%, var(--bg-color) 100%); padding: 4rem; border-radius: 2rem; border: 2px solid var(--main-color); margin-bottom: 4rem; }
+  
   .guide-steps { display: flex; align-items: center; justify-content: space-around; gap: 1rem; }
   .step { text-align: center; flex: 1; }
   .step-number { width: 3rem; height: 3rem; background: var(--main-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; margin: 0 auto 1rem; font-size: 1.5rem; }

@@ -1,0 +1,25 @@
+---
+const { class: className } = Astro.props;
+---
+
+<div class={`standard-container ${className || ''}`}>
+  <slot />
+</div>
+
+<style>
+  .standard-container {
+    width: 100%;
+    margin: 0 auto 5rem;
+    padding: 3rem;
+    border: 2px solid var(--main-color);
+    border-radius: 2rem;
+    background: rgba(255, 255, 255, 0.8);
+    text-align: center; /* Default center align for standard containers like Hero/Contact */
+  }
+
+  @media (max-width: 768px) {
+    .standard-container {
+      padding: 1.5rem;
+    }
+  }
+</style>

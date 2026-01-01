@@ -87,6 +87,10 @@ function formatDate(dateStr) {
               <a href={`/events/archive/${event.date}`} class="event-card">
                 <div class="event-image-wrapper">
                   <img src={imageUrl} alt={`${formatDate(event.date)}のイベント`} class="event-image" />
+                  <div class="card-overlay">
+                    <span class="overlay-text">開催レポート</span>
+                    <Icon name="mdi:arrow-right-circle" class="overlay-icon" />
+                  </div>
                   <div class="event-date-badge">{formatDate(event.date)}</div>
                 </div>
                 <div class="event-content">
@@ -234,6 +238,36 @@ function formatDate(dateStr) {
     background: var(--bg-color);
   }
 
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .event-card:hover .card-overlay {
+    opacity: 1;
+  }
+
+  .overlay-text {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+
+  .overlay-icon {
+    color: white;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
   .event-image {
     position: absolute;
     top: 0;
@@ -260,6 +294,7 @@ function formatDate(dateStr) {
     color: var(--main-color);
     font-size: 0.875rem;
     border: 2px solid var(--main-color);
+    z-index: 20;
   }
 
   .event-content {
