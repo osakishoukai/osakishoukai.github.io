@@ -244,11 +244,21 @@ const breadcrumbs = [
     <section class="image-gallery">
 <h2>📷 ギャラリー</h2>
 <div class="gallery-grid">
-  <img src="/images/products/7266933/1.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
-  <img src="/images/products/7266933/2.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
-  <img src="/images/products/7266933/3.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
-  <img src="/images/products/7266933/4.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
-  <img src="/images/products/7266933/0.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
+  <button class="lightbox-trigger" data-image="/images/products/7266933/1.webp" data-index="0">
+    <img src="/images/products/7266933/1.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
+  </button>
+  <button class="lightbox-trigger" data-image="/images/products/7266933/2.webp" data-index="1">
+    <img src="/images/products/7266933/2.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
+  </button>
+  <button class="lightbox-trigger" data-image="/images/products/7266933/3.webp" data-index="2">
+    <img src="/images/products/7266933/3.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
+  </button>
+  <button class="lightbox-trigger" data-image="/images/products/7266933/4.webp" data-index="3">
+    <img src="/images/products/7266933/4.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
+  </button>
+  <button class="lightbox-trigger" data-image="/images/products/7266933/0.webp" data-index="4">
+    <img src="/images/products/7266933/0.webp" alt="【VRChat想定ワールドアセット】焼ける！食べれる！「お好み焼き」" />
+  </button>
 </div>
 </section>
 
@@ -256,11 +266,9 @@ const breadcrumbs = [
     
     
   </main>
-    <div id="image-modal" class="modal">
-      <span class="close">&times;</span>
-      <img class="modal-content" id="modal-img">
-    </div>
-  </main>
+  <dialog id="image-dialog" class="lightbox">
+    <img id="lightbox-img" src="" alt="拡大画像" />
+  </dialog>
 </Layout>
 
 <script is:inline>
@@ -440,11 +448,6 @@ const breadcrumbs = [
     border-radius: 12px;
     border: 2px solid transparent;
     transition: all 0.3s ease;
-  }
-  
-  .variation-item:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-4px);
   }
   
   .variation-item h4 {

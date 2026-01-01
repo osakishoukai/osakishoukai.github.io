@@ -238,10 +238,18 @@ const breadcrumbs = [
     <section class="image-gallery">
 <h2>📷 ギャラリー</h2>
 <div class="gallery-grid">
-  <img src="/images/products/7250066/1.webp" alt="【VRChat想定ワールドギミック】おつまみ盛り合わせ" />
-  <img src="/images/products/7250066/2.webp" alt="【VRChat想定ワールドギミック】おつまみ盛り合わせ" />
-  <img src="/images/products/7250066/3.webp" alt="【VRChat想定ワールドギミック】おつまみ盛り合わせ" />
-  <img src="/images/products/7250066/0.webp" alt="【VRChat想定ワールドギミック】おつまみ盛り合わせ" />
+  <button class="lightbox-trigger" data-image="/images/products/7250066/1.webp" data-index="0">
+    <img src="/images/products/7250066/1.webp" alt="【VRChat想定ワールドギミック】おつまみ盛り合わせ" />
+  </button>
+  <button class="lightbox-trigger" data-image="/images/products/7250066/2.webp" data-index="1">
+    <img src="/images/products/7250066/2.webp" alt="【VRChat想定ワールドギミック】おつまみ盛り合わせ" />
+  </button>
+  <button class="lightbox-trigger" data-image="/images/products/7250066/3.webp" data-index="2">
+    <img src="/images/products/7250066/3.webp" alt="【VRChat想定ワールドギミック】おつまみ盛り合わせ" />
+  </button>
+  <button class="lightbox-trigger" data-image="/images/products/7250066/0.webp" data-index="3">
+    <img src="/images/products/7250066/0.webp" alt="【VRChat想定ワールドギミック】おつまみ盛り合わせ" />
+  </button>
 </div>
 </section>
 
@@ -249,11 +257,9 @@ const breadcrumbs = [
     
     
   </main>
-    <div id="image-modal" class="modal">
-      <span class="close">&times;</span>
-      <img class="modal-content" id="modal-img">
-    </div>
-  </main>
+  <dialog id="image-dialog" class="lightbox">
+    <img id="lightbox-img" src="" alt="拡大画像" />
+  </dialog>
 </Layout>
 
 <script is:inline>
@@ -433,11 +439,6 @@ const breadcrumbs = [
     border-radius: 12px;
     border: 2px solid transparent;
     transition: all 0.3s ease;
-  }
-  
-  .variation-item:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-4px);
   }
   
   .variation-item h4 {
