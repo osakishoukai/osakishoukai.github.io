@@ -13,11 +13,12 @@ const item = {
   tags: ["3Dモデル", "3D環境・ワールド", "インテリア", "ワールド", "からあげ", "VRChat", "VRC想定モデル", "居酒屋風", "ワールドギミック", "インテリア x 3D環境・ワールド"]
 };
 
-const description = `# 🚢 FunamoriKaraage 🍤
+const description = `🚢 FunamoriKaraage 🍤
 みんなでわいわい食べよう！船に盛られたからあげのセットです。
 どこかで見たことあるような、そんな既視感が感じられる、雰囲気が楽しめます。
 
 ## ✨ 特徴
+
 - ワールド向けギミック
 - 船+からあげの山+もてる唐揚げ+レモン+効果音やパーティクル演出付き。
 - 食べることができるギミック、レモンをかけるギミック
@@ -25,19 +26,23 @@ const description = `# 🚢 FunamoriKaraage 🍤
 - Toon Standardシェーダー利用によりモバイル環境でもリッチな質感を表現しました
 
 ## 🌏 サンプルワールド
+
 KemonoBarずんどこ　（スケール2倍で展示）
     https://vrchat.com/home/world/wrld_935ba54d-727a-45a3-b81d-107f0fa860d1
 
 ## 🕹️ 使い方
+
 - 唐揚げを持ってインタラクトすると食べることができます。一定時間後復活。
 - レモンを持ってインタラクトすると唐揚げの山に掛けることができます
 - 山にかけると一定時間ゴールデン唐揚げになります。その間、食べる音が変わります。
 
 ## 🛠️ 設置方法
+
 1. Unityでプロジェクトを開きます。
 2. 「Osaki/FunamoriKarage/Funamorikarage.prefab」をワールドのお好きな位置に置いてください
 
 ## 🎨 カスタマイズ
+
 FunamoriKaraageプレハブについている「FunamoriController」より次が設定できます
 - MountainLemonMaterial…ゴールデン唐揚げ山のマテリアル
 - KarageLemonMaterial…ゴールデン唐揚げ単体のマテリアル
@@ -51,37 +56,41 @@ FunamoriKaraageプレハブについている「FunamoriController」より次�
 - LemonDeadTime…通常唐揚げ山になってから再度レモンを受け付けるまでの時間
 
 ## 🎵 クレジット
+
 - 効果音：効果音ラボ様
     https://soundeffect-lab.info/
 - Matcap素材：たびマル倉庫様
     https://tabimal.booth.pm/items/4481767
 
 ## ⛔ 禁止事項
+
 - 二次配布、法令違反用途、製作者のなりすまし
 - 配布データ内の音源データの他データへの転用
 
 ## ⚠️ 免責事項
+
 - 本製品の利用・準備によるいかなる損害も責任を負いません。
 - ご利用は自己責任でお願いします。
 - ダウンロード商品の特性上、返品・返金はできません。
 
 ## 🖥️ 動作確認環境
+
 - Unity 2022.3.22f1
 - VRChat SDK3 Worlds/Base 3.8.1　(⚠️重要)
 
 ## 🔼ポリゴン数
+
 全体 △6,267
 
 ## ‼️ 注意事項
 
-### レイトジョイナー対応
+● レイトジョイナー対応
 - 変化した瞬間のみを同期しているため、レイトジョイナー非対応です。たとえば次のような事象がおきます。
-- Aさんがレモンを絞りつづけているときBさんがジョインすると、Bさんからはレモンを絞っていないように見える
-- ゴールデン唐揚げ状態のときBさんがジョインすると、Bさんには通常唐揚げ状態に見える
-- これらは一度通常状態（レモンを絞っていない状態、唐揚げが通常色の場合）になると以降正しくなります
-- この性質上、ゴールデン唐揚げ状態の設定値は過度に延ばさないことを推奨します
-
-### SDKバージョン
+    - Aさんがレモンを絞りつづけているときBさんがジョインすると、Bさんからはレモンを絞っていないように見える
+    - ゴールデン唐揚げ状態のときBさんがジョインすると、Bさんには通常唐揚げ状態に見える
+    - これらは一度通常状態（レモンを絞っていない状態、唐揚げが通常色の場合）になると以降正しくなります
+    - この性質上、ゴールデン唐揚げ状態の設定値は過度に延ばさないことを推奨します
+● SDKバージョン
 - ToonStandardを使用しているため、VRC SDK3.8.1以上が必須です`;
 const faq = ``;
 
@@ -247,7 +256,7 @@ const breadcrumbs = [
       </div>
       <div class="variations">
   <div class="variation-item">
-    <h4></h4>
+    <h4>Unknown</h4>
     <div class="price">¥350</div>
   </div>
 </div>
@@ -306,7 +315,18 @@ const breadcrumbs = [
 </div>
 </section>
 
-    
+    <section class="tech-info">
+<h2>🔧 技術情報</h2>
+<div class="dev-env">
+<h3>開発環境</h3>
+<ul>
+<li>Unity 2022.3.22</li>
+<li>Unity</li>
+<li>VRChat SDK3</li>
+</ul>
+</div>
+</section>
+
     
     {faq && (
       <section class="content-section">
