@@ -18,11 +18,11 @@ export async function GET(context: APIContext) {
   
   // イベントをRSSアイテムに変換
   const eventItems = events.slice(0, 5).map((event) => ({
-    title: `けものバーずんどこ ${event.date} 開催レポート`,
+    title: `KemonoBarずんどこ ${event.date} 開催レポート`,
     pubDate: new Date(event.date),
-    description: event.summary || `${event.date}に開催された「けものバーずんどこ」のレポートです。参加者${event.participants}名。`,
+    description: event.summary || `${event.date}に開催された「KemonoBarずんどこ」のレポートです。参加者${event.participants}名。`,
     link: `/events/archive/${event.date.replace(/-/g, '')}/`,
-    categories: ['イベント', 'けものバーずんどこ'],
+    categories: ['イベント', 'KemonoBarずんどこ'],
   }));
   
   // 全アイテムを日付順にソート
