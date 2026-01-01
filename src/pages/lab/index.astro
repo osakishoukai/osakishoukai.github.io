@@ -1,0 +1,1469 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
+import { Icon } from "astro-icon/components";
+---
+
+<Layout 
+  title="おおさきラボ" 
+  description="おおさきくんが自分用に作った、ちょっと便利な開発者向けツール置き場です。"
+>
+  <Container>
+    <Breadcrumbs items={[{ label: "おおさきラボ" }]} />
+    <div class="hero-section">
+      <div class="hero-content-wrapper">
+        <div class="hero-text-box">
+          <h1 class="hero-title">おおさきラボ</h1>
+          <p class="hero-intro">
+            おおさきくんの研究所。<br />ブラウザ完結で動作するから、プライバシーも安心だよ！
+          </p>
+        </div>
+      </div>
+    </div>
+  </Container>
+
+  <Container>
+    <div class="lab-nav-grid">
+      <a href="#vector-tracer" class="nav-panel">
+        <div class="nav-panel-icon">🖋️</div>
+        <div class="nav-panel-text">
+          <span class="nav-panel-title">いろあつめーかー</span>
+          <span class="nav-panel-desc">画像をベクター化</span>
+        </div>
+      </a>
+      <a href="#image-scatter" class="nav-panel">
+        <div class="nav-panel-icon">🌌</div>
+        <div class="nav-panel-text">
+          <span class="nav-panel-title">ちりばめーかー</span>
+          <span class="nav-panel-desc">画像をランダム散布</span>
+        </div>
+      </a>
+      <a href="#icon-generator" class="nav-panel">
+        <div class="nav-panel-icon">🎨</div>
+        <div class="nav-panel-text">
+          <span class="nav-panel-title">あいこんめーかー</span>
+          <span class="nav-panel-desc">マルチサイズ変換</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="tools-grid">
+      <!-- Tool: いろあつめーかー -->
+      <section class="tool-card" id="vector-tracer">
+        <div class="tool-header">
+          <div class="tool-icon">🖋️</div>
+          <div>
+            <h2 class="tool-name">いろあつめーかー</h2>
+            <p class="tool-desc">写真をイラスト風のベクター画像（SVG）に変換します。色数を調整して、ロゴ制作やフラットデザインの素材作りに！</p>
+          </div>
+        </div>
+
+        <div class="tool-content">
+          <div class="tracer-layout">
+            <div class="tracer-controls">
+              <div class="control-group">
+                <label>色数</label>
+                <input type="number" id="tr-colors" min="2" max="64" value="8" style="width: 80px;" />
+              </div>
+              <div class="control-group">
+                <label>なめらかさ</label>
+                <select id="tr-detail">
+                  <option value="1">低（カクカク）</option>
+                  <option value="2" selected>中（標準）</option>
+                  <option value="3">高（なめらか）</option>
+                </select>
+              </div>
+              <div class="actions">
+                <button id="tr-download" class="btn btn-primary">
+                  <span>💾</span> 保存
+                </button>
+                <button id="tr-reset" class="btn btn-secondary">リセット</button>
+              </div>
+            </div>
+
+            <div class="tracer-preview">
+              <div class="drop-zone" id="tr-drop-zone">
+                <input type="file" id="tr-file-input" accept="image/*" class="file-input" />
+                <div class="drop-zone-text">
+                  <span class="upload-icon">🖋️</span>
+                  <p>画像をドロップしてベクター化</p>
+                </div>
+              </div>
+              <div id="tr-preview-container" class="preview-container hidden">
+                <div id="tr-svg-container" class="svg-preview"></div>
+                <div class="canvas-info">SVGプレビュー</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tool: Extension Icon Generator -->
+      <section class="tool-card" id="icon-generator">
+        <div class="tool-header">
+          <div class="tool-icon">🎨</div>
+          <div>
+            <h2 class="tool-name">あいこんめーかー</h2>
+            <p class="tool-desc">1つの画像から、様々な用途に使えるアイコンサイズ（16, 48, 128）を一括生成します。SVG入力とマルチサイズICO出力に対応！</p>
+          </div>
+        </div>
+
+        <div class="tool-content">
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" id="file-input" accept="image/*" class="file-input" />
+            <div class="drop-zone-text">
+              <span class="upload-icon">📁</span>
+              <p>画像をドロップするか、クリックしてアップロード</p>
+              <span class="file-hint">PNG / JPG / WebP / SVG 対応</span>
+            </div>
+          </div>
+
+          <div id="preview-area" class="preview-area hidden">
+            <div class="previews-container">
+              <div class="preview-item">
+                <canvas id="canvas-128" width="128" height="128"></canvas>
+                <span class="preview-label">128x128</span>
+              </div>
+              <div class="preview-item">
+                <canvas id="canvas-48" width="48" height="48"></canvas>
+                <span class="preview-label">48x48</span>
+              </div>
+              <div class="preview-item">
+                <canvas id="canvas-16" width="16" height="16"></canvas>
+                <span class="preview-label">16x16</span>
+              </div>
+            </div>
+            
+            <div class="actions">
+              <button id="download-zip" class="btn btn-primary">
+                <span>💾</span> 保存
+              </button>
+              <button id="reset-tool" class="btn btn-secondary">リセット</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-card" id="image-scatter">
+        <div class="tool-header">
+          <div class="tool-icon">🌌</div>
+          <div>
+            <h2 class="tool-name">ちりばめーかー</h2>
+            <p class="tool-desc">画像をランダムにちりばめて新しい画像を生成します。URLCardとかおおさきくん服をこれで作ってるよ！</p>
+          </div>
+        </div>
+
+        <div class="tool-content">
+          <div class="scatter-layout">
+            <div class="scatter-controls">
+              <div class="control-group">
+                <label>シード値</label>
+                <div class="seed-input-group">
+                  <input type="number" id="sc-seed" value="42" />
+                  <button id="sc-random-seed" class="btn-small">🎲</button>
+                </div>
+              </div>
+              <div class="control-group">
+                <label>散布量: <span id="val-count">100</span></label>
+                <input type="range" id="sc-count" min="1" max="1000" value="100" />
+              </div>
+              <div class="control-group">
+                <label>サイズ: <span id="val-size-range">0.1 - 0.5</span></label>
+                <div class="dual-range" id="sc-size-range-container">
+                  <div class="slider-track"></div>
+                  <input type="range" id="sc-size-min" min="0.01" max="2" step="0.01" value="0.1" />
+                  <input type="range" id="sc-size-max" min="0.01" max="2" step="0.01" value="0.5" />
+                </div>
+              </div>
+              <div class="control-group">
+                <label>角度: <span id="val-angle-range">0° - 360°</span></label>
+                <div class="dual-range" id="sc-angle-range-container">
+                  <div class="slider-track"></div>
+                  <input type="range" id="sc-angle-min" min="0" max="360" value="0" />
+                  <input type="range" id="sc-angle-max" min="0" max="360" value="360" />
+                </div>
+              </div>
+              <div class="control-group checkbox-group">
+                <input type="checkbox" id="sc-overlap" />
+                <label for="sc-overlap">不透明部分の重複を許可 (加算合成)</label>
+              </div>
+              <div class="control-group">
+                <label>シームレス化</label>
+                <div class="control-row">
+                  <div class="control-group checkbox-group">
+                    <input type="checkbox" id="sc-seamless-x" checked />
+                    <label for="sc-seamless-x">横</label>
+                  </div>
+                  <div class="control-group checkbox-group">
+                    <input type="checkbox" id="sc-seamless-y" checked />
+                    <label for="sc-seamless-y">縦</label>
+                  </div>
+                </div>
+              </div>
+              <div class="control-group">
+                <label>背景色</label>
+                <div class="color-control-group">
+                  <input type="color" id="sc-bg-color" value="#000000" />
+                </div>
+              </div>
+              <div class="control-group">
+                <label>出力解像度</label>
+                <select id="sc-resolution">
+                  <option value="512">512x512</option>
+                  <option value="1024">1024x1024</option>
+                  <option value="2048" selected>2048x2048 (高画質)</option>
+                </select>
+              </div>
+              <div class="actions">
+                <button id="sc-download" class="btn btn-primary"><span>💾</span> 保存</button>
+              </div>
+            </div>
+
+            <div class="scatter-preview">
+              <div class="drop-zone" id="sc-drop-zone">
+                <input type="file" id="sc-file-input" accept="image/*" class="file-input" />
+                <div class="drop-zone-text">
+                  <span class="upload-icon">✨</span>
+                  <p>元画像をドロップ</p>
+                </div>
+              </div>
+              <div id="sc-preview-container" class="preview-container hidden">
+                <canvas id="sc-canvas"></canvas>
+                <div class="canvas-info">リアルタイムプレビュー</div>
+                <button id="sc-reset" class="btn-small mt-2">リセット</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </Container>
+</Layout>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script is:inline src="https://unpkg.com/imagetracerjs@1.2.6/imagetracer_v1.2.6.js"></script>
+
+<script>
+  // --- Common Utilities ---
+  function mulberry32(a: number) {
+    return function() {
+      var t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+  }
+
+  // --- Tool 1: ちりばめーかー ---
+  const scDropZone = document.getElementById('sc-drop-zone');
+  const scFileInput = document.getElementById('sc-file-input') as HTMLInputElement;
+  const scCanvas = document.getElementById('sc-canvas') as HTMLCanvasElement;
+  const scPreviewContainer = document.getElementById('sc-preview-container');
+  const scDownloadBtn = document.getElementById('sc-download');
+  const scResetBtn = document.getElementById('sc-reset');
+  const scRandomSeedBtn = document.getElementById('sc-random-seed');
+
+  // Controls
+  const scControls = {
+    seed: document.getElementById('sc-seed') as HTMLInputElement,
+    count: document.getElementById('sc-count') as HTMLInputElement,
+    sizeMin: document.getElementById('sc-size-min') as HTMLInputElement,
+    sizeMax: document.getElementById('sc-size-max') as HTMLInputElement,
+    angleMin: document.getElementById('sc-angle-min') as HTMLInputElement,
+    angleMax: document.getElementById('sc-angle-max') as HTMLInputElement,
+    overlap: document.getElementById('sc-overlap') as HTMLInputElement,
+    resolution: document.getElementById('sc-resolution') as HTMLSelectElement,
+    seamlessX: document.getElementById('sc-seamless-x') as HTMLInputElement,
+    seamlessY: document.getElementById('sc-seamless-y') as HTMLInputElement,
+    bgColor: document.getElementById('sc-bg-color') as HTMLInputElement,
+  };
+
+  const scValues = {
+    count: document.getElementById('val-count'),
+    sizeRange: document.getElementById('val-size-range'),
+    angleRange: document.getElementById('val-angle-range'),
+  };
+
+  let sourceImage: HTMLImageElement | null = null;
+
+  // --- Overlap Detection Helpers ---
+  const checkCanvas = document.createElement('canvas');
+  const cctx = checkCanvas.getContext('2d', { willReadFrequently: true });
+
+  function checkOverlap(x: number, y: number, scale: number, angle: number, hitCanvas: HTMLCanvasElement, hitScale: number) {
+    if (!cctx || !sourceImage) return false;
+    const w = sourceImage.width * scale * hitScale;
+    const h = sourceImage.height * scale * hitScale;
+    const diag = Math.sqrt(w * w + h * h) || 1;
+    
+    checkCanvas.width = Math.ceil(diag);
+    checkCanvas.height = Math.ceil(diag);
+    
+    cctx.clearRect(0, 0, checkCanvas.width, checkCanvas.height);
+    cctx.save();
+    cctx.translate(checkCanvas.width / 2, checkCanvas.height / 2);
+    cctx.rotate(angle);
+    cctx.drawImage(sourceImage, -w / 2, -h / 2, w, h);
+    cctx.restore();
+    
+    cctx.globalCompositeOperation = 'source-in';
+    cctx.drawImage(hitCanvas, -x * hitScale + checkCanvas.width / 2, -y * hitScale + checkCanvas.height / 2);
+    
+    const imgData = cctx.getImageData(0, 0, checkCanvas.width, checkCanvas.height).data;
+    for (let i = 3; i < imgData.length; i += 4) {
+      if (imgData[i] > 10) return true; // Overlap detected
+    }
+    return false;
+  }
+
+
+  scDropZone?.addEventListener('click', () => scFileInput?.click());
+  scDropZone?.addEventListener('dragover', (e) => { e.preventDefault(); scDropZone.classList.add('drag-over'); });
+  ['dragleave', 'dragend'].forEach(t => scDropZone?.addEventListener(t, () => scDropZone.classList.remove('drag-over')));
+  scDropZone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    scDropZone.classList.remove('drag-over');
+    if (e.dataTransfer?.files.length) handleScFile(e.dataTransfer.files[0]);
+  });
+  scFileInput?.addEventListener('change', () => {
+    if (scFileInput.files?.length) handleScFile(scFileInput.files[0]);
+  });
+
+  function handleScFile(file: File) {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        sourceImage = img;
+        scDropZone?.classList.add('hidden');
+        scPreviewContainer?.classList.remove('hidden');
+        updateScatter();
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Event listeners for sliders and inputs
+  Object.entries(scControls).forEach(([key, ctrl]) => {
+    const eventType = ctrl instanceof HTMLSelectElement || ctrl.type === 'checkbox' || ctrl.type === 'color' ? 'change' : 'input';
+    
+    ctrl.addEventListener(eventType, () => {
+      // Constraints for dual sliders
+      if (key === 'sizeMin') {
+        if (parseFloat(scControls.sizeMin.value) > parseFloat(scControls.sizeMax.value)) {
+          scControls.sizeMin.value = scControls.sizeMax.value;
+        }
+      }
+      if (key === 'sizeMax') {
+        if (parseFloat(scControls.sizeMax.value) < parseFloat(scControls.sizeMin.value)) {
+          scControls.sizeMax.value = scControls.sizeMin.value;
+        }
+      }
+      if (key === 'angleMin') {
+        if (parseInt(scControls.angleMin.value) > parseInt(scControls.angleMax.value)) {
+          scControls.angleMin.value = scControls.angleMax.value;
+        }
+      }
+      if (key === 'angleMax') {
+        if (parseInt(scControls.angleMax.value) < parseInt(scControls.angleMin.value)) {
+          scControls.angleMax.value = scControls.angleMin.value;
+        }
+      }
+
+      updateLabels();
+      updateScatter();
+    });
+  });
+
+  scRandomSeedBtn?.addEventListener('click', () => {
+    scControls.seed.value = Math.floor(Math.random() * 10000).toString();
+    updateScatter();
+  });
+
+  scResetBtn?.addEventListener('click', () => {
+    sourceImage = null;
+    scPreviewContainer?.classList.add('hidden');
+    scDropZone?.classList.remove('hidden');
+    scFileInput.value = '';
+  });
+
+  function updateLabels() {
+    if (scValues.count) scValues.count.textContent = scControls.count.value;
+    
+    if (scValues.sizeRange) {
+      scValues.sizeRange.textContent = `${scControls.sizeMin.value} - ${scControls.sizeMax.value}`;
+    }
+    if (scValues.angleRange) {
+      scValues.angleRange.textContent = `${scControls.angleMin.value}° - ${scControls.angleMax.value}°`;
+    }
+
+    updateSliderTrack('sc-size-range-container', scControls.sizeMin, scControls.sizeMax);
+    updateSliderTrack('sc-angle-range-container', scControls.angleMin, scControls.angleMax);
+  }
+
+  function updateSliderTrack(containerId: string, minInput: HTMLInputElement, maxInput: HTMLInputElement) {
+    const container = document.getElementById(containerId);
+    const track = container?.querySelector('.slider-track') as HTMLElement;
+    if (!track) return;
+
+    const min = parseFloat(minInput.min);
+    const max = parseFloat(minInput.max);
+    const valMin = parseFloat(minInput.value);
+    const valMax = parseFloat(maxInput.value);
+
+    const percent1 = ((valMin - min) / (max - min)) * 100;
+    const percent2 = ((valMax - min) / (max - min)) * 100;
+
+    track.style.background = `linear-gradient(to right, #eee ${percent1}%, var(--main-color) ${percent1}%, var(--main-color) ${percent2}%, #eee ${percent2}%)`;
+  }
+
+  // Initial call
+  updateLabels();
+
+  let updateTimeout: any;
+  function updateScatter() {
+    if (!sourceImage) return;
+    clearTimeout(updateTimeout);
+    updateTimeout = setTimeout(() => {
+      renderScatter();
+    }, 10);
+  }
+
+  function renderScatter() {
+    if (!sourceImage || !scCanvas) return;
+    const res = parseInt(scControls.resolution.value);
+    scCanvas.width = res;
+    scCanvas.height = res;
+    const ctx = scCanvas.getContext('2d');
+    if (!ctx) return;
+
+    const seed = parseInt(scControls.seed.value) || 0;
+    const rand = mulberry32(seed);
+    const count = parseInt(scControls.count.value);
+    const sMin = parseFloat(scControls.sizeMin.value);
+    const sMax = parseFloat(scControls.sizeMax.value);
+    const aMin = parseFloat(scControls.angleMin.value) * Math.PI / 180;
+    const aMax = parseFloat(scControls.angleMax.value) * Math.PI / 180;
+    const allowOverlap = scControls.overlap.checked;
+    const seamlessX = scControls.seamlessX.checked;
+    const seamlessY = scControls.seamlessY.checked;
+    const bgColor = scControls.bgColor.value;
+
+    if (allowOverlap) {
+      // Allow overlapping (Addition composition)
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, res, res);
+      
+      ctx.globalCompositeOperation = 'lighter';
+
+      for (let i = 0; i < count; i++) {
+        const x = rand() * res;
+        const y = rand() * res;
+        const scale = sMin + rand() * (sMax - sMin);
+        const angle = aMin + rand() * (aMax - aMin);
+
+        const drawAt = (dx: number, dy: number) => {
+          ctx.save();
+          ctx.translate(dx, dy);
+          ctx.rotate(angle);
+          const w = sourceImage.width * scale;
+          const h = sourceImage.height * scale;
+          ctx.drawImage(sourceImage, -w / 2, -h / 2, w, h);
+          ctx.restore();
+        };
+
+        drawAt(x, y);
+        
+        // Seamless tiling
+        if (seamlessX) {
+          drawAt(x - res, y);
+          drawAt(x + res, y);
+        }
+        if (seamlessY) {
+          drawAt(x, y - res);
+          drawAt(x, y + res);
+        }
+        if (seamlessX && seamlessY) {
+          drawAt(x - res, y - res);
+          drawAt(x + res, y - res);
+          drawAt(x - res, y + res);
+          drawAt(x + res, y + res);
+        }
+      }
+    } else {
+      // Disallow overlapping
+      ctx.clearRect(0, 0, res, res);
+      ctx.globalCompositeOperation = 'source-over';
+
+      const hitScale = 0.25; // Use smaller scale for hit testing performance
+      const hitCanvas = document.createElement('canvas');
+      hitCanvas.width = res * hitScale;
+      hitCanvas.height = res * hitScale;
+      const hctx = hitCanvas.getContext('2d', { willReadFrequently: true });
+      if (!hctx) return;
+
+      for (let i = 0; i < count; i++) {
+        let placed = false;
+        // Try up to 10 random positions/scales for each count
+        for (let tries = 0; tries < 10; tries++) {
+          const x = rand() * res;
+          const y = rand() * res;
+          const scale = sMin + rand() * (sMax - sMin);
+          const angle = aMin + rand() * (aMax - aMin);
+
+          if (!checkOverlap(x, y, scale, angle, hitCanvas, hitScale)) {
+            const drawMainAt = (dx: number, dy: number) => {
+              ctx.save();
+              ctx.translate(dx, dy);
+              ctx.rotate(angle);
+              const w = sourceImage.width * scale;
+              const h = sourceImage.height * scale;
+              ctx.drawImage(sourceImage, -w / 2, -h / 2, w, h);
+              ctx.restore();
+            };
+
+            const drawHitAt = (dx: number, dy: number) => {
+              hctx.save();
+              hctx.translate(dx * hitScale, dy * hitScale);
+              hctx.rotate(angle);
+              hctx.drawImage(sourceImage, (-sourceImage.width * scale * hitScale) / 2, (-sourceImage.height * scale * hitScale) / 2, sourceImage.width * scale * hitScale, sourceImage.height * scale * hitScale);
+              hctx.restore();
+            };
+
+            // Draw to main canvas
+            drawMainAt(x, y);
+            if (seamlessX) {
+              drawMainAt(x - res, y);
+              drawMainAt(x + res, y);
+            }
+            if (seamlessY) {
+              drawMainAt(x, y - res);
+              drawMainAt(x, y + res);
+            }
+            if (seamlessX && seamlessY) {
+              drawMainAt(x - res, y - res);
+              drawMainAt(x + res, y - res);
+              drawMainAt(x - res, y + res);
+              drawMainAt(x + res, y + res);
+            }
+
+            // Draw to hit canvas
+            drawHitAt(x, y);
+            if (seamlessX) {
+              drawHitAt(x - res, y);
+              drawHitAt(x + res, y);
+            }
+            if (seamlessY) {
+              drawHitAt(x, y - res);
+              drawHitAt(x, y + res);
+            }
+            if (seamlessX && seamlessY) {
+              drawHitAt(x - res, y - res);
+              drawHitAt(x + res, y - res);
+              drawHitAt(x - res, y + res);
+              drawHitAt(x + res, y + res);
+            }
+
+            placed = true;
+            break;
+          }
+        }
+      }
+
+      // Fill background after scattering
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, res, res);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+  }
+
+  scDownloadBtn?.addEventListener('click', () => {
+    if (!scCanvas) return;
+    scCanvas.toBlob((blob) => {
+      if (!blob) return;
+      const link = document.createElement('a');
+      link.download = `scatter_${scControls.seed.value}.png`;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(link.href), 100);
+    }, 'image/png');
+  });
+
+  // --- Tool 2: Extension Icon Generator ---
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input') as HTMLInputElement;
+  const previewArea = document.getElementById('preview-area');
+  const downloadZipBtn = document.getElementById('download-zip');
+  const resetBtn = document.getElementById('reset-tool');
+
+  const canvases = {
+    128: document.getElementById('canvas-128') as HTMLCanvasElement,
+    48: document.getElementById('canvas-48') as HTMLCanvasElement,
+    16: document.getElementById('canvas-16') as HTMLCanvasElement,
+  };
+
+  dropZone?.addEventListener('click', () => fileInput?.click());
+  dropZone?.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  ['dragleave', 'dragend'].forEach(t => dropZone?.addEventListener(t, () => dropZone.classList.remove('drag-over')));
+  dropZone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    if (e.dataTransfer?.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput?.addEventListener('change', () => {
+    if (fileInput.files?.length) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        Object.entries(canvases).forEach(([size, canvas]) => {
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          }
+        });
+        dropZone?.classList.add('hidden');
+        previewArea?.classList.remove('hidden');
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  downloadZipBtn?.addEventListener('click', async () => {
+    // @ts-ignore
+    const zip = new JSZip();
+    
+    // Add PNGs
+    for (const [size, canvas] of Object.entries(canvases)) {
+      const blob = await new Promise<Blob | null>(res => canvas.toBlob(res, 'image/png'));
+      if (blob) {
+        zip.file(`icon${size}.png`, blob);
+      }
+    }
+
+    // Add ICO
+    const icoData = await generateICO([
+      canvases[128],
+      canvases[48],
+      canvases[16]
+    ]);
+    zip.file('favicon.ico', icoData);
+
+    const content = await zip.generateAsync({ 
+      type: 'blob',
+      compression: 'DEFLATE',
+      compressionOptions: { level: 9 }
+    });
+    const link = document.createElement('a');
+    link.download = 'icons.zip';
+    link.href = URL.createObjectURL(content);
+    link.click();
+  });
+
+  async function generateICO(canvasList: HTMLCanvasElement[]) {
+    const images = await Promise.all(canvasList.map(async (canvas) => {
+      const blob = await new Promise<Blob | null>(res => canvas.toBlob(res, 'image/png'));
+      if (!blob) throw new Error('Canvas conversion failed');
+      return {
+        data: new Uint8Array(await blob.arrayBuffer()),
+        width: canvas.width,
+        height: canvas.height
+      };
+    }));
+
+    const headerSize = 6;
+    const entrySize = 16;
+    const totalHeaderSize = headerSize + entrySize * images.length;
+    
+    let currentOffset = totalHeaderSize;
+    const entries = images.map(img => {
+      const entry = new DataView(new ArrayBuffer(entrySize));
+      entry.setUint8(0, img.width === 256 ? 0 : img.width);
+      entry.setUint8(1, img.height === 256 ? 0 : img.height);
+      entry.setUint8(2, 0); // Palette
+      entry.setUint8(3, 0); // Reserved
+      entry.setUint16(4, 1, true); // Planes
+      entry.setUint16(6, 32, true); // Bits per pixel
+      entry.setUint32(8, img.data.length, true);
+      entry.setUint32(12, currentOffset, true);
+      currentOffset += img.data.length;
+      return new Uint8Array(entry.buffer);
+    });
+
+    const header = new DataView(new ArrayBuffer(headerSize));
+    header.setUint16(0, 0, true);
+    header.setUint16(2, 1, true); // Icon type
+    header.setUint16(4, images.length, true);
+
+    const totalSize = currentOffset;
+    const result = new Uint8Array(totalSize);
+    result.set(new Uint8Array(header.buffer), 0);
+    entries.forEach((entry, i) => {
+      result.set(entry, headerSize + i * entrySize);
+    });
+    images.forEach((img, i) => {
+      const offset = new DataView(entries[i].buffer).getUint32(12, true);
+      result.set(img.data, offset);
+    });
+
+    return result;
+  }
+
+  resetBtn?.addEventListener('click', () => {
+    previewArea?.classList.add('hidden');
+    dropZone?.classList.remove('hidden');
+    fileInput.value = '';
+  });
+
+  // --- Tool 3: いろあつめーかー ---
+  const trDropZone = document.getElementById('tr-drop-zone');
+  const trFileInput = document.getElementById('tr-file-input') as HTMLInputElement;
+  const trPreviewContainer = document.getElementById('tr-preview-container');
+  const trSvgContainer = document.getElementById('tr-svg-container');
+  const trDownloadBtn = document.getElementById('tr-download');
+  const trResetBtn = document.getElementById('tr-reset');
+
+  const trControls = {
+    colors: document.getElementById('tr-colors') as HTMLInputElement,
+    detail: document.getElementById('tr-detail') as HTMLSelectElement,
+  };
+
+  const trValues = {
+    colors: document.getElementById('val-tr-colors'),
+  };
+
+  let trSourceImage: string | null = null;
+  let currentSvgStr: string | null = null;
+  let sourceImageElement: HTMLImageElement | null = null;
+  let currentPalette: {r:number, g:number, b:number, a:number}[] = [];
+
+  function handleTrFile(file: File) {
+    if (!file.type.startsWith('image/')) { return; }
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        sourceImageElement = img;
+        trSourceImage = e.target?.result as string;
+        trDropZone?.classList.add('hidden');
+        trPreviewContainer?.classList.remove('hidden');
+        updateAll();
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function updateAll(forcePalette = false) {
+    if (forcePalette || currentPalette.length === 0) {
+      const palette = extractPaletteFromImage();
+      if (palette) {
+        currentPalette = palette;
+      }
+    }
+    
+    if (currentPalette.length > 0) {
+      renderVector(currentPalette);
+    }
+  }
+
+  function extractPaletteFromImage() {
+    if (!sourceImageElement) return null;
+    
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    
+    // Resize for analysis
+    const maxSize = 100;
+    const scale = Math.min(maxSize / sourceImageElement.width, maxSize / sourceImageElement.height);
+    canvas.width = Math.max(1, sourceImageElement.width * scale);
+    canvas.height = Math.max(1, sourceImageElement.height * scale);
+    
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(sourceImageElement, 0, 0, canvas.width, canvas.height);
+    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    const numColors = parseInt(trControls.colors.value);
+    
+    // 1. Quantize and count frequencies
+    const colorMap = new Map<string, number>();
+    for (let i = 0; i < pixels.length; i += 4) {
+      if (pixels[i+3] < 128) continue;
+      // Quantize and clamp correctly
+      const r = Math.min(255, Math.max(0, Math.round(pixels[i] / 16) * 16));
+      const g = Math.min(255, Math.max(0, Math.round(pixels[i+1] / 16) * 16));
+      const b = Math.min(255, Math.max(0, Math.round(pixels[i+2] / 16) * 16));
+      const key = `${r},${g},${b}`;
+      colorMap.set(key, (colorMap.get(key) || 0) + 1);
+    }
+
+    // 2. Sort by frequency (descending)
+    const sortedColors = Array.from(colorMap.entries())
+      .map(([key, count]) => ({
+        rgb: key.split(',').map(Number),
+        count
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    // 3. Select diverse colors from most frequent ones
+    const picked: number[][] = [];
+    const minDiff = 32; // Threshold for color similarity
+
+    for (const color of sortedColors) {
+      if (picked.length >= numColors) break;
+      
+      const isDiverse = picked.every(p => {
+        // Simple Manhattan distance for speed
+        const dist = Math.abs(color.rgb[0] - p[0]) + 
+                     Math.abs(color.rgb[1] - p[1]) + 
+                     Math.abs(color.rgb[2] - p[2]);
+        return dist > minDiff;
+      });
+
+      if (isDiverse) {
+        picked.push(color.rgb);
+      }
+    }
+
+    // 4. Fill remaining slots with the next most distant color if needed
+    if (picked.length < numColors && sortedColors.length > picked.length) {
+       for (const color of sortedColors) {
+         if (picked.length >= numColors) break;
+         if (!picked.some(p => p[0] === color.rgb[0] && p[1] === color.rgb[1] && p[2] === color.rgb[2])) {
+           picked.push(color.rgb);
+         }
+       }
+    }
+
+    return picked.map(c => ({r: c[0], g: c[1], b: c[2], a: 255}));
+  }
+
+  function renderVector(palette: {r:number, g:number, b:number, a:number}[]) {
+    if (!trSourceImage || !trSvgContainer) return;
+    const detail = parseInt(trControls.detail.value);
+
+    // @ts-ignore
+    ImageTracer.imageToSVG(
+      trSourceImage,
+      (svgstr: string) => {
+        if (palette.length > 0) {
+           const bg = palette[0];
+           const bgRect = `<rect width="100%" height="100%" fill="rgb(${bg.r},${bg.g},${bg.b})" />`;
+           svgstr = svgstr.replace(/<svg(.*?)>/, `<svg$1>${bgRect}`);
+        }
+        
+        currentSvgStr = svgstr;
+        trSvgContainer.innerHTML = svgstr;
+      },
+      { 
+        pal: palette,
+        ltres: detail === 3 ? 0.05 : detail === 2 ? 2 : 20,
+        qtres: detail === 3 ? 0.05 : detail === 2 ? 2 : 20,
+        pathomit: detail === 3 ? 8 : detail === 2 ? 64 : 512,
+        // パス同士をわずかに重ねて白背景が漏れるのを防ぐ
+        strokewidth: 1, 
+        viewbox: true,
+        blurradius: detail === 1 ? 3 : 0,
+        blurdelta: 20
+      }
+    );
+  }
+
+  Object.entries(trControls).forEach(([key, ctrl]) => {
+    const eventType = ctrl instanceof HTMLSelectElement || ctrl.type === 'number' ? 'change' : 'input';
+    ctrl.addEventListener(eventType, () => {
+      if (key === 'colors') {
+        updateAll(true); // 色数が変わったらパレットを再抽出
+      } else {
+        updateAll(false); // なめらかさなどの変更はパレットを維持
+      }
+    });
+  });
+
+  trDropZone?.addEventListener('click', () => trFileInput?.click());
+  trDropZone?.addEventListener('dragover', (e) => { e.preventDefault(); trDropZone.classList.add('drag-over'); });
+  ['dragleave', 'dragend'].forEach(t => trDropZone?.addEventListener(t, () => trDropZone.classList.remove('drag-over')));
+  trDropZone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    trDropZone.classList.remove('drag-over');
+    if (e.dataTransfer?.files.length) handleTrFile(e.dataTransfer.files[0]);
+  });
+  trFileInput?.addEventListener('change', () => {
+    if (trFileInput.files?.length) handleTrFile(trFileInput.files[0]);
+  });
+
+  trDownloadBtn?.addEventListener('click', () => {
+    if (!currentSvgStr) return;
+    const blob = new Blob([currentSvgStr], { type: 'image/svg+xml' });
+    const link = document.createElement('a');
+    link.download = 'vectorized.svg';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  });
+
+  trResetBtn?.addEventListener('click', () => {
+    trSourceImage = null;
+    currentSvgStr = null;
+    trPreviewContainer?.classList.add('hidden');
+    trDropZone?.classList.remove('hidden');
+    trFileInput.value = '';
+    if (trSvgContainer) trSvgContainer.innerHTML = '';
+  });
+</script>
+
+<style>
+  /* --- Hero Section --- */
+  .hero-section {
+    padding: 3rem 1.5rem;
+    position: relative;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/images/labo_hero.webp');
+    background-size: cover;
+    background-position: center;
+    border-radius: 2rem;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    border: 3px solid var(--main-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+  }
+
+  .hero-content-wrapper {
+    max-width: 800px;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .hero-text-box {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    padding: 3rem;
+    border-radius: 2rem;
+    border: 2px solid var(--main-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--main-color);
+    text-shadow: 2px 2px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
+  }
+
+  .hero-intro {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    color: var(--sub-color);
+    line-height: 1.6;
+    font-weight: 800;
+  }
+
+  /* --- Lab Navigation Panels --- */
+  .lab-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .nav-panel {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    text-decoration: none;
+    border: 2px solid var(--main-color);
+    box-shadow: 0 8px 0 var(--main-color);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    top: 0;
+  }
+
+  .nav-panel:hover {
+    top: 4px;
+    box-shadow: 0 4px 0 var(--main-color);
+    background: var(--bg-color);
+  }
+
+  .nav-panel:active {
+    top: 8px;
+    box-shadow: 0 0px 0 var(--main-color);
+  }
+
+  .nav-panel-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  }
+
+  .nav-panel-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .nav-panel-title {
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--main-color);
+    line-height: 1.2;
+  }
+
+  .nav-panel-desc {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--sub-color);
+    opacity: 0.8;
+  }
+
+  @media (max-width: 900px) {
+    .lab-nav-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .nav-panel {
+      padding: 1rem 1.5rem;
+    }
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    margin-bottom: 8rem;
+  }
+
+  .tool-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 2px solid var(--main-color);
+    border-radius: 2.5rem;
+    padding: 3rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-header {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .tool-icon {
+    font-size: 3rem;
+    background: white;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .tool-name {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--main-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .tool-desc {
+    font-size: 1.1rem;
+    color: var(--sub-color);
+    opacity: 0.8;
+  }
+
+  .drop-zone {
+    border: 3px dashed var(--main-color);
+    border-radius: 2rem;
+    padding: 4rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  .drop-zone:hover, .drop-zone.drag-over {
+    background: white;
+    border-color: var(--accent-color);
+    transform: scale(1.02);
+  }
+
+  .file-input { display: none; }
+
+  /* --- ちりばめーかー Specific --- */
+  .scatter-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 3rem;
+  }
+
+  .scatter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: rgba(0,0,0,0.02);
+    padding: 2rem;
+    border-radius: 1.5rem;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .control-group label {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--sub-color);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .control-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+  }
+
+  .checkbox-group {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.75rem;
+  }
+
+  .checkbox-group input { width: auto; }
+
+  .seed-input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .seed-input-group input[type="number"] {
+    flex: 1;
+  }
+
+  .color-control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+  }
+
+  .color-control-group input[type="checkbox"] {
+    width: auto;
+  }
+
+  .color-control-group input[type="color"] {
+    border: none;
+    width: 40px;
+    height: 30px;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+  }
+
+  /* Dual Range States */
+  .dual-range {
+    position: relative;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .dual-range input[type="range"] {
+    position: absolute;
+    width: 100%;
+    pointer-events: none;
+    appearance: none;
+    background: none;
+    z-index: 2;
+    margin: 0;
+  }
+
+  /* Thumbs */
+  .dual-range input[type="range"]::-webkit-slider-thumb {
+    pointer-events: auto;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--main-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: transform 0.1s ease;
+  }
+
+  .dual-range input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+
+  .dual-range input[type="range"]::-moz-range-thumb {
+    pointer-events: auto;
+    width: 20px;
+    height: 20px;
+    background: var(--main-color);
+    border: 3px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .slider-track {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    z-index: 1;
+  }
+
+  input[type="range"] { width: 100%; cursor: pointer; }
+  input[type="number"], select {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ddd;
+  }
+
+  .scatter-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-container {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #sc-canvas {
+    max-width: 100%;
+    max-height: 60vh;
+    border-radius: 1rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    background: #000;
+  }
+
+  .canvas-info {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      opacity: 0.5;
+  }
+
+  .btn-small {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      background: white;
+  }
+
+  .btn-small:hover { background: #f0f0f0; }
+
+  /* --- Icon Generator Specific --- */
+  .preview-area {
+    text-align: center;
+    animation: slideUp 0.5s ease;
+  }
+
+  .previews-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    margin-bottom: 3rem;
+    padding: 3rem;
+    background: rgba(0,0,0,0.03);
+    border-radius: 2rem;
+  }
+
+  .preview-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .preview-item canvas {
+    background: white;
+    border-radius: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  canvas[id^="canvas-"] { image-rendering: auto; }
+  #canvas-128 { width: 128px; height: 128px; }
+  #canvas-48 { width: 48px; height: 48px; }
+  #canvas-16 { width: 16px; height: 16px; }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .btn {
+    padding: 1rem 2rem;
+    border-radius: 1.25rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary { background: var(--main-color); color: white; }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(207,61,49,0.3); }
+  .btn-secondary { background: white; border: 2px solid var(--main-color); color: var(--main-color); }
+
+  .hidden { display: none !important; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .scatter-layout {
+      grid-template-columns: 1fr;
+    }
+    .scatter-controls {
+      order: 2;
+    }
+  }
+
+  /* --- いろあつめーかー Specific --- */
+  .tracer-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 3rem;
+  }
+
+  .tracer-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: rgba(0,0,0,0.02);
+    padding: 2rem;
+    border-radius: 1.5rem;
+  }
+
+  .palette-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 1rem;
+    min-height: 100px;
+    border: 1px solid #eee;
+  }
+
+  .palette-item {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid #ddd;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: white;
+  }
+
+  .palette-item:hover {
+    transform: scale(1.1);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: var(--main-color);
+  }
+
+  .palette-item input[type="color"] {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    background: none;
+  }
+
+  .svg-preview {
+    width: 100%;
+    min-height: 300px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+    overflow: hidden;
+  }
+
+  .svg-preview svg {
+    max-width: 100%;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .tracer-preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  }
+
+  @media (max-width: 900px) {
+    .tracer-layout {
+      grid-template-columns: 1fr;
+    }
+    .tracer-controls {
+      order: 2;
+    }
+  }
+</style>

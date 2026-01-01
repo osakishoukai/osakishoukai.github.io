@@ -1,6 +1,29 @@
 {
   "events": [
     {
+      "date": "2025-12-31",
+      "participants": 17,
+      "staff": [
+        "おおさき",
+        "おいしいぽてと（焼芋）",
+        "いぬろう"
+      ],
+      "summary": "大晦日特別営業を実施しました！\n23時でクローズし、その後はFriends+で祇園街のインスタンスを立てて、新年をお祝いしました！\n毎年これができたらなぁと思いつつ、年内営業終了！",
+      "urls": [
+        "https://x.com/osaki_vrc/status/2006368421467029605"
+      ],
+      "images": [
+        "events\\20251231\\001.webp",
+        "events\\20251231\\002.webp",
+        "events\\20251231\\003.webp",
+        "events\\20251231\\004.webp",
+        "events\\20251231\\005.webp",
+        "events\\20251231\\006.webp",
+        "events\\20251231\\007.webp",
+        "events\\20251231\\008.webp"
+      ]
+    },
+    {
       "date": "2025-12-26",
       "participants": 41,
       "staff": [
@@ -677,7 +700,7 @@
     }
   ],
   "metadata": {
-    "last_updated": "2025-12-31T16:41:49.702295",
-    "total_events": 45
+    "last_updated": "2026-01-01T16:08:54.075858",
+    "total_events": 46
   }
 }
