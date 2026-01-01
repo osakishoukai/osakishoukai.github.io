@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
+import StandardContainer from "@/components/ui/StandardContainer.astro";
 import { Picture } from "astro:assets";
 
 // データを読み込む
@@ -175,16 +176,18 @@ const categoryLabels: Record<string, string> = {
   <!-- Latest Updates (自動生成) -->
   <Container>
     <div class="updates-section">
-      <h2 class="section-title">新着情報</h2>
-      <div class="updates-list">
-        {latestUpdates.map(update => (
-          <div class="update-item">
-            <span class="update-date">{update.dateStr}</span>
-            <span class={`update-category ${update.category}`}>{categoryLabels[update.category]}</span>
-            <a href={update.link} class="update-link">{update.title}</a>
-          </div>
-        ))}
-      </div>
+      <StandardContainer>
+        <h2 class="section-title">新着情報</h2>
+        <div class="updates-list">
+          {latestUpdates.map(update => (
+            <div class="update-item">
+              <span class="update-date">{update.dateStr}</span>
+              <span class={`update-category ${update.category}`}>{categoryLabels[update.category]}</span>
+              <a href={update.link} class="update-link">{update.title}</a>
+            </div>
+          ))}
+        </div>
+      </StandardContainer>
     </div>
   </Container>
 </Layout>
@@ -325,7 +328,7 @@ const categoryLabels: Record<string, string> = {
     background: linear-gradient(135deg, white 0%, var(--bg-color) 100%);
     border-radius: 2rem;
     margin: 3rem 0;
-    border: 1px solid var(--main-color);
+    border: 3px solid var(--main-color);
   }
 
   .section-title {
@@ -347,7 +350,7 @@ const categoryLabels: Record<string, string> = {
     padding: 2rem;
     background: white;
     border-radius: 1rem;
-    border: 1px solid var(--main-color);
+    border: 2px solid var(--main-color);
     text-align: center;
     transition: all 0.3s ease;
   }
