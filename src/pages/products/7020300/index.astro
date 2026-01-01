@@ -13,31 +13,31 @@ const item = {
   tags: ["3Dモデル", "3D環境・ワールド", "インテリア", "ワールド", "からあげ", "VRChat", "VRC想定モデル", "居酒屋風", "ワールドギミック", "インテリア x 3D環境・ワールド"]
 };
 
-const description = `🚢 FunamoriKaraage 🍤
+const description = `# 🚢 FunamoriKaraage 🍤
 みんなでわいわい食べよう！船に盛られたからあげのセットです。
 どこかで見たことあるような、そんな既視感が感じられる、雰囲気が楽しめます。
 
-# ✨ 特徴
+## ✨ 特徴
 - ワールド向けギミック
 - 船+からあげの山+もてる唐揚げ+レモン+効果音やパーティクル演出付き。
 - 食べることができるギミック、レモンをかけるギミック
 - Quest対応
 - Toon Standardシェーダー利用によりモバイル環境でもリッチな質感を表現しました
 
-# 🌏 サンプルワールド
+## 🌏 サンプルワールド
 KemonoBarずんどこ　（スケール2倍で展示）
-https://vrchat.com/home/world/wrld_935ba54d-727a-45a3-b81d-107f0fa860d1
+    https://vrchat.com/home/world/wrld_935ba54d-727a-45a3-b81d-107f0fa860d1
 
-🕹️ 使い方
+## 🕹️ 使い方
 - 唐揚げを持ってインタラクトすると食べることができます。一定時間後復活。
 - レモンを持ってインタラクトすると唐揚げの山に掛けることができます
 - 山にかけると一定時間ゴールデン唐揚げになります。その間、食べる音が変わります。
 
-🛠️ 設置方法
+## 🛠️ 設置方法
 1. Unityでプロジェクトを開きます。
 2. 「Osaki/FunamoriKarage/Funamorikarage.prefab」をワールドのお好きな位置に置いてください
 
-# 🎨 カスタマイズ
+## 🎨 カスタマイズ
 FunamoriKaraageプレハブについている「FunamoriController」より次が設定できます
 - MountainLemonMaterial…ゴールデン唐揚げ山のマテリアル
 - KarageLemonMaterial…ゴールデン唐揚げ単体のマテリアル
@@ -50,36 +50,38 @@ FunamoriKaraageプレハブについている「FunamoriController」より次�
 - LemonStateDuration…ゴールデン唐揚げの継続時間（⚠️長くしすぎないでください）
 - LemonDeadTime…通常唐揚げ山になってから再度レモンを受け付けるまでの時間
 
-🎵 クレジット
+## 🎵 クレジット
 - 効果音：効果音ラボ様
-https://soundeffect-lab.info/
+    https://soundeffect-lab.info/
 - Matcap素材：たびマル倉庫様
-https://tabimal.booth.pm/items/4481767
+    https://tabimal.booth.pm/items/4481767
 
-⛔ 禁止事項
+## ⛔ 禁止事項
 - 二次配布、法令違反用途、製作者のなりすまし
 - 配布データ内の音源データの他データへの転用
 
-⚠️ 免責事項
+## ⚠️ 免責事項
 - 本製品の利用・準備によるいかなる損害も責任を負いません。
 - ご利用は自己責任でお願いします。
 - ダウンロード商品の特性上、返品・返金はできません。
 
-🖥️ 動作確認環境
+## 🖥️ 動作確認環境
 - Unity 2022.3.22f1
 - VRChat SDK3 Worlds/Base 3.8.1　(⚠️重要)
 
-🔼ポリゴン数
+## 🔼ポリゴン数
 全体 △6,267
 
-‼️ 注意事項
-● レイトジョイナー対応
+## ‼️ 注意事項
+
+### レイトジョイナー対応
 - 変化した瞬間のみを同期しているため、レイトジョイナー非対応です。たとえば次のような事象がおきます。
 - Aさんがレモンを絞りつづけているときBさんがジョインすると、Bさんからはレモンを絞っていないように見える
 - ゴールデン唐揚げ状態のときBさんがジョインすると、Bさんには通常唐揚げ状態に見える
 - これらは一度通常状態（レモンを絞っていない状態、唐揚げが通常色の場合）になると以降正しくなります
 - この性質上、ゴールデン唐揚げ状態の設定値は過度に延ばさないことを推奨します
-● SDKバージョン
+
+### SDKバージョン
 - ToonStandardを使用しているため、VRC SDK3.8.1以上が必須です`;
 const faq = ``;
 
@@ -87,79 +89,89 @@ function parseMarkdown(md: string): string {
   if (!md) return '';
   const lines = md.split('\n');
   const result: string[] = [];
-  let listStack: number[] = [];
-  
-  const getIndent = (line: string): number => {
-    if (line.startsWith('      - ')) return 3;
-    if (line.startsWith('    - ')) return 2;
-    if (line.startsWith('  - ')) return 1;
-    if (line.trim().startsWith('- ')) return 0;
-    return -1;
-  };
-  
-  const closeListsToLevel = (targetLevel: number) => {
-    while (listStack.length > 0 && listStack[listStack.length - 1] >= targetLevel) {
-      listStack.pop();
-      result.push('</ul>');
-    }
-  };
-  
-  const closeAllLists = () => {
-    while (listStack.length > 0) {
-      listStack.pop();
-      result.push('</ul>');
-    }
+  let listStack: number[] = []; // インデントレベルのスタック
+
+  const linkify = (text: string) => {
+    return text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="content-link">$1</a>');
   };
   
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const trimmed = line.trim();
-    const indent = getIndent(line);
     
     if (!trimmed) {
-      closeAllLists();
+      while (listStack.length > 0) { listStack.pop(); result.push('</ul>'); }
       result.push('');
       continue;
     }
-    
-    if (trimmed.startsWith('### ')) {
-      closeAllLists();
-      result.push('<h3>' + trimmed.substring(4) + '</h3>');
-      continue;
+
+    // ヘッダー判定
+    if (trimmed.startsWith('#')) {
+      while (listStack.length > 0) { listStack.pop(); result.push('</ul>'); }
+      if (trimmed.startsWith('### ')) { result.push('<h3>' + linkify(trimmed.substring(4)) + '</h3>'); continue; }
+      if (trimmed.startsWith('## ')) { result.push('<h2>' + linkify(trimmed.substring(3)) + '</h2>'); continue; }
+      if (trimmed.startsWith('# ')) { result.push('<h1>' + linkify(trimmed.substring(2)) + '</h1>'); continue; }
     }
-    if (trimmed.startsWith('## ')) {
-      closeAllLists();
-      result.push('<h2>' + trimmed.substring(3) + '</h2>');
-      continue;
-    }
-    if (trimmed.startsWith('# ')) {
-      closeAllLists();
-      result.push('<h1>' + trimmed.substring(2) + '</h1>');
-      continue;
-    }
-    
-    if (indent >= 0) {
-      const content = trimmed.substring(2);
-      if (listStack.length > 0 && indent < listStack[listStack.length - 1]) {
-        closeListsToLevel(indent + 1);
+
+    // リストアイテム判定 (- で始まる行)
+    const listMatch = line.match(/^(\s*)-\s+(.*)/);
+    if (listMatch) {
+      const currentIndent = listMatch[1].length;
+      const content = listMatch[2];
+
+      // インデントが減った場合、スタックを閉じる
+      while (listStack.length > 0 && currentIndent < listStack[listStack.length - 1]) {
+        listStack.pop();
+        result.push('</ul>');
       }
-      if (listStack.length === 0 || indent > listStack[listStack.length - 1]) {
+
+      // 新しいレベルのリストを開始
+      if (listStack.length === 0 || currentIndent > listStack[listStack.length - 1]) {
         result.push('<ul>');
-        listStack.push(indent);
+        listStack.push(currentIndent);
       }
-      result.push('<li>' + content);
-      const nextIndent = i + 1 < lines.length ? getIndent(lines[i + 1]) : -1;
-      if (nextIndent <= indent || nextIndent === -1) {
-        result.push('</li>');
+
+      // 項目を開始
+      result.push('<li>' + linkify(content));
+      
+      // 次の行が同じレベルの継続行かどうか判定
+      let isContinued = false;
+      if (i + 1 < lines.length) {
+        const nextLine = lines[i + 1];
+        if (nextLine.trim() && !nextLine.trim().startsWith('-') && !nextLine.trim().startsWith('#')) {
+          const nextIndent = nextLine.match(/^(\s*)/)![0].length;
+          if (nextIndent >= currentIndent + 2) isContinued = true;
+        }
       }
+      if (!isContinued) result.push('</li>');
       continue;
     }
-    
-    closeAllLists();
-    result.push('<p>' + trimmed + '</p>');
+
+    // リストの継続行判定
+    if (listStack.length > 0) {
+      const currentIndent = line.match(/^(\s*)/)![0].length;
+      if (currentIndent >= listStack[listStack.length - 1] + 2) {
+        result.push('<br />' + linkify(trimmed));
+        
+        let isStillContinued = false;
+        if (i + 1 < lines.length) {
+          const nextLine = lines[i + 1];
+          if (nextLine.trim() && !nextLine.trim().startsWith('-') && !nextLine.trim().startsWith('#')) {
+            const nextIndent = nextLine.match(/^(\s*)/)![0].length;
+            if (nextIndent >= listStack[listStack.length - 1] + 2) isStillContinued = true;
+          }
+        }
+        if (!isStillContinued) result.push('</li>');
+        continue;
+      }
+    }
+
+    // 通常の段落
+    while (listStack.length > 0) { listStack.pop(); result.push('</ul>'); }
+    result.push('<p>' + linkify(trimmed) + '</p>');
   }
   
-  closeAllLists();
+  while (listStack.length > 0) { listStack.pop(); result.push('</ul>'); }
   return result.join('\n');
 }
 
@@ -256,9 +268,17 @@ const breadcrumbs = [
       <div class="description-content" set:html={parseMarkdown(description)}></div>
     </section>
     
-    <section class="image-gallery">
-<h2>📷 ギャラリー</h2>
-<div class="gallery-grid">
+    
+    <section class="content-section">
+      <div class="section-header">
+        <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        <h2>ギャラリー</h2>
+      </div>
+      <div class="gallery-grid">
   <button class="lightbox-trigger" data-image="/images/products/7020300/1.webp" data-index="0">
     <img src="/images/products/7020300/1.webp" alt="【VRChat想定ワールドギミック】「船盛りからあげ」" />
   </button>
@@ -674,6 +694,21 @@ const breadcrumbs = [
     left: 0;
     color: var(--main-color);
     font-weight: bold;
+  }
+
+  :global(.content-link) {
+    color: var(--main-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: all 0.2s ease;
+    word-break: break-all;
+    display: inline-block;
+  }
+  
+  :global(.content-link:hover) {
+    opacity: 0.7;
+    transform: translateY(-1px);
+    color: var(--accent-color);
   }
   
   .gallery-grid {

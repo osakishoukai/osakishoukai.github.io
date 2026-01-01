@@ -13,7 +13,9 @@ const item = {
   tags: ["3Dモデル", "3D環境・ワールド", "インテリア", "ごはん", "ワールド", "焼き鳥", "VRChat", "ワールド小物", "VRC想定モデル", "VRChat想定モデル", "VRChat向け", "ワールドアセット", "ワールドギミック", "インテリア x 3D環境・ワールド"]
 };
 
-const description = `- 焼き鳥10点盛り合わせのアセットです
+const description = `## Overview
+
+- 焼き鳥10点盛り合わせのアセットです
 - 食べると効果音とエフェクトが出ます
 - 焼き鳥だけだと寂しいので、ちゃぶ台(机)をおまけでお付けしました。
 - ほんと何となく必要かなぁと思い、缶ビールとポテチもおまけでお付けしました。
@@ -22,13 +24,15 @@ const description = `- 焼き鳥10点盛り合わせのアセットです
 - あなたのワールドのインテリアや、居酒屋等のアクセントにご活用ください！
 
 # 🌏 サンプルワールド
+
 Yakitori Test World
 https://vrchat.com/home/world/wrld_3c0fa125-7ada-4a80-9a3c-993028615998
 
 # 📥 導入方法
+
 購入後DLしたファイル内にある「Yakitoriv1.0.0.unitypackage」をインポートしてください。
 Assets/Osaki/Yakitori にプレハブがありますので、ワールドに設置してください。
-（おまけは「YakitoriOmake」フォルダ内にunitypackageを同梱しておりますので、Can、Potechi、Chabudaiをそれぞれインポートしてお使いください）
+（おまけは「YakitoriOmake」フォルダ内にunitypackageを同梱しておりますので、Can、Potechi, Chabudaiをそれぞれインポートしてお使いください）
 
 # 📊 当アセットの仕様
 
@@ -36,7 +40,6 @@ VRC上の操作
 - 焼き鳥（１０本）それぞれをもって、Useすると食べることができます
 - 串だけの状態でUseするとリスポーンします
 - ビール・ポテチは持つことのみできます。食べることはできません
-
 
 # ポリゴン数
 
@@ -57,20 +60,24 @@ VRC上の操作
 ※具のポリゴン数は１つあたり
 
 🙏 クレジット
+
 🎵 OtoLogic様
 https://otologic.jp/
 効果音の素材です（CC BY 4.0）※詳細はサイトをご確認ください。
 
 ⛔ 禁止事項
+
 - 二次配布、法令違反用途、製作者のなりすまし
 - 配布データ内の音源データの他データへの転用
 
 ⚠️ 免責事項
+
 - 本製品の利用・準備によるいかなる損害も責任を負いません。
 - ご利用は自己責任でお願いします。
 - ダウンロード商品の特性上、返品・返金はできません。
 
 🖥️ 動作確認環境
+
 - Unity 2022.3.22f1
 - VRChat SDK3 Worlds/Base 3.8.2`;
 const faq = ``;
@@ -79,79 +86,89 @@ function parseMarkdown(md: string): string {
   if (!md) return '';
   const lines = md.split('\n');
   const result: string[] = [];
-  let listStack: number[] = [];
-  
-  const getIndent = (line: string): number => {
-    if (line.startsWith('      - ')) return 3;
-    if (line.startsWith('    - ')) return 2;
-    if (line.startsWith('  - ')) return 1;
-    if (line.trim().startsWith('- ')) return 0;
-    return -1;
-  };
-  
-  const closeListsToLevel = (targetLevel: number) => {
-    while (listStack.length > 0 && listStack[listStack.length - 1] >= targetLevel) {
-      listStack.pop();
-      result.push('</ul>');
-    }
-  };
-  
-  const closeAllLists = () => {
-    while (listStack.length > 0) {
-      listStack.pop();
-      result.push('</ul>');
-    }
+  let listStack: number[] = []; // インデントレベルのスタック
+
+  const linkify = (text: string) => {
+    return text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="content-link">$1</a>');
   };
   
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const trimmed = line.trim();
-    const indent = getIndent(line);
     
     if (!trimmed) {
-      closeAllLists();
+      while (listStack.length > 0) { listStack.pop(); result.push('</ul>'); }
       result.push('');
       continue;
     }
-    
-    if (trimmed.startsWith('### ')) {
-      closeAllLists();
-      result.push('<h3>' + trimmed.substring(4) + '</h3>');
-      continue;
+
+    // ヘッダー判定
+    if (trimmed.startsWith('#')) {
+      while (listStack.length > 0) { listStack.pop(); result.push('</ul>'); }
+      if (trimmed.startsWith('### ')) { result.push('<h3>' + linkify(trimmed.substring(4)) + '</h3>'); continue; }
+      if (trimmed.startsWith('## ')) { result.push('<h2>' + linkify(trimmed.substring(3)) + '</h2>'); continue; }
+      if (trimmed.startsWith('# ')) { result.push('<h1>' + linkify(trimmed.substring(2)) + '</h1>'); continue; }
     }
-    if (trimmed.startsWith('## ')) {
-      closeAllLists();
-      result.push('<h2>' + trimmed.substring(3) + '</h2>');
-      continue;
-    }
-    if (trimmed.startsWith('# ')) {
-      closeAllLists();
-      result.push('<h1>' + trimmed.substring(2) + '</h1>');
-      continue;
-    }
-    
-    if (indent >= 0) {
-      const content = trimmed.substring(2);
-      if (listStack.length > 0 && indent < listStack[listStack.length - 1]) {
-        closeListsToLevel(indent + 1);
+
+    // リストアイテム判定 (- で始まる行)
+    const listMatch = line.match(/^(\s*)-\s+(.*)/);
+    if (listMatch) {
+      const currentIndent = listMatch[1].length;
+      const content = listMatch[2];
+
+      // インデントが減った場合、スタックを閉じる
+      while (listStack.length > 0 && currentIndent < listStack[listStack.length - 1]) {
+        listStack.pop();
+        result.push('</ul>');
       }
-      if (listStack.length === 0 || indent > listStack[listStack.length - 1]) {
+
+      // 新しいレベルのリストを開始
+      if (listStack.length === 0 || currentIndent > listStack[listStack.length - 1]) {
         result.push('<ul>');
-        listStack.push(indent);
+        listStack.push(currentIndent);
       }
-      result.push('<li>' + content);
-      const nextIndent = i + 1 < lines.length ? getIndent(lines[i + 1]) : -1;
-      if (nextIndent <= indent || nextIndent === -1) {
-        result.push('</li>');
+
+      // 項目を開始
+      result.push('<li>' + linkify(content));
+      
+      // 次の行が同じレベルの継続行かどうか判定
+      let isContinued = false;
+      if (i + 1 < lines.length) {
+        const nextLine = lines[i + 1];
+        if (nextLine.trim() && !nextLine.trim().startsWith('-') && !nextLine.trim().startsWith('#')) {
+          const nextIndent = nextLine.match(/^(\s*)/)![0].length;
+          if (nextIndent >= currentIndent + 2) isContinued = true;
+        }
       }
+      if (!isContinued) result.push('</li>');
       continue;
     }
-    
-    closeAllLists();
-    result.push('<p>' + trimmed + '</p>');
+
+    // リストの継続行判定
+    if (listStack.length > 0) {
+      const currentIndent = line.match(/^(\s*)/)![0].length;
+      if (currentIndent >= listStack[listStack.length - 1] + 2) {
+        result.push('<br />' + linkify(trimmed));
+        
+        let isStillContinued = false;
+        if (i + 1 < lines.length) {
+          const nextLine = lines[i + 1];
+          if (nextLine.trim() && !nextLine.trim().startsWith('-') && !nextLine.trim().startsWith('#')) {
+            const nextIndent = nextLine.match(/^(\s*)/)![0].length;
+            if (nextIndent >= listStack[listStack.length - 1] + 2) isStillContinued = true;
+          }
+        }
+        if (!isStillContinued) result.push('</li>');
+        continue;
+      }
+    }
+
+    // 通常の段落
+    while (listStack.length > 0) { listStack.pop(); result.push('</ul>'); }
+    result.push('<p>' + linkify(trimmed) + '</p>');
   }
   
-  closeAllLists();
+  while (listStack.length > 0) { listStack.pop(); result.push('</ul>'); }
   return result.join('\n');
 }
 
@@ -248,9 +265,17 @@ const breadcrumbs = [
       <div class="description-content" set:html={parseMarkdown(description)}></div>
     </section>
     
-    <section class="image-gallery">
-<h2>📷 ギャラリー</h2>
-<div class="gallery-grid">
+    
+    <section class="content-section">
+      <div class="section-header">
+        <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        <h2>ギャラリー</h2>
+      </div>
+      <div class="gallery-grid">
   <button class="lightbox-trigger" data-image="/images/products/7531514/1.webp" data-index="0">
     <img src="/images/products/7531514/1.webp" alt="【VRChat想定ワールドアセット】「焼き鳥10種盛り合わせ(+缶ビール&ポテチ)」" />
   </button>
@@ -657,6 +682,21 @@ const breadcrumbs = [
     left: 0;
     color: var(--main-color);
     font-weight: bold;
+  }
+
+  :global(.content-link) {
+    color: var(--main-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: all 0.2s ease;
+    word-break: break-all;
+    display: inline-block;
+  }
+  
+  :global(.content-link:hover) {
+    opacity: 0.7;
+    transform: translateY(-1px);
+    color: var(--accent-color);
   }
   
   .gallery-grid {
