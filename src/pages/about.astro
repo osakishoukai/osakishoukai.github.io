@@ -132,6 +132,17 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
           </div>
         </div>
       </div>
+      
+      <div class="tech-detail-link">
+        <a href="/about/technical" class="tech-link-card">
+          <Icon name="mdi:cog" class="tech-link-icon" />
+          <div class="tech-link-content">
+            <h3>軽量化へのこだわり</h3>
+            <p>大崎商会の技術的な取り組みを詳しく解説しています</p>
+          </div>
+          <Icon name="mdi:arrow-right" class="tech-arrow" />
+        </a>
+      </div>
     </div>
 
     <!-- Owner Profile -->
@@ -272,5 +283,76 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
   .social-link { display: inline-flex; align-items: center; gap: 0.5rem; background: white; padding: 0.75rem 1.5rem; border-radius: 3rem; text-decoration: none; font-weight: 900; color: var(--sub-color); border: 2px solid var(--main-color); transition: all 0.3s ease; }
   .social-link:hover { background: var(--main-color); color: white; }
   .social-icon { width: 1.25rem; height: 1.25rem; }
-  @media (max-width: 768px) { .owner-card { flex-direction: column; text-align: center; } }
+  
+  /* Tech Detail Link */
+  .tech-detail-link {
+    margin-top: 3rem;
+  }
+  
+  .tech-link-card {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: linear-gradient(135deg, var(--main-color) 0%, #e67e22 100%);
+    padding: 2.5rem 3rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    border: 3px solid var(--sub-color);
+  }
+  
+  .tech-link-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+  
+  .tech-link-icon {
+    width: 4rem;
+    height: 4rem;
+    flex-shrink: 0;
+  }
+  
+  .tech-link-content {
+    flex: 1;
+  }
+  
+  .tech-link-content h3 {
+    font-size: 1.75rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tech-link-content p {
+    margin: 0;
+    opacity: 0.95;
+    font-weight: 700;
+  }
+  
+  .tech-arrow {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+  
+  .tech-link-card:hover .tech-arrow {
+    transform: translateX(8px);
+  }
+  
+  @media (max-width: 768px) { 
+    .owner-card { flex-direction: column; text-align: center; }
+    .tech-link-card {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .tech-arrow {
+      transform: rotate(90deg);
+    }
+    .tech-link-card:hover .tech-arrow {
+      transform: rotate(90deg) translateX(8px);
+    }
+  }
 </style>

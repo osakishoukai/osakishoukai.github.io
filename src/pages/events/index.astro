@@ -72,7 +72,7 @@ function formatDate(dateStr) {
         {latestEvents.map(event => {
           const firstImage = event.images && event.images.length > 0 
             ? `/images/${event.images[0].replace(/\\/g, '/')}`
-            : '/images/bar-bg.png';
+            : '/images/bar-bg.webp';
           
           return (
             <a href={`/events/archive/${event.date}`} class="simple-archive-card">
@@ -147,7 +147,7 @@ function formatDate(dateStr) {
   .hero-section {
     padding: 3rem 1.5rem;
     position: relative;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/images/bar-bg.png');
+    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/images/bar-bg.webp');
     background-size: cover;
     background-position: center;
     border-radius: 2rem;

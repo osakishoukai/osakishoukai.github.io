@@ -1,0 +1,1314 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
+---
+
+<Layout title="軽量化へのこだわり">
+  <Container>
+    <Breadcrumbs items={[
+      { label: "大崎商会について", href: "/about" },
+      { label: "軽量化へのこだわり" }
+    ]} />
+
+    <div class="hero-section">
+      <div class="hero-content-wrapper">
+        <div class="hero-text-box">
+          <h1 class="hero-title">
+            軽量化へのこだわり
+          </h1>
+          <p class="hero-intro">
+            みんなが一緒に楽しめる空間を作るために。<br />
+            技術で実現する「誰も置いていかない」世界。
+          </p>
+        </div>
+      </div>
+    </div>
+  </Container>
+
+  <Container>
+    <!-- Introduction -->
+    <div class="intro-section">
+      <div class="intro-card">
+        <Icon name="mdi:account-group" class="intro-icon" />
+        <h2 class="intro-title">なぜ軽量化にこだわるのか</h2>
+        <p class="intro-text">
+          けものバーずんどこには、毎週いろんな人が来てくれます。<br />
+          ハイエンドPCの人も、Questの人も、みんな一緒に笑いたい。<br />
+          だから、<strong>「誰も置いていかない」</strong>ために、軽量化にこだわっています。
+        </p>
+        <p class="intro-text">
+          目の前のできることからひとつずつ。日々、おおさきくん、がんばってます！
+        </p>
+      </div>
+    </div>
+
+    <!-- 3 Aspects of Optimization -->
+    <div class="aspects-section">
+      <h2 class="section-title">
+        <Icon name="mdi:lightbulb-on" class="title-icon" />
+        軽量化には、実は3つの側面がある
+      </h2>
+      <p class="section-intro">
+        「軽量化」という言葉でひとくくりにされがちですが、実は3つの異なる側面があります。
+      </p>
+
+      <div class="aspect-cards">
+        <div class="aspect-card">
+          <div class="aspect-number">1</div>
+          <Icon name="mdi:download" class="aspect-icon" />
+          <h3 class="aspect-title">ダウンロードの軽さ</h3>
+          <p class="aspect-description">アップロードサイズ</p>
+          <p class="aspect-detail">ワールドに入る時の待ち時間に関わる部分です。</p>
+        </div>
+
+        <div class="aspect-card">
+          <div class="aspect-number">2</div>
+          <Icon name="mdi:speedometer" class="aspect-icon" />
+          <h3 class="aspect-title">動作の軽さ</h3>
+          <p class="aspect-description">快適化</p>
+          <p class="aspect-detail">入った後、カクカクしないこと。FPSの安定性に関わります。</p>
+        </div>
+
+        <div class="aspect-card">
+          <div class="aspect-number">3</div>
+          <Icon name="mdi:package-variant" class="aspect-icon" />
+          <h3 class="aspect-title">データの軽さ</h3>
+          <p class="aspect-description">unitypackage容量</p>
+          <p class="aspect-detail">ワールドを作る人がBoothからダウンロードする際の快適さです。</p>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <Icon name="mdi:check-circle" class="highlight-icon" />
+        <p>大崎商会では、<strong>この3つ全てを意識しています</strong>。<br />
+        それぞれがトレードオフの関係にあることも多く、日々、バランスを考えながら取り組んでいます。</p>
+      </div>
+    </div>
+
+    <!-- Section 1: Download Optimization -->
+    <div class="detail-section">
+      <div class="section-header">
+        <Icon name="mdi:download-circle" class="section-icon" />
+        <h2 class="section-title">1. ダウンロードの軽さ：ワールド読み込みを早く</h2>
+      </div>
+
+      <div class="technique-list">
+        <div class="technique-item">
+          <Icon name="mdi:image-filter-hdr" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">クランチ圧縮（品質50程度）</h3>
+            <p>最近のアセットでは、テクスチャにクランチ圧縮をかけています。品質は50程度に設定し、ワールドアップロード時の容量削減を図っています。</p>
+          </div>
+        </div>
+
+        <div class="technique-item">
+          <Icon name="mdi:resize" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">テクスチャ解像度の調整</h3>
+            <p>多くの画像は1024pxか512pxに設定しています。接近して見ても問題ない範囲で、適切な解像度を選んでいます。</p>
+          </div>
+        </div>
+
+        <div class="technique-item">
+          <Icon name="mdi:volume-high" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">オーディオ圧縮（Mono / 48kHz / OGG）</h3>
+            <p>最近力を入れている部分です。ステレオである必要がないものはモノラルに変換しています。</p>
+          </div>
+        </div>
+
+        <div class="technique-item">
+          <Icon name="mdi:cube-outline" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">メッシュ圧縮</h3>
+            <p>インポート設定でFBX圧縮を有効にしています。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <Icon name="mdi:tools" class="info-icon" />
+        <div>
+          <h4 class="info-title">検証体制</h4>
+          <p><strong>VRWorld Toolkit</strong>というツールを使って、最適化状況を確認しています。<br />
+          数値で見えると、改善すべき箇所がわかりやすくなります。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Performance Optimization -->
+    <div class="detail-section priority">
+      <div class="section-header">
+        <Icon name="mdi:flash" class="section-icon" />
+        <h2 class="section-title">2. 動作の軽さ：幅広い環境で快適に</h2>
+      </div>
+
+      <div class="priority-badge">
+        <Icon name="mdi:star" class="badge-icon" />
+        <span>大崎商会の最優先事項</span>
+      </div>
+
+      <!-- Geometry -->
+      <div class="subsection">
+        <h3 class="subsection-title">
+          <Icon name="mdi:vector-polygon" class="subsection-icon" />
+          ジオメトリ系
+        </h3>
+        
+        <div class="technique-list">
+          <div class="technique-item">
+            <Icon name="mdi:chart-line" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">ポリゴン数の最適化</h3>
+              <p>モデリング時点で、必要最小限のポリゴン数を心がけています。</p>
+            </div>
+          </div>
+
+          <div class="technique-item">
+            <Icon name="mdi:eye-off" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">不可視面の削除</h3>
+              <p>皿の裏側など、通常見えない部分は削除しています。</p>
+            </div>
+          </div>
+
+          <div class="technique-item">
+            <Icon name="mdi:cube-scan" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">Mesh Colliderの最小化</h3>
+              <p>プリミティブコライダー（Box、Sphere、Capsule）を中心に使用し、Mesh Colliderはなるべく避けています。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shader/Material -->
+      <div class="subsection">
+        <h3 class="subsection-title">
+          <Icon name="mdi:palette" class="subsection-icon" />
+          シェーダー/マテリアル系
+        </h3>
+        
+        <div class="technique-list">
+          <div class="technique-item">
+            <Icon name="mdi:checkbox-marked-circle" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">VRC標準シェーダー中心の使用</h3>
+              <p>基本的には「Standard」と「Toon Standard」というVRC SDKに含まれる標準シェーダーを使用しています。</p>
+            </div>
+          </div>
+
+          <div class="technique-item">
+            <Icon name="mdi:virtual-reality" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">Quest対応</h3>
+              <p>モバイル対応シェーダーを使用し、Quest環境でも動作するよう配慮しています。</p>
+            </div>
+          </div>
+
+          <div class="technique-item">
+            <Icon name="mdi:content-cut" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">半透明の最小化（Cutout使用）</h3>
+              <p>パフォーマンスへの影響を考慮し、半透明表現が必要な場合もCutoutで代用できないか検討しています。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Script Optimization -->
+      <div class="subsection highlight">
+        <h3 class="subsection-title">
+          <Icon name="mdi:code-braces" class="subsection-icon" />
+          スクリプト系：ネットワーク負荷への配慮
+        </h3>
+        
+        <div class="emphasis-box">
+          <Icon name="mdi:star-circle" class="emphasis-icon" />
+          <p><strong>ここが大崎商会の特に力を入れている部分です。</strong></p>
+        </div>
+
+        <div class="technique-list">
+          <div class="technique-item">
+            <Icon name="mdi:update" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">Update()の最小化</h3>
+              <p>毎フレーム実行されるUpdate()は、パフォーマンスへの影響を考慮して最小限にしています。<br />
+              代わりに以下のような工夫をしています。</p>
+              <ul class="tech-list">
+                <li>SendCustomEventDelayedSecondsでの代用</li>
+                <li>イベント駆動型設計（OnPickup、OnTriggerなど）</li>
+                <li>どうしても使う場合は、状態監視と早期returnで処理を軽減</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="technique-item">
+            <Icon name="mdi:cached" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">APIコールのキャッシュ</h3>
+              <p>GetComponent()などの処理は、Start()で一度だけ実行して変数に保存しています。<br />
+              さらに、Editorで設定できないかも常に検討しています。</p>
+            </div>
+          </div>
+
+          <div class="technique-item">
+            <Icon name="mdi:network" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">同期方式の工夫</h3>
+              <p>大崎商会のアセットでは、SendCustomNetworkEventを中心に使用しています。これにより以下を実現しています。</p>
+              <ul class="tech-list">
+                <li>同期のタイミングの制御</li>
+                <li>不要な同期の削減</li>
+                <li>送信先の最適化によるネットワーク負荷軽減</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="technique-item">
+            <Icon name="mdi:wifi-strength-alert-outline" class="tech-icon" />
+            <div class="tech-content">
+              <h3 class="tech-title">ネットワーク環境を考慮した設計</h3>
+              <p>VRChatのネットワーク環境は不安定なこともあるため、以下のような設計方針を採用しています。</p>
+              <ul class="tech-list">
+                <li>同期の失敗を想定した設計</li>
+                <li>リトライによるネットワーク混雑の回避</li>
+                <li>間接同期の活用（別の情報から状態を推測できる場合は直接同期しない）</li>
+                <li>必要最小限の情報のみの同期</li>
+                <li>Owner以外は状態判断をしないという設計ルール</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Special Feature: Pool System -->
+        <div class="feature-box">
+          <div class="feature-header">
+            <Icon name="mdi:pool" class="feature-icon" />
+            <h4 class="feature-title">AudioPool / ParticlePoolの活用</h4>
+            <span class="feature-badge">大崎商会の特徴的な仕組み</span>
+          </div>
+          <p class="feature-description">
+            例えば、「おつまみ20」というアセットには、1000個以上の食べ物オブジェクトが存在します。<br />
+            通常であれば、1000個分のAudioSourceとParticleSystemが必要になります。
+          </p>
+          <p class="feature-description">
+            大崎商会では、AudioPoolとParticlePoolという仕組みを作り、少数のコンポーネントを使い回すことで、メモリとCPU負荷を軽減しています。
+          </p>
+        </div>
+
+        <!-- Late Joiner Support -->
+        <div class="technique-item">
+          <Icon name="mdi:account-multiple-plus" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">レイトジョイナー対応</h3>
+            <p>後から入ってきた人にも同じ世界を見てもらいたいという思いから、レイトジョイナー対応にも取り組んでいます。ただし、すべての情報を送るとネットワークに負荷がかかるため、以下のような工夫をしています。</p>
+            <ul class="tech-list">
+              <li>本当に必要な情報の選別（「なくても不自然でない情報」「他の情報から計算できる情報」は送らない）</li>
+              <li>同期タイミングの分散（一度に送らず、時間をずらして送信）</li>
+              <li>データ形式の最適化（Int Packingなどの技術を使い、最小限のデータで同期）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOD Discussion -->
+      <div class="discussion-box">
+        <h4 class="discussion-title">
+          <Icon name="mdi:information" class="discussion-icon" />
+          LOD（Level of Detail）について
+        </h4>
+        <p>LODは遠くにあるときに低ポリゴン版に切り替える技術ですが、大崎商会では現時点では採用していません。</p>
+        <div class="reason-box">
+          <h5 class="reason-title">理由：</h5>
+          <ul class="reason-list">
+            <li>大崎商会のアセットは「手に持つ小物」が中心で、常に近距離で見られるため、LODの効果が限定的</li>
+            <li>データ容量が増える（高ポリ版と低ポリ版の両方が必要）</li>
+            <li>初期段階からポリゴン数を抑えた設計をしているため、必要性が低い</li>
+          </ul>
+          <p class="reason-note">ただし、将来的に大型オブジェクトを扱う場合は、検討する可能性もあります。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Data Size Optimization -->
+    <div class="detail-section">
+      <div class="section-header">
+        <Icon name="mdi:package-down" class="section-icon" />
+        <h2 class="section-title">3. データの軽さ：制作者の使いやすさ</h2>
+      </div>
+
+      <p class="section-intro">Boothからダウンロードして、Unityに入れる際の快適さにも配慮しています。</p>
+
+      <div class="technique-list">
+        <div class="technique-item">
+          <Icon name="mdi:image-size-select-large" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">画像の事前圧縮</h3>
+            <p>Unityのインポート設定に合わせて、事前に画像を圧縮しています。</p>
+          </div>
+        </div>
+
+        <div class="technique-item">
+          <Icon name="mdi:file-remove" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">不要なファイルの除外</h3>
+            <p>開発中専用のデータや、他のプランのデータが混ざらないように、専用のPackerツールを作成・運用しています。<br />
+            これによって、制作者の混乱を防ぎ、容量も最小限にしています。</p>
+          </div>
+        </div>
+
+        <div class="technique-item">
+          <Icon name="mdi:image-multiple" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">テクスチャの共有・再利用</h3>
+            <p>規格化して、複数のオブジェクトで同じテクスチャを使うこともあります。</p>
+          </div>
+        </div>
+
+        <div class="technique-item">
+          <Icon name="mdi:format-text" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">フォントファイルの最小化</h3>
+            <p>可能な限りフォントファイルを使わない工夫をしています。</p>
+            <ul class="tech-list">
+              <li>画像で置き換えられないか</li>
+              <li>フォールバックフォントで対応できないか</li>
+            </ul>
+            <p>といったことを常に検討しています。</p>
+          </div>
+        </div>
+
+        <div class="technique-item">
+          <Icon name="mdi:auto-fix" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">シェーダーの依存関係の最小化</h3>
+            <p>Unity標準＋VRC標準で実現できることを優先しています。</p>
+          </div>
+        </div>
+
+        <div class="technique-item">
+          <Icon name="mdi:cube-unfolded" class="tech-icon" />
+          <div class="tech-content">
+            <h3 class="tech-title">プレハブの整理</h3>
+            <p>不要なデータは削減しています。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tradeoffs -->
+    <div class="tradeoff-section">
+      <h2 class="section-title">
+        <Icon name="mdi:scale-balance" class="title-icon" />
+        トレードオフの判断
+      </h2>
+
+      <p class="section-intro">軽量化には、しばしば矛盾が生じます。</p>
+
+      <div class="tradeoff-examples">
+        <div class="tradeoff-card">
+          <Icon name="mdi:image-filter-hdr" class="tradeoff-icon" />
+          <p><strong>クランチ圧縮</strong>を強くすると、ワールド読み込み（1）は早くなりますが、画質への影響があります</p>
+        </div>
+
+        <div class="tradeoff-card">
+          <Icon name="mdi:chart-timeline-variant" class="tradeoff-icon" />
+          <p><strong>LOD</strong>を実装すると、動作（2）は軽くなる可能性がありますが、データ容量（3）は増えます</p>
+        </div>
+
+        <div class="tradeoff-card">
+          <Icon name="mdi:image-multiple" class="tradeoff-icon" />
+          <p><strong>テクスチャを共有</strong>すると、データ容量（3）は減りますが、見た目のバリエーションには制約が生じます</p>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <Icon name="mdi:thought-bubble" class="highlight-icon" />
+        <p>大崎商会では、その都度、用途とバランスを考えて判断しています。</p>
+      </div>
+    </div>
+
+    <!-- Future Improvements -->
+    <div class="future-section">
+      <h2 class="section-title">
+        <Icon name="mdi:rocket-launch" class="title-icon" />
+        まだまだ改善の余地があります
+      </h2>
+
+      <p class="section-intro">正直に言うと、まだできていないこと、勉強中のこともたくさんあります。</p>
+
+      <div class="future-list">
+        <div class="future-item">
+          <Icon name="mdi:progress-clock" class="future-icon" />
+          <span>LODの実装</span>
+        </div>
+        <div class="future-item">
+          <Icon name="mdi:progress-clock" class="future-icon" />
+          <span>テクスチャフォーマットの個別最適化</span>
+        </div>
+        <div class="future-item">
+          <Icon name="mdi:progress-clock" class="future-icon" />
+          <span>アセットをまたいだマテリアル統合</span>
+        </div>
+      </div>
+
+      <div class="achievement-box">
+        <Icon name="mdi:check-decagram" class="achievement-icon" />
+        <p>ただ、「けものバーずんどこ」で毎週20名以上の規模で実際に使っていただき、おおむね快適に動いているという実績があります。<br />
+        <strong>それが、現時点での大崎商会の品質の目安です。</strong></p>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h2 class="cta-title">
+        <Icon name="mdi:hand-wave" class="cta-icon" />
+        この技術を実際に体験してみませんか？
+      </h2>
+      <p class="cta-intro">大崎商会のアセットは、この記事で紹介した工夫を実装しています。</p>
+
+      <div class="cta-cards">
+        <div class="cta-card">
+          <Icon name="mdi:beer" class="cta-card-icon" />
+          <h3 class="cta-card-title">実際に触って確かめる</h3>
+          <p class="cta-card-text">
+            <strong>サンプルワールド「けものバーずんどこ」</strong><br />
+            毎週金曜 22:00~ 開催中
+          </p>
+          <a href="/events" class="cta-button">
+            <Icon name="mdi:calendar" class="button-icon" />
+            次回開催情報
+          </a>
+        </div>
+
+        <div class="cta-card">
+          <Icon name="mdi:shopping" class="cta-card-icon" />
+          <h3 class="cta-card-title">アセットを使ってみる</h3>
+          <p class="cta-card-text">
+            <strong>おつまみ20</strong><br />
+            （AudioPool/ParticlePool実装）
+          </p>
+          <a href="/products/7815764" class="cta-button">
+            <Icon name="mdi:open-in-new" class="button-icon" />
+            Boothで見る
+          </a>
+        </div>
+
+        <div class="cta-card">
+          <Icon name="mdi:chat-question" class="cta-card-icon" />
+          <h3 class="cta-card-title">質問・相談がある方へ</h3>
+          <p class="cta-card-text">
+            技術的な質問や、「こういう最適化はどうでしょう？」といった相談も歓迎です。
+          </p>
+          <a href="/support#contact" class="cta-button">
+            <Icon name="mdi:email" class="button-icon" />
+            お問い合わせ
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <Icon name="mdi:information-outline" class="disclaimer-icon" />
+      <p>※この記事は2026年1月1日時点の情報です。過去のアセットは現在の基準を満たしていない場合があります。また、今後情報が古くなる可能性もありますので、ご了承ください。</p>
+    </div>
+
+    <!-- Back Link -->
+    <div class="back-link-section">
+      <a href="/about" class="back-link">
+        <Icon name="mdi:arrow-left" class="back-icon" />
+        <span>Aboutページに戻る</span>
+      </a>
+    </div>
+  </Container>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    padding: 3rem 1.5rem;
+    position: relative;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/images/technical-hero.webp');
+    background-size: cover;
+    background-position: center;
+    border-radius: 2rem;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    border: 2px solid var(--main-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+  }
+
+  .hero-content-wrapper {
+    max-width: 800px;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .hero-text-box {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    padding: 3rem;
+    border-radius: 2rem;
+    border: 2px solid var(--main-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--main-color);
+    text-shadow: 2px 2px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
+  }
+
+  .hero-intro {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    color: var(--sub-color);
+    line-height: 1.8;
+    font-weight: 700;
+  }
+
+  /* Introduction */
+  .intro-section {
+    margin: 3rem 0;
+  }
+
+  .intro-card {
+    background: linear-gradient(135deg, var(--main-color) 0%, #e67e22 100%);
+    color: white;
+    padding: 3rem;
+    border-radius: 2rem;
+    text-align: center;
+  }
+
+  .intro-icon {
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-text {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .intro-text:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Aspects Section */
+  .aspects-section {
+    margin: 4rem 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .title-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--main-color);
+  }
+
+  .section-intro {
+    font-size: 1.125rem;
+    color: var(--sub-color);
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+
+  .aspect-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .aspect-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    border: 3px solid var(--main-color);
+    text-align: center;
+    position: relative;
+  }
+
+  .aspect-number {
+    position: absolute;
+    top: -1rem;
+    left: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--main-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.25rem;
+  }
+
+  .aspect-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    color: var(--main-color);
+    margin: 1rem 0;
+  }
+
+  .aspect-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .aspect-description {
+    font-size: 0.875rem;
+    color: var(--main-color);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .aspect-detail {
+    color: var(--sub-color);
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  .highlight-box {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .highlight-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #ffc107;
+    flex-shrink: 0;
+  }
+
+  .highlight-box p {
+    color: var(--sub-color);
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  /* Detail Sections */
+  .detail-section {
+    margin: 4rem 0;
+    padding: 3rem;
+    background: var(--bg-color);
+    border-radius: 2rem;
+    border: 2px solid #e2e8f0;
+  }
+
+  .detail-section.priority {
+    border: 3px solid var(--main-color);
+    background: linear-gradient(to bottom, #fff5f0 0%, var(--bg-color) 100%);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-icon {
+    width: 3rem;
+    height: 3rem;
+    color: var(--main-color);
+  }
+
+  .priority-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--main-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+  }
+
+  .badge-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* Subsections */
+  .subsection {
+    margin: 3rem 0;
+  }
+
+  .subsection.highlight {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    border: 2px solid var(--main-color);
+  }
+
+  .subsection-title {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .subsection-icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--main-color);
+  }
+
+  .emphasis-box {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border: 2px solid var(--main-color);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .emphasis-icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--main-color);
+    flex-shrink: 0;
+  }
+
+  .emphasis-box p {
+    margin: 0;
+    color: var(--sub-color);
+    font-size: 1.125rem;
+  }
+
+  /* Technique List */
+  .technique-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .technique-item {
+    display: flex;
+    gap: 1.5rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+
+  .technique-item:hover {
+    border-color: var(--main-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .tech-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--main-color);
+    flex-shrink: 0;
+  }
+
+  .tech-content {
+    flex: 1;
+  }
+
+  .tech-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 0.75rem;
+  }
+
+  .tech-content p {
+    color: var(--sub-color);
+    line-height: 1.8;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+  }
+
+  .tech-list {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .tech-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--sub-color);
+    opacity: 0.9;
+  }
+
+  .tech-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--main-color);
+    font-weight: 900;
+  }
+
+  /* Info Box */
+  .info-box {
+    background: #e3f2fd;
+    border: 2px solid #2196f3;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .info-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #2196f3;
+    flex-shrink: 0;
+  }
+
+  .info-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 0.75rem;
+  }
+
+  .info-box p {
+    color: var(--sub-color);
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  /* Feature Box */
+  .feature-box {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    border: 3px solid #9c27b0;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .feature-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .feature-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #9c27b0;
+  }
+
+  .feature-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin: 0;
+  }
+
+  .feature-badge {
+    background: #9c27b0;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .feature-description {
+    color: var(--sub-color);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  /* Discussion Box */
+  .discussion-box {
+    background: #f5f5f5;
+    border: 2px solid #9e9e9e;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 2rem;
+  }
+
+  .discussion-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .discussion-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: #9e9e9e;
+  }
+
+  .discussion-box > p {
+    color: var(--sub-color);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .reason-box {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .reason-title {
+    font-weight: 900;
+    color: var(--sub-color);
+    margin-bottom: 1rem;
+  }
+
+  .reason-list {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .reason-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--sub-color);
+    opacity: 0.9;
+  }
+
+  .reason-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--main-color);
+    font-weight: 900;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .reason-note {
+    color: var(--sub-color);
+    font-style: italic;
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Tradeoff Section */
+  .tradeoff-section {
+    margin: 4rem 0;
+  }
+
+  .tradeoff-examples {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .tradeoff-card {
+    background: white;
+    border: 2px solid #ff9800;
+    padding: 2rem;
+    border-radius: 1rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .tradeoff-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #ff9800;
+    flex-shrink: 0;
+  }
+
+  .tradeoff-card p {
+    color: var(--sub-color);
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  /* Future Section */
+  .future-section {
+    margin: 4rem 0;
+    padding: 3rem;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-radius: 2rem;
+    border: 2px solid #4caf50;
+  }
+
+  .future-list {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .future-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 700;
+    color: var(--sub-color);
+  }
+
+  .future-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: #4caf50;
+  }
+
+  .achievement-box {
+    background: white;
+    border: 3px solid #4caf50;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .achievement-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #4caf50;
+    flex-shrink: 0;
+  }
+
+  .achievement-box p {
+    color: var(--sub-color);
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    margin: 4rem 0;
+    padding: 3rem;
+    background: linear-gradient(135deg, var(--main-color) 0%, #e67e22 100%);
+    color: white;
+    border-radius: 2rem;
+    text-align: center;
+  }
+
+  .cta-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .cta-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .cta-intro {
+    font-size: 1.125rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+  }
+
+  .cta-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .cta-card {
+    background: white;
+    color: var(--sub-color);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    text-align: center;
+  }
+
+  .cta-card-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    color: var(--main-color);
+    margin-bottom: 1rem;
+  }
+
+  .cta-card-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    color: var(--sub-color);
+  }
+
+  .cta-card-text {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--main-color);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: 3rem;
+    text-decoration: none;
+    font-weight: 900;
+    transition: all 0.3s ease;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .button-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Disclaimer */
+  .disclaimer {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin: 3rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .disclaimer-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #757575;
+    flex-shrink: 0;
+  }
+
+  .disclaimer p {
+    font-size: 0.875rem;
+    color: #757575;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Back Link */
+  .back-link-section {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--main-color);
+    text-decoration: none;
+    font-weight: 900;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    gap: 1rem;
+  }
+
+  .back-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 2rem 1rem;
+      min-height: 300px;
+    }
+
+    .hero-text-box {
+      padding: 2rem;
+    }
+
+    .detail-section {
+      padding: 2rem 1.5rem;
+    }
+
+    .intro-card,
+    .cta-section {
+      padding: 2rem 1.5rem;
+    }
+
+    .technique-item {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .section-header {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .section-title {
+      flex-direction: column;
+    }
+
+    .cta-title {
+      flex-direction: column;
+      font-size: 1.5rem;
+    }
+
+    .feature-header {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
