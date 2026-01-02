@@ -59,7 +59,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
           <div class="msdf-previews">
             <!-- 入力 SVG -->
             <div class="preview-card" id="msdf-drop-zone">
-              <div class="card-label">入力 SVG (Drop here)</div>
+              <div class="card-label">SVG</div>
               <div id="msdf-svg-preview" class="preview-content">
                 <div class="placeholder">
                   <span class="icon">📁</span>
@@ -71,7 +71,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 
             <!-- 生成 MSDF -->
             <div class="preview-card">
-              <div class="card-label">生成結果 (MSDF)</div>
+              <div class="card-label">MSDF</div>
               <div class="preview-content canvas-bg">
                 <canvas id="msdf-canvas"></canvas>
               </div>
@@ -79,7 +79,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
 
             <!-- 復号プレビュー -->
             <div class="preview-card">
-              <div class="card-label">拡大表示サンプル</div>
+              <div class="card-label">表示サンプル</div>
               <div class="preview-content">
                 <canvas id="msdf-decoded-canvas"></canvas>
               </div>
@@ -648,8 +648,9 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
   }
 
   .canvas-bg {
-    /* MSDFが見えやすいようにグレーの背景 */
-    background: #222;
+    /* MSDFが見えやすいように白背景 */
+    background: #fff;
+    border: 1px solid #eee;
   }
 
   .preview-content canvas, .preview-content :global(svg) {
