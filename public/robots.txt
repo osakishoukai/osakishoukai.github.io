@@ -1,11 +1,66 @@
 # 大崎商会公式サイト robots.txt
 # https://osakishoukai.github.io
 
+# 全てのクローラーに対する基本設定
 User-agent: *
 Allow: /
+Disallow: /404
 
 # Sitemap locations
 Sitemap: https://osakishoukai.github.io/sitemap-index.xml
 
-# Crawl-delay (optional, for polite crawling)
+# AI クローラー向け最適化設定
+# OpenAI GPTBot
+User-agent: GPTBot
+Allow: /
+Allow: /products/
+Allow: /events/
+Allow: /lab/
+Allow: /about/
+Allow: /support/
+Crawl-delay: 1
+
+# Anthropic Claude
+User-agent: Claude-Web
+Allow: /
+Allow: /products/
+Allow: /events/
+Allow: /lab/
+Allow: /about/
+Allow: /support/
+Crawl-delay: 1
+
+# Google Gemini
+User-agent: Google-Extended
+Allow: /
+Allow: /products/
+Allow: /events/
+Allow: /lab/
+Allow: /about/
+Allow: /support/
+Crawl-delay: 1
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Allow: /products/
+Allow: /events/
+Allow: /lab/
+Allow: /about/
+Allow: /support/
+Crawl-delay: 1
+
+# Common Crawl (AI学習データセット)
+User-agent: CCBot
+Allow: /
+Crawl-delay: 2
+
+# 優先クロールパス（重要なコンテンツ）
+# /products/ - 商品情報
+# /events/ - イベント情報
+# /lab/ - おおさきラボツール群
+# /about/ - 会社情報・技術情報
+# /support/ - サポート・FAQ
+
+# Crawl-delay (全体的なクロール速度調整)
 Crawl-delay: 1

@@ -85,7 +85,13 @@ const pathMap: Record<string, string> = {
   "archive": "アーカイブ",
   "owner": "おおさきくん",
   "license": "ライセンス",
-  "lab": "おおさきラボ"
+  "lab": "おおさきラボ",
+  "technical": "技術へのこだわり",
+  "legal": "法的情報",
+  "vector-tracer": "いろあつめーかー",
+  "msdf-generator": "でかーるめーかー",
+  "icon-generator": "アイコンジェネレーター",
+  "image-scatter": "画像スキャッター"
 };
 
 let currentPath = "";
@@ -98,6 +104,7 @@ pathSegments.forEach((segment, index) => {
   });
 });
 
+// パンくずリスト構造化データ（AIと検索エンジン向け）
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -108,6 +115,7 @@ const breadcrumbSchema = {
     "item": item.url
   }))
 };
+
 ---
 
 <!doctype html>

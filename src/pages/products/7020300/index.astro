@@ -188,9 +188,33 @@ const breadcrumbs = [
   { label: '商品一覧', href: '/products' },
   { label: item.name, href: `/products/${item.id}` }
 ];
+
+// Product Schema (構造化データ) - SEO & AI対応
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": item.name,
+  "image": `https://osakishoukai.github.io${item.main_image}`,
+  "description": description.substring(0, 200).replace(/[\r\n]+/g, ' '),
+  "brand": {
+    "@type": "Brand",
+    "name": "大崎商会"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "JPY",
+    "availability": "https://schema.org/InStock",
+    "url": item.booth_url || `https://osakishoukai.github.io/products/${item.id}`
+  },
+  "category": "VRChat ワールドアセット",
+  "keywords": item.tags ? item.tags.join(', ') : ''
+};
 ---
 
 <Layout title={item.name}>
+  <!-- Product Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+  
   <Container>
     <Breadcrumbs items={breadcrumbs} />
   </Container>
