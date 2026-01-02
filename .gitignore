@@ -28,6 +28,9 @@ spec.md
 開発メモ/
 internal/
 AGENTS.md
+OPERATIONS.md
+README.md
+TODO.md
 
 # 環境変数
 .env
