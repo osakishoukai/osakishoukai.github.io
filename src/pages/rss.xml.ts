@@ -36,9 +36,9 @@ export async function GET(context: APIContext) {
     site: context.site!,
     items: allItems.slice(0, 20),
     customData: `<language>ja</language>
-<copyright>© 2025 大崎商会</copyright>
-<managingEditor>osaki_vrc@example.com (おおさきくん)</managingEditor>
-<webMaster>osaki_vrc@example.com (おおさきくん)</webMaster>
+<copyright>© 2026 大崎商会</copyright>
+<managingEditor>osaki_shokai@gmail.com (おおさきくん)</managingEditor>
+<webMaster>osaki_shokai@gmail.com (おおさきくん)</webMaster>
 <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 <category>VRChat</category>
 <category>ワールドアセット</category>
