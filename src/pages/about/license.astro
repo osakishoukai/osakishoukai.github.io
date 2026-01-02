@@ -11,189 +11,137 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
       { label: "ライセンス" }
     ]} />
     
-    <div class="hero-section">
-      <div class="hero-content-wrapper">
-        <div class="hero-text-box">
-          <h1 class="hero-title">
-            大崎商会 製品利用規約
-          </h1>
-          <p class="hero-intro">
-            本製品をご利用いただく際は、本規約に同意したものとみなします。
-          </p>
-        </div>
+    <div class="legal-page">
+      <h1 class="page-title">大崎商会 製品利用規約</h1>
+      <p class="page-intro">本製品をご利用いただく際は、本規約に同意したものとみなします。</p>
+      
+      <div class="license-content">
+        <!-- Section 1: 利用可能範囲 -->
+        <section class="license-section">
+          <div class="section-header">
+            <Icon name="mdi:check-decagram" class="section-icon allowed" />
+            <h2 class="section-title">1. 利用可能範囲</h2>
+          </div>
+          <div class="section-body">
+            <p class="section-intro">
+              本製品は、VRChat等のメタバース空間におけるワールドやアバター用アセットとしての利用を想定しています。
+            </p>
+            <ul class="allowed-list">
+              <li>
+                <Icon name="mdi:check" class="list-icon" />
+                <span>個人・法人を問わず、営利・非営利目的で利用可能です。</span>
+              </li>
+              <li>
+                <Icon name="mdi:check" class="list-icon" />
+                <span>動画配信、ゲーム制作、広告物等への利用が可能です。</span>
+              </li>
+              <li>
+                <Icon name="mdi:check" class="list-icon" />
+                <span>製品の改変（モデルの形状変更、テクスチャの書き換え等）は自由です。</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Section 2: 禁止事項 -->
+        <section class="license-section">
+          <div class="section-header">
+            <Icon name="mdi:alert-circle" class="section-icon prohibited" />
+            <h2 class="section-title">2. 禁止事項</h2>
+          </div>
+          <div class="section-body">
+            <ul class="prohibited-list">
+              <li>
+                <Icon name="mdi:close" class="list-icon" />
+                <div>
+                  <strong>再配布・転売の禁止</strong>
+                  <p>改変の有無を問わず、本製品のモデルデータ、テクスチャデータそのものを再配布または販売することを禁止します。</p>
+                </div>
+              </li>
+              <li>
+                <Icon name="mdi:close" class="list-icon" />
+                <div>
+                  <strong>自作発言の禁止</strong>
+                  <p>本製品またはその改変物を、自身がゼロから制作したものとして公開することを禁止します。</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Section 6: お問い合わせ -->
+        <section class="license-section">
+          <div class="section-header">
+            <Icon name="mdi:email" class="section-icon contact" />
+            <h2 class="section-title">3. お問い合わせ</h2>
+          </div>
+          <div class="section-body">
+            <p>
+              規約に関するご質問、不具合報告などはBoothのメッセージ機能またはサポートページからお送りください。
+            </p>
+            <div class="contact-buttons">
+              <a href="https://osaki-vrc.booth.pm/" target="_blank" rel="noopener" class="contact-button">
+                <Icon name="mdi:shopping" class="button-icon" />
+                Boothで確認
+              </a>
+              <a href="/support#contact" class="contact-button secondary">
+                <Icon name="mdi:help-circle" class="button-icon" />
+                サポートページ
+              </a>
+            </div>
+          </div>
+        </section>
       </div>
-    </div>
-  </Container>
 
-  <Container>
-    <div class="license-content">
-      <!-- Section 1: 利用可能範囲 -->
-      <section class="license-section">
-        <div class="section-header">
-          <Icon name="mdi:check-decagram" class="section-icon allowed" />
-          <h2 class="section-title">1. 利用可能範囲</h2>
-        </div>
-        <div class="section-body">
-          <p class="section-intro">
-            本製品は、VRChat等のメタバース空間におけるワールドやアバター用アセットとしての利用を想定しています。
-          </p>
-          <ul class="allowed-list">
-            <li>
-              <Icon name="mdi:check" class="list-icon" />
-              <span>個人・法人を問わず、営利・非営利目的で利用可能です。</span>
-            </li>
-            <li>
-              <Icon name="mdi:check" class="list-icon" />
-              <span>動画配信、ゲーム制作、広告物等への利用が可能です。</span>
-            </li>
-            <li>
-              <Icon name="mdi:check" class="list-icon" />
-              <span>製品の改変（モデルの形状変更、テクスチャの書き換え等）は自由です。</span>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- Section 2: 禁止事項 -->
-      <section class="license-section">
-        <div class="section-header">
-          <Icon name="mdi:alert-circle" class="section-icon prohibited" />
-          <h2 class="section-title">2. 禁止事項</h2>
-        </div>
-        <div class="section-body">
-          <ul class="prohibited-list">
-            <li>
-              <Icon name="mdi:close" class="list-icon" />
-              <div>
-                <strong>再配布・転売の禁止</strong>
-                <p>改変の有無を問わず、本製品のモデルデータ、テクスチャデータそのものを再配布または販売することを禁止します。</p>
-              </div>
-            </li>
-            <li>
-              <Icon name="mdi:close" class="list-icon" />
-              <div>
-                <strong>自作発言の禁止</strong>
-                <p>本製品またはその改変物を、自身がゼロから制作したものとして公開することを禁止します。</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- Section 6: お問い合わせ -->
-      <section class="license-section">
-        <div class="section-header">
-          <Icon name="mdi:email" class="section-icon contact" />
-          <h2 class="section-title">3. お問い合わせ</h2>
-        </div>
-        <div class="section-body">
-          <p>
-            規約に関するご質問、不具合報告などはBoothのメッセージ機能またはサポートページからお送りください。
-          </p>
-          <div class="contact-buttons">
-            <a href="https://osaki-vrc.booth.pm/" target="_blank" rel="noopener" class="contact-button">
-              <Icon name="mdi:shopping" class="button-icon" />
-              Boothで確認
-            </a>
-            <a href="/support#contact" class="contact-button secondary">
-              <Icon name="mdi:help-circle" class="button-icon" />
-              サポートページ
-            </a>
+      <!-- Summary Box -->
+      <div class="summary-box">
+        <h3 class="summary-title">要約</h3>
+        <div class="summary-grid">
+          <div class="summary-item allowed">
+            <Icon name="mdi:check-circle" class="summary-icon" />
+            <div>
+              <strong>できること</strong>
+              <p>メタバース空間での自由な使用、改変、収益化、動画配信への映り込み</p>
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- Summary Box -->
-    <div class="summary-box">
-      <h3 class="summary-title">要約</h3>
-      <div class="summary-grid">
-        <div class="summary-item allowed">
-          <Icon name="mdi:check-circle" class="summary-icon" />
-          <div>
-            <strong>できること</strong>
-            <p>メタバース空間での自由な使用、改変、収益化、動画配信への映り込み</p>
-          </div>
-        </div>
-        <div class="summary-item prohibited">
-          <Icon name="mdi:close-circle" class="summary-icon" />
-          <div>
-            <strong>できないこと</strong>
-            <p>データの再配布・転売、自作発言、公序良俗に反する利用</p>
+          <div class="summary-item prohibited">
+            <Icon name="mdi:close-circle" class="summary-icon" />
+            <div>
+              <strong>できないこと</strong>
+              <p>データの再配布・転売、自作発言、公序良俗に反する利用</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Back Link -->
-
   </Container>
 </Layout>
 
 <style>
-  /* Hero Section */
-  .hero-section {
-    padding: 3rem 1.5rem;
-    position: relative;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/images/license.webp');
-    background-size: cover;
-    background-position: center;
-    border-radius: 2rem;
-    overflow: hidden;
-    margin-bottom: 3rem;
-    border: 2px solid var(--main-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 400px;
-  }
-
-  .hero-content-wrapper {
+  .legal-page {
     max-width: 800px;
-    width: 100%;
-    z-index: 10;
+    margin: 0 auto;
+    padding: 2rem 0 4rem;
   }
-
-  .hero-text-box {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(12px);
-    padding: 3rem;
-    border-radius: 2rem;
-    border: 2px solid var(--main-color);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  
+  .page-title {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: 900;
+    color: var(--main-color);
+    margin-bottom: 1rem;
     text-align: center;
   }
-
-  .hero-title {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-    color: var(--main-color);
-    text-shadow: 2px 2px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
-  }
-
-  .hero-intro {
-    font-size: clamp(1.1rem, 2vw, 1.25rem);
+  
+  .page-intro {
+    text-align: center;
     color: var(--sub-color);
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
     line-height: 1.8;
-    font-weight: 700;
-  }
-
-  @media (max-width: 768px) {
-    .hero-section {
-      padding: 2rem 1rem;
-      min-height: 300px;
-    }
-
-    .hero-text-box {
-      padding: 2rem;
-    }
   }
 
   .license-content {
-    max-width: 900px;
-    margin: 0 auto;
+    margin-top: 2rem;
   }
 
   .license-section {
@@ -305,17 +253,15 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     color: var(--main-color);
   }
 
-  .back-link-section {
-    text-align: center;
-    padding: 2rem 0;
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--main-color);
-    text-decoration: none;
-    font-weight: 900;
+  @media (max-width: 768px) {
+    .legal-page {
+      padding: 1rem 0 3rem;
+    }
+    .license-section {
+      padding: 2rem;
+    }
+    .contact-buttons {
+      flex-direction: column;
+    }
   }
 </style>
