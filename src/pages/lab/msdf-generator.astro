@@ -1,0 +1,751 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
+---
+
+<Layout 
+  title="SVGからMSDFを生成 | でかーるめーかー - おおさきラボ" 
+  description="SVGをMSDF（Multi-channel Signed Distance Field）形式のテクスチャに変換します。超軽量でエッジが非常に綺麗なデカールが貼れます。liltoonなどのシェーダーに対応。"
+>
+  <Container>
+    <Breadcrumbs items={[
+      { label: "おおさきラボ", href: "/lab" },
+      { label: "でかーるめーかー" }
+    ]} />
+
+    <div class="tool-header-section">
+      <div class="tool-icon-wrapper">
+        <div class="tool-icon">💠</div>
+      </div>
+      <div class="tool-info">
+        <h1 class="tool-title">でかーるめーかー</h1>
+        <p class="tool-description">
+          SVGをMSDFにします。超軽量のテクスチャでベクターっぽい奇麗なデカールが貼れます。<br/>
+          liltoonなどが対応してるよ！
+        </p>
+        <div class="tool-guide">
+          <span>💡</span> SVGを持ってない？ <a href="/lab/vector-tracer">いろあつめーかー</a> で作れるよ！
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-content">
+        <div class="msdf-layout">
+          <div class="msdf-controls">
+            <div class="control-group">
+              <label>出力サイズ</label>
+              <div class="size-inputs">
+                <input type="number" id="msdf-width" value="64" min="16" max="1024" />
+                <span>×</span>
+                <input type="number" id="msdf-height" value="64" min="16" max="1024" />
+                <button id="msdf-aspect-lock" class="lock-btn active" title="縦横比を固定">🔒</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label>Pixel Range</label>
+              <input type="number" id="msdf-range" value="3" min="1" max="32" step="0.5" />
+            </div>
+            <div class="actions">
+              <button id="msdf-download" class="btn btn-primary" disabled>
+                <span>💾</span> MSDFを保存
+              </button>
+            </div>
+            
+            <div id="msdf-status" class="status-box">WASM読み込み中...</div>
+          </div>
+
+          <div class="msdf-previews">
+            <!-- 入力 SVG -->
+            <div class="preview-card" id="msdf-drop-zone">
+              <div class="card-label">入力 SVG (Drop here)</div>
+              <div id="msdf-svg-preview" class="preview-content">
+                <div class="placeholder">
+                  <span class="icon">📁</span>
+                  <p>SVGをドロップ</p>
+                </div>
+              </div>
+              <input type="file" id="msdf-file-input" accept=".svg" class="hidden" />
+            </div>
+
+            <!-- 生成 MSDF -->
+            <div class="preview-card">
+              <div class="card-label">生成結果 (MSDF)</div>
+              <div class="preview-content canvas-bg">
+                <canvas id="msdf-canvas"></canvas>
+              </div>
+            </div>
+
+            <!-- 復号プレビュー -->
+            <div class="preview-card">
+              <div class="card-label">拡大表示サンプル</div>
+              <div class="preview-content">
+                <canvas id="msdf-decoded-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Layout>
+
+<script is:inline src="/lab/msdfgen/msdfgen.js"></script>
+
+<script>
+  let msdfModule = null;
+  let currentSvgData = null;
+  let currentFileName = 'decal';
+  let isAspectLocked = true;
+  let aspectRatio = 1.0;
+
+  const elements = {
+    dropZone: document.getElementById('msdf-drop-zone'),
+    fileInput: document.getElementById('msdf-file-input') as HTMLInputElement,
+    svgPreview: document.getElementById('msdf-svg-preview'),
+    msdfCanvas: document.getElementById('msdf-canvas') as HTMLCanvasElement,
+    decodedCanvas: document.getElementById('msdf-decoded-canvas') as HTMLCanvasElement,
+    width: document.getElementById('msdf-width') as HTMLInputElement,
+    height: document.getElementById('msdf-height') as HTMLInputElement,
+    range: document.getElementById('msdf-range') as HTMLInputElement,
+    downloadBtn: document.getElementById('msdf-download') as HTMLButtonElement,
+    status: document.getElementById('msdf-status'),
+    aspectBtn: document.getElementById('msdf-aspect-lock')
+  };
+
+  function updateStatus(msg, type = 'info') {
+    if (!elements.status) return;
+    elements.status.textContent = msg;
+    elements.status.className = `status-box ${type}`;
+  }
+
+  // WASM初期化
+  async function init() {
+    try {
+      // @ts-ignore
+      msdfModule = await createMsdfgenModule();
+      updateStatus('準備完了！SVGをドロップしてください', 'success');
+    } catch (e) {
+      updateStatus('WASMの初期化に失敗しました', 'error');
+      console.error(e);
+    }
+  }
+
+  function handleFile(file) {
+    if (!file || !file.name.endsWith('.svg')) {
+      updateStatus('SVGファイルを選択してください', 'error');
+      return;
+    }
+    currentFileName = file.name.replace('.svg', '');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      currentSvgData = e.target?.result;
+      if (elements.svgPreview) elements.svgPreview.innerHTML = currentSvgData;
+      updateStatus('SVG読み込み完了。MSDFを生成します...', 'success');
+      generate();
+    };
+    reader.readAsText(file);
+  }
+
+  async function generate() {
+    if (!msdfModule || !currentSvgData) return;
+
+    try {
+      const width = parseInt(elements.width.value);
+      const height = parseInt(elements.height.value);
+      const range = parseFloat(elements.range.value);
+
+      updateStatus('生成中...', 'info');
+
+      // 簡易的なパス抽出（複雑なSVGは変換が必要だが、ここではapp.js準拠のロジックを使用）
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(currentSvgData, 'image/svg+xml');
+      const pathElement = svgDoc.querySelector('path');
+      
+      if (!pathElement) {
+        updateStatus('path要素が見つかりません', 'error');
+        return;
+      }
+
+      // 共通のトランスフォーム処理（app.jsから抽出した簡易版）
+      const pathData = extractTransformedPath(pathElement, svgDoc);
+      
+      // メモリ確保
+      const bufferSize = width * height * 4;
+      const bufferPtr = msdfModule._malloc(bufferSize);
+      const pathDataLength = pathData.length + 1;
+      const pathDataPtr = msdfModule._malloc(pathDataLength);
+      
+      // 文字列をWASMメモリに書き込む
+      for (let i = 0; i < pathData.length; i++) {
+        msdfModule.HEAPU8[pathDataPtr + i] = pathData.charCodeAt(i);
+      }
+      msdfModule.HEAPU8[pathDataPtr + pathData.length] = 0;
+      
+      // WASM呼び出し
+      const result = msdfModule._generate_msdf_from_svg(width, height, pathDataPtr, range, bufferPtr);
+      
+      if (result === 1) {
+        const buffer = msdfModule.HEAPU8.subarray(bufferPtr, bufferPtr + bufferSize);
+        const ctx = elements.msdfCanvas.getContext('2d');
+        elements.msdfCanvas.width = width;
+        elements.msdfCanvas.height = height;
+        const imgData = ctx.createImageData(width, height);
+        imgData.data.set(buffer);
+        ctx.putImageData(imgData, 0, 0);
+        
+        elements.downloadBtn.disabled = false;
+        updateStatus('生成完了！', 'success');
+        decode();
+      } else {
+        updateStatus('MSDF生成に失敗しました', 'error');
+      }
+
+      msdfModule._free(pathDataPtr);
+      msdfModule._free(bufferPtr);
+    } catch (e) {
+      updateStatus('エラーが発生しました', 'error');
+      console.error(e);
+    }
+  }
+
+  function extractTransformedPath(pathElement, svgDoc) {
+    // 親要素のtransformを再帰的に収集
+    function collectTransforms(element) {
+        let transforms = [];
+        let current = element;
+        while (current && current.nodeType === 1) {
+            const transform = current.getAttribute('transform');
+            if (transform) {
+                transforms.unshift(transform); // 親が先に来るように
+            }
+            current = current.parentElement;
+        }
+        return transforms;
+    }
+    
+    // 変換行列を計算してパスを変換
+    function transformPathData(pathData, transforms, svg) {
+        if (!transforms.length) return pathData;
+        
+        let current = svg;
+        const gList = [];
+        for (const t of transforms) {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('transform', t);
+            current.appendChild(g);
+            current = g;
+            gList.push(g);
+        }
+        
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathData);
+        current.appendChild(path);
+        
+        const ctm = path.getCTM();
+        if (!ctm) {
+            console.warn('Could not get CTM');
+            return pathData;
+        }
+        
+        const result = [];
+        let currentX = 0, currentY = 0;
+        let startX = 0, startY = 0;
+        
+        const tokens = pathData.match(/[a-zA-Z]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g) || [];
+        let i = 0;
+        
+        function parseNumber() { return parseFloat(tokens[i++]); }
+        function transformPoint(x, y) {
+            const pt = svg.createSVGPoint();
+            pt.x = x; pt.y = y;
+            const transformed = pt.matrixTransform(ctm);
+            return { x: transformed.x, y: transformed.y };
+        }
+        
+        while (i < tokens.length) {
+            const cmd = tokens[i++];
+            switch (cmd) {
+                case 'M': case 'm': {
+                    const isRel = cmd === 'm';
+                    const x = parseNumber(), y = parseNumber();
+                    const absX = isRel ? currentX + x : x, absY = isRel ? currentY + y : y;
+                    const tp = transformPoint(absX, absY);
+                    result.push(`M ${tp.x},${tp.y}`);
+                    currentX = absX; currentY = absY; startX = absX; startY = absY;
+                    while (i < tokens.length && !isNaN(parseFloat(tokens[i]))) {
+                        const nx = parseNumber(), ny = parseNumber();
+                        const nabsX = isRel ? currentX + nx : nx, nabsY = isRel ? currentY + ny : ny;
+                        const ntp = transformPoint(nabsX, nabsY);
+                        result.push(`L ${ntp.x},${ntp.y}`);
+                        currentX = nabsX; currentY = nabsY;
+                    }
+                    break;
+                }
+                case 'L': case 'l': {
+                    const isRel = cmd === 'l';
+                    while (i < tokens.length && !isNaN(parseFloat(tokens[i]))) {
+                        const x = parseNumber(), y = parseNumber();
+                        const absX = isRel ? currentX + x : x, absY = isRel ? currentY + y : y;
+                        const tp = transformPoint(absX, absY);
+                        result.push(`L ${tp.x},${tp.y}`);
+                        currentX = absX; currentY = absY;
+                    }
+                    break;
+                }
+                case 'H': case 'h': {
+                    const isRel = cmd === 'h';
+                    while (i < tokens.length && !isNaN(parseFloat(tokens[i]))) {
+                        const x = parseNumber();
+                        const absX = isRel ? currentX + x : x;
+                        const tp = transformPoint(absX, currentY);
+                        result.push(`L ${tp.x},${tp.y}`);
+                        currentX = absX;
+                    }
+                    break;
+                }
+                case 'V': case 'v': {
+                    const isRel = cmd === 'v';
+                    while (i < tokens.length && !isNaN(parseFloat(tokens[i]))) {
+                        const y = parseNumber();
+                        const absY = isRel ? currentY + y : y;
+                        const tp = transformPoint(currentX, absY);
+                        result.push(`L ${tp.x},${tp.y}`);
+                        currentY = absY;
+                    }
+                    break;
+                }
+                case 'C': case 'c': {
+                    const isRel = cmd === 'c';
+                    while (i < tokens.length && !isNaN(parseFloat(tokens[i]))) {
+                        const x1 = parseNumber(), y1 = parseNumber();
+                        const x2 = parseNumber(), y2 = parseNumber();
+                        const x = parseNumber(), y = parseNumber();
+                        const ax1 = isRel ? currentX + x1 : x1, ay1 = isRel ? currentY + y1 : y1;
+                        const ax2 = isRel ? currentX + x2 : x2, ay2 = isRel ? currentY + y2 : y2;
+                        const ax = isRel ? currentX + x : x, ay = isRel ? currentY + y : y;
+                        const tp1 = transformPoint(ax1, ay1), tp2 = transformPoint(ax2, ay2), tp = transformPoint(ax, ay);
+                        result.push(`C ${tp1.x},${tp1.y} ${tp2.x},${tp2.y} ${tp.x},${tp.y}`);
+                        currentX = ax; currentY = ay;
+                    }
+                    break;
+                }
+                case 'Z': case 'z':
+                    result.push('Z');
+                    currentX = startX; currentY = startY;
+                    break;
+            }
+        }
+        return result.join(' ');
+    }
+
+    const svg = svgDoc.documentElement;
+    const transforms = collectTransforms(pathElement);
+    const originalPath = pathElement.getAttribute('d') || '';
+    
+    if (transforms.length === 0) return originalPath;
+    
+    // 一時的なコンテナでCTMを取得
+    const container = document.createElement('div');
+    container.style.position = 'absolute';
+    container.style.visibility = 'hidden';
+    container.style.width = '0'; container.style.height = '0';
+    document.body.appendChild(container);
+    
+    const tempSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    container.appendChild(tempSvg);
+    
+    const result = transformPathData(originalPath, transforms, tempSvg);
+    document.body.removeChild(container);
+    
+    return result;
+  }
+
+  function decode() {
+    const src = elements.msdfCanvas;
+    const dst = elements.decodedCanvas;
+    if (!src.width) return;
+
+    const size = 512;
+    dst.width = size;
+    dst.height = size;
+    const scale = size / Math.max(src.width, src.height);
+    const ctx = dst.getContext('2d');
+    const srcCtx = src.getContext('2d', { willReadFrequently: true });
+    
+    const srcData = srcCtx.getImageData(0, 0, src.width, src.height);
+    const dstData = ctx.createImageData(size, size);
+    const range = parseFloat(elements.range.value);
+
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const sx = x / scale;
+        const sy = y / scale;
+        
+        // バイリニアサンプリング
+        const x0 = Math.floor(sx), y0 = Math.floor(sy);
+        const fx = sx - x0, fy = sy - y0;
+        const x1 = Math.min(x0 + 1, src.width - 1), y1 = Math.min(y0 + 1, src.height - 1);
+
+        const getP = (px, py) => {
+          const i = (py * src.width + px) * 4;
+          return [srcData.data[i]/255, srcData.data[i+1]/255, srcData.data[i+2]/255];
+        };
+
+        const p00 = getP(x0, y0), p10 = getP(x1, y0);
+        const p01 = getP(x0, y1), p11 = getP(x1, y1);
+
+        const lerp = (a, b, t) => a + (b - a) * t;
+        const r = lerp(lerp(p00[0], p10[0], fx), lerp(p01[0], p11[0], fx), fy);
+        const g = lerp(lerp(p00[1], p10[1], fx), lerp(p01[1], p11[1], fx), fy);
+        const b = lerp(lerp(p00[2], p10[2], fx), lerp(p01[2], p11[2], fx), fy);
+
+        const median = Math.max(Math.min(r, g), Math.min(Math.max(r, g), b));
+        const opacity = Math.max(0, Math.min(1, (median - 0.5) * range * scale + 0.5));
+        const val = Math.round(255 * (1 - opacity));
+
+        const di = (y * size + x) * 4;
+        dstData.data[di] = dstData.data[di+1] = dstData.data[di+2] = val;
+        dstData.data[di+3] = 255;
+      }
+    }
+    ctx.putImageData(dstData, 0, 0);
+  }
+
+  // イベント設定
+  elements.dropZone?.addEventListener('click', () => elements.fileInput.click());
+  elements.dropZone?.addEventListener('dragover', (e) => { e.preventDefault(); elements.dropZone.classList.add('drag-over'); });
+  ['dragleave', 'dragend'].forEach(t => elements.dropZone?.addEventListener(t, () => elements.dropZone.classList.remove('drag-over')));
+  elements.dropZone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    elements.dropZone.classList.remove('drag-over');
+    if (e.dataTransfer?.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  elements.fileInput?.addEventListener('change', () => {
+    if (elements.fileInput.files?.length) handleFile(elements.fileInput.files[0]);
+  });
+
+  elements.width.addEventListener('input', () => {
+    if (isAspectLocked) {
+      elements.height.value = Math.round(parseInt(elements.width.value) / aspectRatio).toString();
+    }
+    generate();
+  });
+  elements.height.addEventListener('input', () => {
+    if (isAspectLocked) {
+      elements.width.value = Math.round(parseInt(elements.height.value) * aspectRatio).toString();
+    }
+    generate();
+  });
+  elements.range.addEventListener('input', generate);
+  elements.aspectBtn?.addEventListener('click', () => {
+    isAspectLocked = !isAspectLocked;
+    elements.aspectBtn.classList.toggle('active', isAspectLocked);
+    elements.aspectBtn.textContent = isAspectLocked ? '🔒' : '🔓';
+    if (isAspectLocked) aspectRatio = parseInt(elements.width.value) / parseInt(elements.height.value);
+  });
+
+  elements.downloadBtn.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = `${currentFileName}_msdf.png`;
+    link.href = elements.msdfCanvas.toDataURL();
+    link.click();
+  });
+
+  init();
+</script>
+
+<style>
+  /* Common Tool Styles */
+  .tool-header-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .tool-icon-wrapper {
+    background: white;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .tool-icon {
+    font-size: 3rem;
+  }
+
+  .tool-title {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--main-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .tool-description {
+    font-size: 1.1rem;
+    color: var(--sub-color);
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+
+  .tool-guide {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--sub-color);
+    background: rgba(0, 0, 0, 0.03);
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tool-guide a {
+    color: var(--main-color);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: opacity 0.2s;
+  }
+
+  .tool-guide a:hover {
+    opacity: 0.7;
+  }
+
+  .tool-card {
+    background: white;
+    border: 2px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+
+  .msdf-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .msdf-controls {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 2rem;
+    background: rgba(0,0,0,0.02);
+    padding: 2rem;
+    border-radius: 1.5rem;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 0 1 auto;
+  }
+
+  .control-group label {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--sub-color);
+  }
+
+  .size-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .size-inputs input {
+    width: 80px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+  }
+
+  .lock-btn {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .lock-btn.active {
+    background: var(--main-color);
+    color: white;
+    border-color: var(--main-color);
+  }
+
+  .status-box {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+    min-width: 200px;
+  }
+
+  .status-box.info { background: #f0f0f0; color: #666; }
+  .status-box.success { background: #e6f6ee; color: #166534; }
+  .status-box.error { background: #fee2e2; color: #991b1b; }
+
+  .msdf-previews {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .preview-card {
+    background: white;
+    border: 2px solid #eee;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .preview-card:hover {
+    border-color: var(--main-color);
+  }
+
+  .card-label {
+    padding: 0.75rem;
+    background: #f8f8f8;
+    border-bottom: 1px solid #eee;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--sub-color);
+  }
+
+  .preview-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .canvas-bg {
+    /* MSDFが見えやすいようにグレーの背景 */
+    background: #222;
+  }
+
+  .preview-content canvas, .preview-content :global(svg) {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* MSDFキャンバスはドットが見えるように */
+  #msdf-canvas {
+    image-rendering: pixelated;
+  }
+
+  .placeholder {
+    text-align: center;
+    color: #ccc;
+  }
+
+  .placeholder .icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .preview-hint {
+    padding: 0.5rem;
+    font-size: 0.7rem;
+    text-align: center;
+    color: #999;
+    font-weight: 700;
+  }
+
+  .drag-over {
+    border: 3px dashed var(--main-color);
+    background: var(--bg-color);
+  }
+
+  .actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .hidden { display: none; }
+
+  .btn {
+    width: auto;
+    min-width: 200px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .btn-primary { 
+    background: var(--main-color); 
+    color: white; 
+  }
+  
+  .btn-primary:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 10px 20px rgba(207,61,49,0.3); 
+  }
+  
+  .btn:disabled { 
+    background: #ccc; 
+    cursor: not-allowed; 
+    transform: none; 
+    box-shadow: none; 
+  }
+
+  .actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 900px) {
+    .msdf-layout { grid-template-columns: 1fr; }
+    .msdf-controls { 
+      order: 2; 
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .actions {
+      justify-content: center;
+    }
+    .btn {
+      width: 100%;
+    }
+  }
+</style>

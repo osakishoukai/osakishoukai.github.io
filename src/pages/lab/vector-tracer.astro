@@ -2,7 +2,6 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
-
 ---
 
 <Layout 
@@ -22,9 +21,12 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
       <div class="tool-info">
         <h1 class="tool-title">いろあつめーかー</h1>
         <p class="tool-description">
-          写真をイラスト風のベクター画像（SVG）に変換します。<br/>
+          写真やイラストをきれいな線のベクター画像（SVG）に変換します。<br/>
           色数を調整して、ロゴ制作やフラットデザインの素材作りに！
         </p>
+        <div class="tool-guide">
+          <span>💡</span> VRChatで使いたい？ <a href="/lab/msdf-generator">でかーるめーかー</a> が便利だよ！
+        </div>
       </div>
     </div>
 
@@ -34,8 +36,26 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
           <div class="tracer-controls">
             <div class="control-group">
               <label>色数</label>
-              <input type="number" id="tr-colors" min="2" max="64" value="8" style="width: 80px;" />
+              <input type="number" id="tr-colors" min="1" max="64" value="1" />
             </div>
+            
+            <div class="control-group">
+              <label>手動パレット</label>
+              <div class="toggle-row">
+                <button id="manual-palette-toggle" class="toggle-btn">
+                  <span class="toggle-label-off">OFF</span>
+                  <span class="toggle-label-on">ON</span>
+                  <span class="toggle-knob"></span>
+                </button>
+                <button id="auto-fill-palette" class="auto-fill-btn hidden" title="自動で色を抽出">🎨</button>
+              </div>
+            </div>
+
+            <div id="palette-editor" class="control-group palette-editor hidden">
+              <label>クリックで色変更</label>
+              <div id="palette-colors" class="palette-colors"></div>
+            </div>
+
             <div class="control-group">
               <label>なめらかさ</label>
               <select id="tr-detail">
@@ -44,11 +64,26 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
                 <option value="3">高（なめらか）</option>
               </select>
             </div>
+            <div class="control-group">
+              <label>背景透過</label>
+              <div class="option-buttons">
+                <button class="option-btn" data-transparency="none">なし</button>
+                <button class="option-btn active" data-transparency="topleft">左上</button>
+                <button class="option-btn" data-transparency="most">最多</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label>トリミング</label>
+              <div class="option-buttons">
+                <button class="option-btn" data-trim="none">なし</button>
+                <button class="option-btn" data-trim="min">最小</button>
+                <button class="option-btn active" data-trim="square">正方形</button>
+              </div>
+            </div>
             <div class="actions">
               <button id="tr-download" class="btn btn-primary">
                 <span>💾</span> 保存
               </button>
-              <button id="tr-reset" class="btn btn-secondary">リセット</button>
             </div>
           </div>
 
@@ -62,37 +97,367 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
             </div>
             <div id="tr-preview-container" class="preview-container hidden">
               <div id="tr-svg-container" class="svg-preview"></div>
-              <div class="canvas-info">SVGプレビュー</div>
+              <canvas id="source-canvas" class="source-canvas hidden"></canvas>
+              <div id="picking-hint" class="picking-hint hidden">画像をクリックして色を選択</div>
+              <div class="canvas-info">別の画像をドロップで変更</div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </Container>
 </Layout>
 
 <script is:inline src="https://unpkg.com/imagetracerjs@1.2.6/imagetracer_v1.2.6.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/rgbquant@1.1.2/src/rgbquant.js"></script>
 
 <script>
-  // --- Tool 3: いろあつめーかー ---
+  // ============================================
+  // 要素取得
+  // ============================================
   const trDropZone = document.getElementById('tr-drop-zone');
   const trFileInput = document.getElementById('tr-file-input') as HTMLInputElement;
   const trPreviewContainer = document.getElementById('tr-preview-container');
   const trSvgContainer = document.getElementById('tr-svg-container');
   const trDownloadBtn = document.getElementById('tr-download');
-  const trResetBtn = document.getElementById('tr-reset');
+  const trColorsInput = document.getElementById('tr-colors') as HTMLInputElement;
+  const trDetailSelect = document.getElementById('tr-detail') as HTMLSelectElement;
+  const manualPaletteToggle = document.getElementById('manual-palette-toggle');
+  const paletteEditor = document.getElementById('palette-editor');
+  const paletteColors = document.getElementById('palette-colors');
+  const sourceCanvas = document.getElementById('source-canvas') as HTMLCanvasElement;
+  const pickingHint = document.getElementById('picking-hint');
+  const autoFillBtn = document.getElementById('auto-fill-palette');
 
-  const trControls = {
-    colors: document.getElementById('tr-colors') as HTMLInputElement,
-    detail: document.getElementById('tr-detail') as HTMLSelectElement,
-  };
-
+  // ============================================
+  // 状態管理
+  // ============================================
   let trSourceImage: string | null = null;
-  let currentSvgStr: string | null = null;
   let sourceImageElement: HTMLImageElement | null = null;
-  let currentPalette: {r:number, g:number, b:number, a:number}[] = [];
+  let currentSvgStr: string | null = null;
+  let transparencyMode: 'none' | 'topleft' | 'most' = 'topleft';
+  let trimMode: 'none' | 'min' | 'square' = 'square';
 
-  function handleTrFile(file: File) {
-    if (!file.type.startsWith('image/')) { return; }
+  // 手動パレット関連
+  let isManualPalette = false;
+  let manualPalette: { r: number, g: number, b: number, a: number }[] = [];
+  let currentPickingIndex: number | null = null;
+
+  // ============================================
+  // オプションボタンの切り替え処理
+  // ============================================
+  function setupOptionButtons(selector: string, callback: (value: string) => void) {
+    document.querySelectorAll(selector).forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.target as HTMLButtonElement;
+        
+        if (target.classList.contains('disabled')) return;
+        
+        const parent = target.parentElement;
+        parent?.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+        target.classList.add('active');
+        callback(target.dataset.transparency || target.dataset.trim || '');
+      });
+    });
+  }
+
+  setupOptionButtons('[data-transparency]', (value) => {
+    transparencyMode = value as typeof transparencyMode;
+    if (isManualPalette) {
+      renderPaletteUI();
+    }
+    render();
+  });
+
+  setupOptionButtons('[data-trim]', (value) => {
+    trimMode = value as typeof trimMode;
+    render();
+  });
+
+  // ============================================
+  // 手動パレットのトグル
+  // ============================================
+  manualPaletteToggle?.addEventListener('click', () => {
+    isManualPalette = !isManualPalette;
+    manualPaletteToggle.classList.toggle('active', isManualPalette);
+    paletteEditor?.classList.toggle('hidden', !isManualPalette);
+    autoFillBtn?.classList.toggle('hidden', !isManualPalette);
+    
+    if (isManualPalette) {
+      if (transparencyMode === 'most') {
+        transparencyMode = 'none';
+        document.querySelectorAll('[data-transparency]').forEach(btn => {
+          const button = btn as HTMLButtonElement;
+          button.classList.toggle('active', button.dataset.transparency === 'none');
+        });
+      }
+      updateTransparencyButtons();
+      initManualPalette();
+    } else {
+      updateTransparencyButtons();
+      exitPickingMode();
+    }
+    render();
+  });
+
+  // ============================================
+  // 透過ボタンの有効/無効切り替え
+  // ============================================
+  function updateTransparencyButtons() {
+    document.querySelectorAll('[data-transparency]').forEach(btn => {
+      const button = btn as HTMLButtonElement;
+      const mode = button.dataset.transparency;
+      
+      if (isManualPalette) {
+        if (mode === 'most') {
+          button.classList.add('disabled');
+        } else if (mode === 'topleft') {
+          button.textContent = '最初';
+        }
+      } else {
+        button.classList.remove('disabled');
+        if (mode === 'topleft') {
+          button.textContent = '左上';
+        }
+      }
+    });
+  }
+
+  // ============================================
+  // 手動パレットの初期化
+  // ============================================
+  function initManualPalette() {
+    const numColors = parseInt(trColorsInput.value);
+    
+    manualPalette = [];
+    for (let i = 0; i < numColors; i++) {
+      manualPalette.push({ r: 128, g: 128, b: 128, a: 255 });
+    }
+    
+    renderPaletteUI();
+  }
+
+  // ============================================
+  // 色の多様性重視でパレット抽出
+  // ============================================
+  function extractDiversePalette(numColors: number): { r: number, g: number, b: number, a: number }[] {
+    if (!sourceImageElement) return [];
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return [];
+
+    canvas.width = sourceImageElement.width;
+    canvas.height = sourceImageElement.height;
+    ctx.drawImage(sourceImageElement, 0, 0);
+    
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
+    
+    // 色をグループ化して平均色を計算
+    const colorGroups = new Map<string, { count: number, sumR: number, sumG: number, sumB: number }>();
+    const step = Math.max(1, Math.floor(pixels.length / 4 / 10000));
+    
+    for (let i = 0; i < pixels.length; i += 4 * step) {
+      const r = pixels[i];
+      const g = pixels[i + 1];
+      const b = pixels[i + 2];
+      // 16刻みでグループ化
+      const key = `${Math.floor(r/16)*16},${Math.floor(g/16)*16},${Math.floor(b/16)*16}`;
+      
+      if (!colorGroups.has(key)) {
+        colorGroups.set(key, { count: 1, sumR: r, sumG: g, sumB: b });
+      } else {
+        const group = colorGroups.get(key)!;
+        group.count++;
+        group.sumR += r;
+        group.sumG += g;
+        group.sumB += b;
+      }
+    }
+    
+    // グループから平均色を計算
+    const allColors: { r: number, g: number, b: number, count: number }[] = [];
+    colorGroups.forEach((group) => {
+      allColors.push({
+        r: Math.round(group.sumR / group.count),
+        g: Math.round(group.sumG / group.count),
+        b: Math.round(group.sumB / group.count),
+        count: group.count
+      });
+    });
+    
+    if (allColors.length === 0) return [];
+    
+    // 最も遠い色を順番に選ぶ
+    const selected: { r: number, g: number, b: number }[] = [];
+    
+    // 最初は最も出現回数が多い色
+    allColors.sort((a, b) => b.count - a.count);
+    selected.push({ r: allColors[0].r, g: allColors[0].g, b: allColors[0].b });
+    
+    while (selected.length < numColors && allColors.length > selected.length) {
+      let maxMinDist = -1;
+      let bestColor: { r: number, g: number, b: number } | null = null;
+      
+      for (const color of allColors) {
+        // すでに選ばれてたらスキップ
+        const alreadySelected = selected.some(s => 
+          Math.abs(s.r - color.r) < 10 && Math.abs(s.g - color.g) < 10 && Math.abs(s.b - color.b) < 10
+        );
+        if (alreadySelected) continue;
+        
+        // 選ばれた色たちとの最小距離を計算
+        const minDist = Math.min(...selected.map(s => 
+          Math.sqrt((s.r - color.r) ** 2 + (s.g - color.g) ** 2 + (s.b - color.b) ** 2)
+        ));
+        
+        // 最小距離が最大のものを選ぶ
+        if (minDist > maxMinDist) {
+          maxMinDist = minDist;
+          bestColor = { r: color.r, g: color.g, b: color.b };
+        }
+      }
+      
+      if (bestColor) {
+        selected.push(bestColor);
+      } else {
+        break;
+      }
+    }
+    
+    return selected.map(c => ({ r: c.r, g: c.g, b: c.b, a: 255 }));
+  }
+
+  // 自動抽出ボタン
+  autoFillBtn?.addEventListener('click', () => {
+    if (!sourceImageElement) return;
+    
+    const numColors = parseInt(trColorsInput.value);
+    const extracted = extractDiversePalette(numColors);
+    if (extracted.length > 0) {
+      manualPalette = extracted;
+      renderPaletteUI();
+      render();
+    }
+  });
+
+  // ============================================
+  // パレットUIの描画
+  // ============================================
+  function renderPaletteUI() {
+    if (!paletteColors) return;
+    
+    const numColors = parseInt(trColorsInput.value);
+    
+    while (manualPalette.length < numColors) {
+      manualPalette.push({ r: 128, g: 128, b: 128, a: 255 });
+    }
+    manualPalette = manualPalette.slice(0, numColors);
+    
+    paletteColors.innerHTML = '';
+    
+    manualPalette.forEach((color, index) => {
+      const colorBtn = document.createElement('button');
+      colorBtn.className = 'palette-color-btn';
+      colorBtn.textContent = '■';
+      colorBtn.style.color = `rgb(${color.r}, ${color.g}, ${color.b})`;
+      
+      if (index === 0 && transparencyMode === 'topleft') {
+        colorBtn.classList.add('transparent-color');
+        colorBtn.title = `色${index + 1}: 透過色`;
+      } else {
+        colorBtn.title = `色${index + 1}`;
+      }
+      
+      if (currentPickingIndex === index) {
+        colorBtn.classList.add('picking');
+      }
+      
+      colorBtn.addEventListener('click', () => {
+        startColorPicking(index);
+      });
+      
+      paletteColors.appendChild(colorBtn);
+    });
+  }
+
+  // ============================================
+  // カラーピッキング
+  // ============================================
+  function startColorPicking(index: number) {
+    currentPickingIndex = index;
+    renderPaletteUI();
+    
+    if (trSvgContainer) trSvgContainer.classList.add('hidden');
+    if (sourceCanvas) {
+      sourceCanvas.classList.remove('hidden');
+      drawSourceCanvas();
+    }
+    if (pickingHint) pickingHint.classList.remove('hidden');
+    
+    sourceCanvas?.classList.add('picking-mode');
+  }
+
+  function drawSourceCanvas() {
+    if (!sourceImageElement || !sourceCanvas) return;
+    
+    const ctx = sourceCanvas.getContext('2d');
+    if (!ctx) return;
+    
+    const maxSize = 400;
+    const scale = Math.min(maxSize / sourceImageElement.width, maxSize / sourceImageElement.height, 1);
+    
+    sourceCanvas.width = sourceImageElement.width * scale;
+    sourceCanvas.height = sourceImageElement.height * scale;
+    
+    ctx.drawImage(sourceImageElement, 0, 0, sourceCanvas.width, sourceCanvas.height);
+  }
+
+  function exitPickingMode() {
+    currentPickingIndex = null;
+    renderPaletteUI();
+    
+    if (trSvgContainer) trSvgContainer.classList.remove('hidden');
+    if (sourceCanvas) sourceCanvas.classList.add('hidden');
+    if (pickingHint) pickingHint.classList.add('hidden');
+    sourceCanvas?.classList.remove('picking-mode');
+  }
+
+  sourceCanvas?.addEventListener('click', (e) => {
+    if (currentPickingIndex === null) return;
+    
+    const rect = sourceCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const ctx = sourceCanvas.getContext('2d');
+    if (!ctx) return;
+    
+    const pixel = ctx.getImageData(x, y, 1, 1).data;
+    
+    manualPalette[currentPickingIndex] = {
+      r: pixel[0],
+      g: pixel[1],
+      b: pixel[2],
+      a: 255
+    };
+    
+    exitPickingMode();
+    render();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && currentPickingIndex !== null) {
+      exitPickingMode();
+    }
+  });
+
+  // ============================================
+  // ファイル処理
+  // ============================================
+  function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) return;
     
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -102,121 +467,135 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
         trSourceImage = e.target?.result as string;
         trDropZone?.classList.add('hidden');
         trPreviewContainer?.classList.remove('hidden');
-        updateAll();
+        
+        if (isManualPalette) {
+          initManualPalette();
+        }
+        
+        render();
       };
       img.src = e.target?.result as string;
     };
     reader.readAsDataURL(file);
   }
 
-  function updateAll(forcePalette = false) {
-    if (forcePalette || currentPalette.length === 0) {
-      const palette = extractPaletteFromImage();
-      if (palette) {
-        currentPalette = palette;
-      }
-    }
-    
-    if (currentPalette.length > 0) {
-      renderVector(currentPalette);
-    }
+  // ============================================
+  // パレット抽出（自動モード用）
+  // ============================================
+  function extractPalette(numColors: number): { r: number, g: number, b: number, a: number }[] {
+    if (!sourceImageElement) return [];
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return [];
+
+    canvas.width = sourceImageElement.width;
+    canvas.height = sourceImageElement.height;
+    ctx.drawImage(sourceImageElement, 0, 0);
+
+    // @ts-ignore
+    const q = new RgbQuant({
+      colors: numColors,
+      method: 2,
+      minHueCols: 256,
+    });
+
+    q.sample(canvas);
+    const palette = q.palette(true);
+
+    return palette.map((c: number[]) => ({
+      r: c[0],
+      g: c[1],
+      b: c[2],
+      a: 255
+    }));
   }
 
-  function extractPaletteFromImage() {
-    if (!sourceImageElement || !trControls.colors) return null;
-    
+  // ============================================
+  // 色関連ユーティリティ
+  // ============================================
+  function getTopLeftPixelColor(): { r: number, g: number, b: number } | null {
+    if (!sourceImageElement) return null;
+
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
-    
-    // Resize for analysis
-    const maxSize = 100;
-    const scale = Math.min(maxSize / sourceImageElement.width, maxSize / sourceImageElement.height);
-    canvas.width = Math.max(1, sourceImageElement.width * scale);
-    canvas.height = Math.max(1, sourceImageElement.height * scale);
-    
-    ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(sourceImageElement, 0, 0, canvas.width, canvas.height);
-    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-    const numColors = parseInt(trControls.colors.value);
-    
-    // 1. Quantize and count frequencies
-    const colorMap = new Map<string, number>();
-    for (let i = 0; i < pixels.length; i += 4) {
-      if (pixels[i+3] < 128) continue;
-      // Quantize and clamp correctly
-      const r = Math.min(255, Math.max(0, Math.round(pixels[i] / 16) * 16));
-      const g = Math.min(255, Math.max(0, Math.round(pixels[i+1] / 16) * 16));
-      const b = Math.min(255, Math.max(0, Math.round(pixels[i+2] / 16) * 16));
-      const key = `${r},${g},${b}`;
-      colorMap.set(key, (colorMap.get(key) || 0) + 1);
-    }
 
-    // 2. Sort by frequency (descending)
-    const sortedColors = Array.from(colorMap.entries())
-      .map(([key, count]) => ({
-        rgb: key.split(',').map(Number),
-        count
-      }))
-      .sort((a, b) => b.count - a.count);
+    canvas.width = sourceImageElement.width;
+    canvas.height = sourceImageElement.height;
+    ctx.drawImage(sourceImageElement, 0, 0);
+    const pixel = ctx.getImageData(0, 0, 1, 1).data;
 
-    // 3. Select diverse colors from most frequent ones
-    const picked: number[][] = [];
-    const minDiff = 32; // Threshold for color similarity
-
-    for (const color of sortedColors) {
-      if (picked.length >= numColors) break;
-      
-      const isDiverse = picked.every(p => {
-        // Simple Manhattan distance for speed
-        const dist = Math.abs(color.rgb[0] - p[0]) + 
-                     Math.abs(color.rgb[1] - p[1]) + 
-                     Math.abs(color.rgb[2] - p[2]);
-        return dist > minDiff;
-      });
-
-      if (isDiverse) {
-        picked.push(color.rgb);
-      }
-    }
-
-    // 4. Fill remaining slots with the next most distant color if needed
-    if (picked.length < numColors && sortedColors.length > picked.length) {
-       for (const color of sortedColors) {
-         if (picked.length >= numColors) break;
-         if (!picked.some(p => p[0] === color.rgb[0] && p[1] === color.rgb[1] && p[2] === color.rgb[2])) {
-           picked.push(color.rgb);
-         }
-       }
-    }
-
-    return picked.map(c => ({r: c[0], g: c[1], b: c[2], a: 255}));
+    return { r: pixel[0], g: pixel[1], b: pixel[2] };
   }
 
-  function renderVector(palette: {r:number, g:number, b:number, a:number}[]) {
-    if (!trSourceImage || !trSvgContainer || !trControls.detail) return;
-    const detail = parseInt(trControls.detail.value);
+  function parseFillColor(fill: string): { r: number, g: number, b: number } | null {
+    const rgbMatch = fill.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    if (rgbMatch) {
+      return {
+        r: parseInt(rgbMatch[1]),
+        g: parseInt(rgbMatch[2]),
+        b: parseInt(rgbMatch[3])
+      };
+    }
+
+    const hexMatch = fill.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+    if (hexMatch) {
+      return {
+        r: parseInt(hexMatch[1], 16),
+        g: parseInt(hexMatch[2], 16),
+        b: parseInt(hexMatch[3], 16)
+      };
+    }
+
+    return null;
+  }
+
+  function colorDistance(c1: { r: number, g: number, b: number }, c2: { r: number, g: number, b: number }): number {
+    return Math.abs(c1.r - c2.r) + Math.abs(c1.g - c2.g) + Math.abs(c1.b - c2.b);
+  }
+
+  // ============================================
+  // レンダリング
+  // ============================================
+  function render() {
+    if (!trSourceImage || !trSvgContainer) return;
+
+    const numColors = parseInt(trColorsInput.value);
+    const detail = parseInt(trDetailSelect.value);
+    const needsTransparency = transparencyMode !== 'none';
+
+    let palette: { r: number, g: number, b: number, a: number }[];
+    
+    if (isManualPalette) {
+      palette = [...manualPalette];
+    } else {
+      const internalColors = needsTransparency ? numColors + 1 : numColors;
+      palette = extractPalette(internalColors);
+    }
 
     // @ts-ignore
     ImageTracer.imageToSVG(
       trSourceImage,
       (svgstr: string) => {
-        if (palette.length > 0) {
-           const bg = palette[0];
-           const bgRect = `<rect width="100%" height="100%" fill="rgb(${bg.r},${bg.g},${bg.b})" />`;
-           svgstr = svgstr.replace(/<svg(.*?)>/, `<svg$1>${bgRect}`);
+        if (needsTransparency) {
+          svgstr = applyTransparency(svgstr);
         }
-        
+        if (trimMode !== 'none') {
+          svgstr = applyTrim(svgstr);
+        }
         currentSvgStr = svgstr;
         if (trSvgContainer) trSvgContainer.innerHTML = svgstr;
       },
-      { 
+      {
         pal: palette,
+        numberofcolors: palette.length,
+        colorsampling: 0,
+        colorquantcycles: 1,
         ltres: detail === 3 ? 0.05 : detail === 2 ? 2 : 20,
         qtres: detail === 3 ? 0.05 : detail === 2 ? 2 : 20,
         pathomit: detail === 3 ? 8 : detail === 2 ? 64 : 512,
-        // パス同士をわずかに重ねて白背景が漏れるのを防ぐ
-        strokewidth: 1, 
+        strokewidth: 0,
         viewbox: true,
         blurradius: detail === 1 ? 3 : 0,
         blurdelta: 20
@@ -224,28 +603,195 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     );
   }
 
-  Object.entries(trControls).forEach(([key, ctrl]) => {
-    if (!ctrl) return;
-    const eventType = ctrl instanceof HTMLSelectElement || ctrl.type === 'number' ? 'change' : 'input';
-    ctrl.addEventListener(eventType, () => {
-      if (key === 'colors') {
-        updateAll(true); // 色数が変わったらパレットを再抽出
-      } else {
-        updateAll(false); // なめらかさなどの変更はパレットを維持
+  // ============================================
+  // 透過処理
+  // ============================================
+  function applyTransparency(svgstr: string): string {
+    if (transparencyMode === 'none') return svgstr;
+    
+    const temp = document.createElement('div');
+    temp.style.position = 'absolute';
+    temp.style.visibility = 'hidden';
+    temp.innerHTML = svgstr;
+    document.body.appendChild(temp);
+
+    const svg = temp.querySelector('svg');
+    if (!svg) {
+      document.body.removeChild(temp);
+      return svgstr;
+    }
+
+    const paths = svg.querySelectorAll('path');
+    if (paths.length === 0) {
+      document.body.removeChild(temp);
+      return svgstr;
+    }
+
+    let targetColor: string | null = null;
+    let transparentColorRef: { r: number, g: number, b: number } | null = null;
+    
+    if (isManualPalette) {
+      if (manualPalette.length > 0) {
+        transparentColorRef = manualPalette[0];
       }
+    } else if (transparencyMode === 'topleft') {
+      transparentColorRef = getTopLeftPixelColor();
+    } else if (transparencyMode === 'most') {
+      const colorArea = new Map<string, number>();
+
+      paths.forEach(path => {
+        const fill = path.getAttribute('fill') || '';
+        try {
+          const bbox = (path as SVGPathElement).getBBox();
+          const area = bbox.width * bbox.height;
+          colorArea.set(fill, (colorArea.get(fill) || 0) + area);
+        } catch (e) {}
+      });
+
+      let maxArea = 0;
+      colorArea.forEach((area, color) => {
+        if (area > maxArea) {
+          maxArea = area;
+          targetColor = color;
+        }
+      });
+    }
+
+    if (transparentColorRef && !targetColor) {
+      const svgColors = new Set<string>();
+      paths.forEach(path => {
+        const fill = path.getAttribute('fill');
+        if (fill) svgColors.add(fill);
+      });
+
+      let minDist = Infinity;
+      svgColors.forEach(fill => {
+        const parsed = parseFillColor(fill);
+        if (parsed) {
+          const dist = colorDistance(transparentColorRef!, parsed);
+          if (dist < minDist) {
+            minDist = dist;
+            targetColor = fill;
+          }
+        }
+      });
+    }
+
+    if (targetColor) {
+      paths.forEach(path => {
+        if (path.getAttribute('fill') === targetColor) {
+          path.remove();
+        }
+      });
+    }
+
+    const result = new XMLSerializer().serializeToString(svg);
+    document.body.removeChild(temp);
+    return result;
+  }
+
+  // ============================================
+  // トリミング処理
+  // ============================================
+  function applyTrim(svgstr: string): string {
+    const temp = document.createElement('div');
+    temp.style.position = 'absolute';
+    temp.style.visibility = 'hidden';
+    temp.innerHTML = svgstr;
+    document.body.appendChild(temp);
+
+    const svg = temp.querySelector('svg');
+    if (!svg) {
+      document.body.removeChild(temp);
+      return svgstr;
+    }
+
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    svg.querySelectorAll('path').forEach(path => {
+      try {
+        const bbox = (path as SVGPathElement).getBBox();
+        minX = Math.min(minX, bbox.x);
+        minY = Math.min(minY, bbox.y);
+        maxX = Math.max(maxX, bbox.x + bbox.width);
+        maxY = Math.max(maxY, bbox.y + bbox.height);
+      } catch (e) {}
     });
+
+    document.body.removeChild(temp);
+
+    if (minX === Infinity) return svgstr;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(svgstr, 'image/svg+xml');
+    const svgEl = doc.querySelector('svg');
+    if (!svgEl) return svgstr;
+
+    let width = maxX - minX;
+    let height = maxY - minY;
+    let viewBoxX = minX;
+    let viewBoxY = minY;
+
+    if (trimMode === 'square') {
+      const size = Math.max(width, height);
+      viewBoxX = minX - (size - width) / 2;
+      viewBoxY = minY - (size - height) / 2;
+      width = size;
+      height = size;
+    }
+
+    svgEl.setAttribute('viewBox', `${viewBoxX} ${viewBoxY} ${width} ${height}`);
+    svgEl.removeAttribute('width');
+    svgEl.removeAttribute('height');
+
+    return new XMLSerializer().serializeToString(svgEl);
+  }
+
+  // ============================================
+  // ドロップゾーン設定
+  // ============================================
+  function setupDropZone(element: HTMLElement | null) {
+    if (!element) return;
+
+    element.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      element.classList.add('drag-over');
+    });
+
+    ['dragleave', 'dragend'].forEach(t =>
+      element.addEventListener(t, () => element.classList.remove('drag-over'))
+    );
+
+    element.addEventListener('drop', (e) => {
+      e.preventDefault();
+      element.classList.remove('drag-over');
+      if (e.dataTransfer?.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+  }
+
+  // ============================================
+  // イベント設定
+  // ============================================
+  trColorsInput?.addEventListener('change', () => {
+    if (isManualPalette) {
+      renderPaletteUI();
+    }
+    render();
   });
+  
+  trDetailSelect?.addEventListener('change', render);
 
   trDropZone?.addEventListener('click', () => trFileInput?.click());
-  trDropZone?.addEventListener('dragover', (e) => { e.preventDefault(); trDropZone.classList.add('drag-over'); });
-  ['dragleave', 'dragend'].forEach(t => trDropZone?.addEventListener(t, () => trDropZone.classList.remove('drag-over')));
-  trDropZone?.addEventListener('drop', (e) => {
-    e.preventDefault();
-    trDropZone.classList.remove('drag-over');
-    if (e.dataTransfer?.files.length) handleTrFile(e.dataTransfer.files[0]);
+  setupDropZone(trDropZone);
+
+  setupDropZone(trSvgContainer);
+  trSvgContainer?.addEventListener('click', () => {
+    if (currentPickingIndex === null) {
+      trFileInput?.click();
+    }
   });
+
   trFileInput?.addEventListener('change', () => {
-    if (trFileInput.files?.length) handleTrFile(trFileInput.files[0]);
+    if (trFileInput.files?.length) handleFile(trFileInput.files[0]);
   });
 
   trDownloadBtn?.addEventListener('click', () => {
@@ -256,19 +802,9 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     link.href = URL.createObjectURL(blob);
     link.click();
   });
-
-  trResetBtn?.addEventListener('click', () => {
-    trSourceImage = null;
-    currentSvgStr = null;
-    trPreviewContainer?.classList.add('hidden');
-    trDropZone?.classList.remove('hidden');
-    if (trFileInput) trFileInput.value = '';
-    if (trSvgContainer) trSvgContainer.innerHTML = '';
-  });
 </script>
 
 <style>
-  /* Common Tool Styles */
   .tool-header-section {
     display: flex;
     align-items: center;
@@ -306,6 +842,30 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     line-height: 1.6;
   }
 
+  .tool-guide {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--sub-color);
+    background: rgba(0, 0, 0, 0.03);
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tool-guide a {
+    color: var(--main-color);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: opacity 0.2s;
+  }
+
+  .tool-guide a:hover {
+    opacity: 0.7;
+  }
+
   .tool-card {
     background: white;
     border: 2px solid var(--main-color);
@@ -313,23 +873,6 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     padding: 3rem;
     margin-bottom: 3rem;
     box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-  }
-
-  .legal-note {
-    text-align: center;
-    margin-top: 2rem;
-  }
-  
-  .legal-note a {
-    color: var(--sub-color);
-    text-decoration: underline;
-    font-size: 0.9rem;
-    opacity: 0.7;
-    transition: opacity 0.3s;
-  }
-  
-  .legal-note a:hover {
-    opacity: 1;
   }
 
   .drop-zone {
@@ -355,39 +898,11 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
   }
 
   .file-input { display: none; }
-  
   .hidden { display: none !important; }
 
-  /* Controls */
-  input[type="number"], select {
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-  }
-
-  .btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 1rem;
-    font-weight: 900;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-  }
-
-  .btn-primary { background: var(--main-color); color: white; }
-  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(207,61,49,0.3); }
-  .btn-secondary { background: white; border: 2px solid var(--main-color); color: var(--main-color); }
-  .btn-secondary:hover { background: var(--bg-color); }
-
-  /* Tracer Specific */
   .tracer-layout {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 280px 1fr;
     gap: 2rem;
   }
 
@@ -396,7 +911,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     flex-direction: column;
     gap: 1.5rem;
     background: rgba(0,0,0,0.02);
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 1.5rem;
   }
 
@@ -412,10 +927,250 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     color: var(--sub-color);
   }
 
+  input[type="number"], select {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+  }
+
+  .option-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .option-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    color: var(--sub-color);
+  }
+
+  .option-btn:hover:not(.disabled) {
+    border-color: var(--main-color);
+    background: var(--bg-color);
+  }
+
+  .option-btn.active {
+    border-color: var(--main-color);
+    background: var(--main-color);
+    color: white;
+  }
+
+  .option-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* トグルボタン */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .toggle-btn {
+    position: relative;
+    width: 80px;
+    height: 36px;
+    border-radius: 18px;
+    border: 2px solid #ddd;
+    background: #eee;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .toggle-btn .toggle-label-off,
+  .toggle-btn .toggle-label-on {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    font-weight: 800;
+    transition: opacity 0.2s;
+  }
+
+  .toggle-btn .toggle-label-off {
+    right: 10px;
+    color: #888;
+  }
+
+  .toggle-btn .toggle-label-on {
+    left: 10px;
+    color: white;
+    opacity: 0;
+  }
+
+  .toggle-btn .toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+
+  .toggle-btn.active {
+    background: var(--main-color);
+    border-color: var(--main-color);
+  }
+
+  .toggle-btn.active .toggle-knob {
+    left: calc(100% - 29px);
+  }
+
+  .toggle-btn.active .toggle-label-off {
+    opacity: 0;
+  }
+
+  .toggle-btn.active .toggle-label-on {
+    opacity: 1;
+  }
+
+  /* 自動抽出ボタン */
+  .auto-fill-btn {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+    line-height: 1;
+  }
+
+  .auto-fill-btn:hover {
+    border-color: var(--main-color);
+    transform: scale(1.1);
+  }
+
+  /* パレットエディタ */
+  .palette-editor {
+    background: rgba(0,0,0,0.03);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-top: -0.5rem;
+  }
+
+  .palette-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .palette-color-btn {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0.25rem;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .palette-color-btn:hover {
+    border-color: var(--main-color);
+    transform: scale(1.1);
+  }
+
+  .palette-color-btn.picking {
+    border-color: var(--main-color);
+    animation: pulse 1s infinite;
+  }
+
+  .palette-color-btn.transparent-color {
+    position: relative;
+    opacity: 0.5;
+  }
+
+  .palette-color-btn.transparent-color::after {
+    content: '／';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    color: #666;
+    pointer-events: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  /* ソースキャンバス（カラーピック用） */
+  .source-canvas {
+    border-radius: 1rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    max-width: 100%;
+  }
+
+  .source-canvas.picking-mode {
+    cursor: crosshair;
+  }
+
+  .picking-hint {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--main-color);
+    color: white;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-align: center;
+    animation: bounce 0.5s ease;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .actions {
+    margin-top: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .btn-primary { 
+    background: var(--main-color); 
+    color: white; 
+  }
+  
+  .btn-primary:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 10px 20px rgba(207,61,49,0.3); 
+  }
+
   .svg-preview {
     width: 100%;
     min-height: 300px;
-    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -425,6 +1180,17 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.astro";
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     border: 1px solid #eee;
     overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .svg-preview:hover {
+    border-color: var(--main-color);
+  }
+
+  .svg-preview.drag-over {
+    border: 3px dashed var(--accent-color);
+    background: var(--bg-color);
   }
 
   .canvas-info {
