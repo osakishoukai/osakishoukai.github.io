@@ -1,49 +1,61 @@
-<footer class="mt-20 border-t border-slate-100 pt-16 pb-8">
+---
+import { Icon } from "astro-icon/components";
+---
+<footer class="mt-20 border-t border-slate-100 pt-16 pb-8 bg-slate-50/50">
   <div class="max-w-5xl mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
       <!-- About -->
-      <div class="md:col-span-2">
+      <div class="flex flex-col">
         <a href="/" class="block mb-4 hover:opacity-80 transition-opacity w-fit">
           <img src="/images/logo.svg" alt="大崎商会" class="h-10 w-auto" />
         </a>
-        <p class="text-sm text-slate-500 leading-relaxed max-w-sm">
+        <p class="text-sm text-slate-500 leading-relaxed">
           みんなVRでたのしくくらそう！<br />
           Quest対応の軽量化にこだわったVRChatアセットを開発しています。
         </p>
       </div>
 
-      <!-- Links -->
+      <!-- Contents -->
       <div>
-        <h3 class="font-bold text-slate-800 mb-4">サイトマップ</h3>
-        <ul class="space-y-3 text-sm text-slate-500">
-          <li><a href="/products" class="hover:text-slate-900 transition-colors">商品一覧</a></li>
-          <li><a href="/events" class="hover:text-slate-900 transition-colors">イベント情報</a></li>
-          <li><a href="/about" class="hover:text-slate-900 transition-colors">大崎商会について</a></li>
-          <li><a href="/support" class="hover:text-slate-900 transition-colors">サポート</a></li>
-          <li><a href="/about/license" class="hover:text-slate-900 transition-colors">ライセンス</a></li>
-          <li><a href="/about/legal" class="hover:text-slate-900 transition-colors">法的情報</a></li>
+        <h3 class="font-bold text-slate-800 mb-4">コンテンツ</h3>
+        <ul class="space-y-3 text-sm text-slate-500 font-medium">
+          <li><a href="/products" class="hover:text-brand-main transition-colors">商品一覧</a></li>
+          <li><a href="/events" class="hover:text-brand-main transition-colors">イベント参加</a></li>
+          <li><a href="/lab" class="hover:text-brand-main transition-colors">おおさきラボ</a></li>
+          <li><a href="/events/archive" class="hover:text-brand-main transition-colors">開催レポート</a></li>
         </ul>
       </div>
 
-      <!-- Social -->
+      <!-- About Osaki -->
       <div>
-        <h3 class="font-bold text-slate-800 mb-4">ソーシャル</h3>
-        <ul class="space-y-3 text-sm text-slate-500">
-          <li>
-            <a href="https://twitter.com/osaki_shokai" target="_blank" rel="noopener noreferrer" class="hover:text-slate-900 transition-colors flex items-center gap-2">
-              Twitter
+        <h3 class="font-bold text-slate-800 mb-4">大崎商会について</h3>
+        <ul class="space-y-3 text-sm text-slate-500 font-medium">
+          <li><a href="/about" class="hover:text-brand-main transition-colors">大崎商会とは</a></li>
+          <li><a href="/about/technical" class="hover:text-brand-main transition-colors">技術へのこだわり</a></li>
+          <li><a href="/about/owner" class="hover:text-brand-main transition-colors">店主紹介</a></li>
+        </ul>
+      </div>
+
+      <!-- Support & Legal -->
+      <div>
+        <h3 class="font-bold text-slate-800 mb-4">ガイド・リンク</h3>
+        <ul class="space-y-3 text-sm text-slate-500 font-medium">
+          <li><a href="/support" class="hover:text-brand-main transition-colors">サポート・FAQ</a></li>
+          <li><a href="/about/license" class="hover:text-brand-main transition-colors">ライセンス規定</a></li>
+          <li><a href="/about/legal" class="hover:text-brand-main transition-colors">法的情報</a></li>
+          <li class="pt-2 flex gap-4">
+            <a href="https://twitter.com/osaki_shokai" target="_blank" rel="noopener noreferrer" class="hover:opacity-80 transition-opacity" title="Twitter">
+              <Icon name="mdi:twitter" class="w-6 h-6 text-[#1DA1F2]" />
             </a>
-          </li>
-          <li>
-            <a href="https://osaki-vrc.booth.pm/" target="_blank" rel="noopener noreferrer" class="hover:text-slate-900 transition-colors flex items-center gap-2">
-              Booth
+            <a href="https://osaki-vrc.booth.pm/" target="_blank" rel="noopener noreferrer" class="hover:opacity-80 transition-opacity" title="Booth">
+              <Icon name="mdi:store" class="w-6 h-6 text-[#fc4d50]" />
             </a>
           </li>
         </ul>
       </div>
     </div>
 
-    <div class="border-t border-slate-100 pt-8">
+    <div class="border-t border-slate-200 pt-8">
       <p class="text-center text-sm text-slate-400">
         Copyright © {new Date().getFullYear()} 大崎商会 All rights reserved.
       </p>
